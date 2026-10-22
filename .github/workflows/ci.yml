@@ -1,0 +1,143 @@
+name: Verify OptiTrace
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336
+        env:
+          POSTGRES_DB: optitrace_test
+          POSTGRES_PASSWORD: test-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d optitrace_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:test-only@localhost:5432/optitrace_test?sslmode=disable
+    defaults:
+      run:
+        working-directory: services/engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: services/engine/go.mod
+          cache-dependency-path: services/engine/go.sum
+      - name: Format
+        run: test -z "$(gofmt -l .)"
+      - run: go vet ./...
+      - run: go test -race ./... -count=1 -coverprofile=coverage.out
+      - name: Generated SQL access drift
+        run: |
+          go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.30.0 generate
+          git diff --exit-code -- internal/storage/dbgen
+      - name: Vulnerability analysis
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: engine-coverage
+          path: services/engine/coverage.out
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+      - run: npm run api:generate
+      - run: git diff --exit-code -- src/lib/api-schema.d.ts
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --audit-level=high
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: services/engine/go.mod
+          cache-dependency-path: services/engine/go.sum
+      - name: PowerShell parsing and contracts
+        shell: pwsh
+        run: ./scripts/Test-Harness.ps1
+      - name: Native Go unit tests
+        shell: pwsh
+        run: |
+          Set-Location services/engine
+          go test ./... -count=1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+  infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: docker compose -f infra/compose.yaml config --quiet
+      - run: terraform -chdir=infra/terraform fmt -check -recursive
+      - run: terraform -chdir=infra/terraform init -backend=false -input=false
+      - run: terraform -chdir=infra/terraform validate
+      - run: terraform -chdir=infra/terraform test
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start complete application
+        run: docker compose -f infra/compose.yaml up --build -d --wait
+      - run: npm ci
+        working-directory: apps/web
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - run: npm run test:e2e
+        working-directory: apps/web
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+          OPTITRACE_LIVE: '1'
+      - name: Container logs
+        if: always()
+        run: docker compose -f infra/compose.yaml logs --no-color > compose.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            compose.log
+            apps/web/playwright-report
+            apps/web/test-results
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f infra/engine.Dockerfile -t optitrace-engine:ci .
+      - run: docker build -f infra/web.Dockerfile -t optitrace-web:ci .
+      - name: Scan engine image
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # v0.33.1
+        with:
+          image-ref: optitrace-engine:ci
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+      - name: Scan web image
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # v0.33.1
+        with:
+          image-ref: optitrace-web:ci
+          severity: HIGH,CRITICAL
+          exit-code: '1'

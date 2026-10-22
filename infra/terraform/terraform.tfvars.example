@@ -1,0 +1,10 @@
+project_id                 = "your-approved-project"
+region                     = "africa-south1"
+environment                = "staging"
+app_origin                 = "https://your-approved-domain.example"
+engine_image               = "africa-south1-docker.pkg.dev/your-approved-project/optitrace-staging/engine@sha256:REPLACE_WITH_REVIEWED_DIGEST"
+web_image                  = "africa-south1-docker.pkg.dev/your-approved-project/optitrace-staging/web@sha256:REPLACE_WITH_REVIEWED_DIGEST"
+google_client_id           = "your-google-oauth-client-id"
+github_repository          = "your-owner/your-repository"
+# Supply secret variables through TF_VAR_* or an approved secrets workflow.
+# Remote encrypted state and saved plans contain sensitive values; restrict their access.

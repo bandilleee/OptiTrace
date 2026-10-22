@@ -1,0 +1,12 @@
+{
+  "max_parallel": 2,
+  "tasks": [
+    {"id":"architect","depends_on":[],"writable_paths":["contracts/","docs/"],"scope":"Infrastructure","timeout_seconds":1800,"instruction":"Review requirements and freeze compatible policy contracts, authorization boundaries, API definitions, and architecture decisions. Do not change application implementation."},
+    {"id":"backend","depends_on":["architect"],"writable_paths":["services/engine/"],"scope":"Engine","timeout_seconds":3600,"instruction":"Implement the Go API, Google Cloud Identity Platform authentication, tenant-isolated PostgreSQL persistence, approval workflow, adapters, and durable benchmark worker against the reviewed contracts."},
+    {"id":"algorithm","depends_on":["backend"],"writable_paths":["services/engine/internal/evaluation/","policies/","benchmarks/"],"scope":"Engine","timeout_seconds":3600,"instruction":"Implement and verify the bounded policy evaluator, valid-plan search, mathematical stopping condition, strong comparators, and reproducible held-out benchmark. Never weaken required policy behaviour."},
+    {"id":"frontend","depends_on":["algorithm"],"writable_paths":["apps/web/"],"scope":"Web","timeout_seconds":3600,"instruction":"Implement the invitation-only Next.js console against generated API types. All actions use the real Go API. Cover policy approval, evaluations, trace inspection, benchmarks, workspace administration, and audit."},
+    {"id":"devops","depends_on":["algorithm"],"writable_paths":["infra/","scripts/",".github/","docs/runbooks/"],"scope":"Infrastructure","timeout_seconds":3600,"instruction":"Implement local Compose, reproducible PowerShell commands, CI, Terraform validation, release evidence and rollback. Never apply Terraform or deploy cloud resources."},
+    {"id":"qa","depends_on":["frontend","devops"],"writable_paths":["docs/evidence/","apps/web/e2e/","services/engine/internal/acceptance/"],"scope":"All","timeout_seconds":3600,"instruction":"Independently test requirements, tenant isolation, authentication failure cases, policy equivalence, compulsory work and benchmark honesty. Report findings with exact reproductions; do not change product code."},
+    {"id":"integrator","depends_on":["qa"],"writable_paths":["docs/evidence/","docs/runbooks/"],"scope":"All","timeout_seconds":1800,"instruction":"Review handbacks and independent acceptance evidence. Produce a release candidate report with limitations and approval prerequisites. Do not merge, deploy, or apply infrastructure."}
+  ]
+}

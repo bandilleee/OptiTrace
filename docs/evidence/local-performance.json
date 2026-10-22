@@ -1,0 +1,625 @@
+{
+  "measured_at": "2026-10-22T06:13:40.6082722Z",
+  "measurement": "local authenticated HTTP via Next proxy, includes auth/planning/adapters/persistence/response transfer",
+  "scenario": "all clear, alternating active policy profiles",
+  "samples": 100,
+  "first_unwarmed_request_ms": 79.8093,
+  "p50_ms": 83.1195,
+  "p95_ms": 128.772,
+  "p99_ms": 131.8712,
+  "absolute_500ms_target_passed": true,
+  "baseline_regression_gate": "not established by this single-strategy smoke profile",
+  "limitations": [
+    "Local synthetic measurement, not cloud production SLA.",
+    "Synthetic Google/Identity Platform protocols; no live provider latency measured.",
+    "Representative workload and strongest-baseline comparison remain separate benchmark gates."
+  ],
+  "results": [
+    {
+      "sample": 0,
+      "profile": "complete",
+      "elapsed_ms": 79.8093,
+      "outcome": "verified"
+    },
+    {
+      "sample": 1,
+      "profile": "conditional",
+      "elapsed_ms": 106.3068,
+      "outcome": "verified"
+    },
+    {
+      "sample": 2,
+      "profile": "complete",
+      "elapsed_ms": 66.5863,
+      "outcome": "verified"
+    },
+    {
+      "sample": 3,
+      "profile": "conditional",
+      "elapsed_ms": 111.6352,
+      "outcome": "verified"
+    },
+    {
+      "sample": 4,
+      "profile": "complete",
+      "elapsed_ms": 56.9902,
+      "outcome": "verified"
+    },
+    {
+      "sample": 5,
+      "profile": "conditional",
+      "elapsed_ms": 120.582,
+      "outcome": "verified"
+    },
+    {
+      "sample": 6,
+      "profile": "complete",
+      "elapsed_ms": 77.5695,
+      "outcome": "verified"
+    },
+    {
+      "sample": 7,
+      "profile": "conditional",
+      "elapsed_ms": 109.2552,
+      "outcome": "verified"
+    },
+    {
+      "sample": 8,
+      "profile": "complete",
+      "elapsed_ms": 66.4162,
+      "outcome": "verified"
+    },
+    {
+      "sample": 9,
+      "profile": "conditional",
+      "elapsed_ms": 104.0447,
+      "outcome": "verified"
+    },
+    {
+      "sample": 10,
+      "profile": "complete",
+      "elapsed_ms": 61.1531,
+      "outcome": "verified"
+    },
+    {
+      "sample": 11,
+      "profile": "conditional",
+      "elapsed_ms": 104.9933,
+      "outcome": "verified"
+    },
+    {
+      "sample": 12,
+      "profile": "complete",
+      "elapsed_ms": 59.0957,
+      "outcome": "verified"
+    },
+    {
+      "sample": 13,
+      "profile": "conditional",
+      "elapsed_ms": 107.8775,
+      "outcome": "verified"
+    },
+    {
+      "sample": 14,
+      "profile": "complete",
+      "elapsed_ms": 59.2818,
+      "outcome": "verified"
+    },
+    {
+      "sample": 15,
+      "profile": "conditional",
+      "elapsed_ms": 114.297,
+      "outcome": "verified"
+    },
+    {
+      "sample": 16,
+      "profile": "complete",
+      "elapsed_ms": 57.9141,
+      "outcome": "verified"
+    },
+    {
+      "sample": 17,
+      "profile": "conditional",
+      "elapsed_ms": 104.8345,
+      "outcome": "verified"
+    },
+    {
+      "sample": 18,
+      "profile": "complete",
+      "elapsed_ms": 71.4004,
+      "outcome": "verified"
+    },
+    {
+      "sample": 19,
+      "profile": "conditional",
+      "elapsed_ms": 106.2456,
+      "outcome": "verified"
+    },
+    {
+      "sample": 20,
+      "profile": "complete",
+      "elapsed_ms": 58.3492,
+      "outcome": "verified"
+    },
+    {
+      "sample": 21,
+      "profile": "conditional",
+      "elapsed_ms": 99.503,
+      "outcome": "verified"
+    },
+    {
+      "sample": 22,
+      "profile": "complete",
+      "elapsed_ms": 56.8493,
+      "outcome": "verified"
+    },
+    {
+      "sample": 23,
+      "profile": "conditional",
+      "elapsed_ms": 115.0974,
+      "outcome": "verified"
+    },
+    {
+      "sample": 24,
+      "profile": "complete",
+      "elapsed_ms": 76.6323,
+      "outcome": "verified"
+    },
+    {
+      "sample": 25,
+      "profile": "conditional",
+      "elapsed_ms": 112.2078,
+      "outcome": "verified"
+    },
+    {
+      "sample": 26,
+      "profile": "complete",
+      "elapsed_ms": 64.2506,
+      "outcome": "verified"
+    },
+    {
+      "sample": 27,
+      "profile": "conditional",
+      "elapsed_ms": 128.772,
+      "outcome": "verified"
+    },
+    {
+      "sample": 28,
+      "profile": "complete",
+      "elapsed_ms": 65.3857,
+      "outcome": "verified"
+    },
+    {
+      "sample": 29,
+      "profile": "conditional",
+      "elapsed_ms": 113.353,
+      "outcome": "verified"
+    },
+    {
+      "sample": 30,
+      "profile": "complete",
+      "elapsed_ms": 56.8596,
+      "outcome": "verified"
+    },
+    {
+      "sample": 31,
+      "profile": "conditional",
+      "elapsed_ms": 117.657,
+      "outcome": "verified"
+    },
+    {
+      "sample": 32,
+      "profile": "complete",
+      "elapsed_ms": 60.3473,
+      "outcome": "verified"
+    },
+    {
+      "sample": 33,
+      "profile": "conditional",
+      "elapsed_ms": 105.8241,
+      "outcome": "verified"
+    },
+    {
+      "sample": 34,
+      "profile": "complete",
+      "elapsed_ms": 81.9574,
+      "outcome": "verified"
+    },
+    {
+      "sample": 35,
+      "profile": "conditional",
+      "elapsed_ms": 107.0625,
+      "outcome": "verified"
+    },
+    {
+      "sample": 36,
+      "profile": "complete",
+      "elapsed_ms": 55.7047,
+      "outcome": "verified"
+    },
+    {
+      "sample": 37,
+      "profile": "conditional",
+      "elapsed_ms": 101.7814,
+      "outcome": "verified"
+    },
+    {
+      "sample": 38,
+      "profile": "complete",
+      "elapsed_ms": 57.4321,
+      "outcome": "verified"
+    },
+    {
+      "sample": 39,
+      "profile": "conditional",
+      "elapsed_ms": 116.4817,
+      "outcome": "verified"
+    },
+    {
+      "sample": 40,
+      "profile": "complete",
+      "elapsed_ms": 60.3856,
+      "outcome": "verified"
+    },
+    {
+      "sample": 41,
+      "profile": "conditional",
+      "elapsed_ms": 107.019,
+      "outcome": "verified"
+    },
+    {
+      "sample": 42,
+      "profile": "complete",
+      "elapsed_ms": 57.6765,
+      "outcome": "verified"
+    },
+    {
+      "sample": 43,
+      "profile": "conditional",
+      "elapsed_ms": 102.3179,
+      "outcome": "verified"
+    },
+    {
+      "sample": 44,
+      "profile": "complete",
+      "elapsed_ms": 57.9957,
+      "outcome": "verified"
+    },
+    {
+      "sample": 45,
+      "profile": "conditional",
+      "elapsed_ms": 105.4412,
+      "outcome": "verified"
+    },
+    {
+      "sample": 46,
+      "profile": "complete",
+      "elapsed_ms": 68.3374,
+      "outcome": "verified"
+    },
+    {
+      "sample": 47,
+      "profile": "conditional",
+      "elapsed_ms": 122.7446,
+      "outcome": "verified"
+    },
+    {
+      "sample": 48,
+      "profile": "complete",
+      "elapsed_ms": 59.5233,
+      "outcome": "verified"
+    },
+    {
+      "sample": 49,
+      "profile": "conditional",
+      "elapsed_ms": 111.0567,
+      "outcome": "verified"
+    },
+    {
+      "sample": 50,
+      "profile": "complete",
+      "elapsed_ms": 63.6378,
+      "outcome": "verified"
+    },
+    {
+      "sample": 51,
+      "profile": "conditional",
+      "elapsed_ms": 111.5675,
+      "outcome": "verified"
+    },
+    {
+      "sample": 52,
+      "profile": "complete",
+      "elapsed_ms": 74.0745,
+      "outcome": "verified"
+    },
+    {
+      "sample": 53,
+      "profile": "conditional",
+      "elapsed_ms": 109.469,
+      "outcome": "verified"
+    },
+    {
+      "sample": 54,
+      "profile": "complete",
+      "elapsed_ms": 71.0292,
+      "outcome": "verified"
+    },
+    {
+      "sample": 55,
+      "profile": "conditional",
+      "elapsed_ms": 131.8712,
+      "outcome": "verified"
+    },
+    {
+      "sample": 56,
+      "profile": "complete",
+      "elapsed_ms": 56.0683,
+      "outcome": "verified"
+    },
+    {
+      "sample": 57,
+      "profile": "conditional",
+      "elapsed_ms": 105.3873,
+      "outcome": "verified"
+    },
+    {
+      "sample": 58,
+      "profile": "complete",
+      "elapsed_ms": 66.5514,
+      "outcome": "verified"
+    },
+    {
+      "sample": 59,
+      "profile": "conditional",
+      "elapsed_ms": 125.4453,
+      "outcome": "verified"
+    },
+    {
+      "sample": 60,
+      "profile": "complete",
+      "elapsed_ms": 69.1578,
+      "outcome": "verified"
+    },
+    {
+      "sample": 61,
+      "profile": "conditional",
+      "elapsed_ms": 113.3802,
+      "outcome": "verified"
+    },
+    {
+      "sample": 62,
+      "profile": "complete",
+      "elapsed_ms": 76.765,
+      "outcome": "verified"
+    },
+    {
+      "sample": 63,
+      "profile": "conditional",
+      "elapsed_ms": 145.2643,
+      "outcome": "verified"
+    },
+    {
+      "sample": 64,
+      "profile": "complete",
+      "elapsed_ms": 62.9581,
+      "outcome": "verified"
+    },
+    {
+      "sample": 65,
+      "profile": "conditional",
+      "elapsed_ms": 109.409,
+      "outcome": "verified"
+    },
+    {
+      "sample": 66,
+      "profile": "complete",
+      "elapsed_ms": 66.775,
+      "outcome": "verified"
+    },
+    {
+      "sample": 67,
+      "profile": "conditional",
+      "elapsed_ms": 110.27,
+      "outcome": "verified"
+    },
+    {
+      "sample": 68,
+      "profile": "complete",
+      "elapsed_ms": 82.033,
+      "outcome": "verified"
+    },
+    {
+      "sample": 69,
+      "profile": "conditional",
+      "elapsed_ms": 131.4651,
+      "outcome": "verified"
+    },
+    {
+      "sample": 70,
+      "profile": "complete",
+      "elapsed_ms": 70.1787,
+      "outcome": "verified"
+    },
+    {
+      "sample": 71,
+      "profile": "conditional",
+      "elapsed_ms": 130.1651,
+      "outcome": "verified"
+    },
+    {
+      "sample": 72,
+      "profile": "complete",
+      "elapsed_ms": 68.9515,
+      "outcome": "verified"
+    },
+    {
+      "sample": 73,
+      "profile": "conditional",
+      "elapsed_ms": 109.9702,
+      "outcome": "verified"
+    },
+    {
+      "sample": 74,
+      "profile": "complete",
+      "elapsed_ms": 54.4375,
+      "outcome": "verified"
+    },
+    {
+      "sample": 75,
+      "profile": "conditional",
+      "elapsed_ms": 102.3754,
+      "outcome": "verified"
+    },
+    {
+      "sample": 76,
+      "profile": "complete",
+      "elapsed_ms": 59.9861,
+      "outcome": "verified"
+    },
+    {
+      "sample": 77,
+      "profile": "conditional",
+      "elapsed_ms": 111.0659,
+      "outcome": "verified"
+    },
+    {
+      "sample": 78,
+      "profile": "complete",
+      "elapsed_ms": 66.1988,
+      "outcome": "verified"
+    },
+    {
+      "sample": 79,
+      "profile": "conditional",
+      "elapsed_ms": 117.2442,
+      "outcome": "verified"
+    },
+    {
+      "sample": 80,
+      "profile": "complete",
+      "elapsed_ms": 83.0764,
+      "outcome": "verified"
+    },
+    {
+      "sample": 81,
+      "profile": "conditional",
+      "elapsed_ms": 109.4637,
+      "outcome": "verified"
+    },
+    {
+      "sample": 82,
+      "profile": "complete",
+      "elapsed_ms": 56.344,
+      "outcome": "verified"
+    },
+    {
+      "sample": 83,
+      "profile": "conditional",
+      "elapsed_ms": 104.3793,
+      "outcome": "verified"
+    },
+    {
+      "sample": 84,
+      "profile": "complete",
+      "elapsed_ms": 75.0221,
+      "outcome": "verified"
+    },
+    {
+      "sample": 85,
+      "profile": "conditional",
+      "elapsed_ms": 116.4709,
+      "outcome": "verified"
+    },
+    {
+      "sample": 86,
+      "profile": "complete",
+      "elapsed_ms": 70.9128,
+      "outcome": "verified"
+    },
+    {
+      "sample": 87,
+      "profile": "conditional",
+      "elapsed_ms": 115.3003,
+      "outcome": "verified"
+    },
+    {
+      "sample": 88,
+      "profile": "complete",
+      "elapsed_ms": 65.8397,
+      "outcome": "verified"
+    },
+    {
+      "sample": 89,
+      "profile": "conditional",
+      "elapsed_ms": 130.219,
+      "outcome": "verified"
+    },
+    {
+      "sample": 90,
+      "profile": "complete",
+      "elapsed_ms": 80.1417,
+      "outcome": "verified"
+    },
+    {
+      "sample": 91,
+      "profile": "conditional",
+      "elapsed_ms": 121.8961,
+      "outcome": "verified"
+    },
+    {
+      "sample": 92,
+      "profile": "complete",
+      "elapsed_ms": 83.1195,
+      "outcome": "verified"
+    },
+    {
+      "sample": 93,
+      "profile": "conditional",
+      "elapsed_ms": 124.9565,
+      "outcome": "verified"
+    },
+    {
+      "sample": 94,
+      "profile": "complete",
+      "elapsed_ms": 75.4889,
+      "outcome": "verified"
+    },
+    {
+      "sample": 95,
+      "profile": "conditional",
+      "elapsed_ms": 126.2602,
+      "outcome": "verified"
+    },
+    {
+      "sample": 96,
+      "profile": "complete",
+      "elapsed_ms": 67.515,
+      "outcome": "verified"
+    },
+    {
+      "sample": 97,
+      "profile": "conditional",
+      "elapsed_ms": 117.1721,
+      "outcome": "verified"
+    },
+    {
+      "sample": 98,
+      "profile": "complete",
+      "elapsed_ms": 76.4702,
+      "outcome": "verified"
+    },
+    {
+      "sample": 99,
+      "profile": "conditional",
+      "elapsed_ms": 124.2945,
+      "outcome": "verified"
+    },
+    {
+      "sample": 100,
+      "profile": "complete",
+      "elapsed_ms": 73.8557,
+      "outcome": "verified"
+    }
+  ]
+}

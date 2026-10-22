@@ -1,0 +1,103 @@
+name: Reviewed Cloud Run release
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Protected GitHub environment with explicit release approval
+        type: choice
+        options: [staging, production]
+        required: true
+      engine_image:
+        description: Reviewed engine image with sha256 digest
+        type: string
+        required: true
+      web_image:
+        description: Reviewed web image with sha256 digest
+        type: string
+        required: true
+      promote:
+        description: Promote to 100 percent after migration and smoke checks
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+concurrency:
+  group: release-${{ inputs.environment }}
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      REGION: africa-south1
+      RELEASE_ENVIRONMENT: ${{ inputs.environment }}
+      ENGINE_IMAGE: ${{ inputs.engine_image }}
+      WEB_IMAGE: ${{ inputs.web_image }}
+      PROMOTE: ${{ inputs.promote }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require successful CI for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $runs=& gh api "repos/$($env:GITHUB_REPOSITORY)/actions/workflows/ci.yml/runs?head_sha=$($env:GITHUB_SHA)&status=completed&per_page=20" | ConvertFrom-Json
+          if($LASTEXITCODE -ne 0){throw 'Could not verify CI status.'}
+          $passed=@($runs.workflow_runs|Where-Object {$_.head_sha -eq $env:GITHUB_SHA -and $_.conclusion -eq 'success'})
+          if($passed.Count -eq 0){throw 'This exact commit needs a successful Verify OptiTrace workflow before release.'}
+      - name: Check explicit release inputs
+        run: |
+          if (-not $env:PROJECT_ID) { throw 'Configure the approved project in the protected environment.' }
+          $prefix = "africa-south1-docker.pkg.dev/$($env:PROJECT_ID)/optitrace-$($env:RELEASE_ENVIRONMENT)/"
+          foreach ($image in @($env:ENGINE_IMAGE,$env:WEB_IMAGE)) {
+            if (-not $image.StartsWith($prefix) -or $image -notmatch '@sha256:[0-9a-f]{64}$') { throw 'Images must be reviewed digests in the approved environment registry.' }
+          }
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_RELEASE_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v3
+      - name: Stage revisions and run compatible migrations
+        run: |
+          $ErrorActionPreference='Stop'
+          function Run-Gcloud([string[]]$Arguments) { & gcloud @Arguments; if ($LASTEXITCODE -ne 0) { throw 'Google Cloud command failed.' } }
+          $name="optitrace-$($env:RELEASE_ENVIRONMENT)"
+          foreach ($service in @('api','web')) {
+            $previous=& gcloud run services describe "$name-$service" --project $env:PROJECT_ID --region $env:REGION --format=json
+            if ($LASTEXITCODE -ne 0) { throw 'Bootstrap infrastructure must exist before release.' }
+            $previous | Set-Content "$service-previous.json"
+          }
+          Run-Gcloud @('run','jobs','update',"$name-migration",'--image',$env:ENGINE_IMAGE,'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+          Run-Gcloud @('run','jobs','execute',"$name-migration",'--wait','--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+          foreach ($service in @('api','web')) {
+            $image=if($service -eq 'api'){$env:ENGINE_IMAGE}else{$env:WEB_IMAGE}
+            Run-Gcloud @('run','services','update',"$name-$service",'--image',$image,'--no-traffic','--tag','candidate','--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+            $state=& gcloud run services describe "$name-$service" --project $env:PROJECT_ID --region $env:REGION --format=json
+            if ($LASTEXITCODE -ne 0) { throw 'Could not read candidate revision.' }
+            $state | Set-Content "$service-candidate.json"
+            $parsed=$state|ConvertFrom-Json
+            $candidate=($parsed.status.traffic|Where-Object tag -EQ candidate).url
+            if(-not $candidate){throw 'Candidate traffic tag URL missing.'}
+            $path=if($service -eq 'api'){'/healthz'}else{'/'}
+            $response=Invoke-WebRequest "$candidate$path" -TimeoutSec 30
+            if($response.StatusCode -ne 200){throw 'Candidate smoke check failed.'}
+          }
+          Run-Gcloud @('run','jobs','update',"$name-benchmark",'--image',$env:ENGINE_IMAGE,'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+          Run-Gcloud @('run','services','update',"$name-simulator",'--image',$env:ENGINE_IMAGE,'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+          if ($env:PROMOTE -eq 'true') {
+            foreach($service in @('api','web')) {
+              $revision=(Get-Content "$service-candidate.json" -Raw|ConvertFrom-Json).status.latestReadyRevisionName
+              Run-Gcloud @('run','services','update-traffic',"$name-$service",'--to-revisions',"$revision=100",'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
+            }
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-revision-evidence
+          path: '*-*.json'

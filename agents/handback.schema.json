@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "task_id": {"type": "string"},
+    "status": {"type": "string", "enum": ["passed", "blocked", "failed"]},
+    "input_commit": {"type": "string"},
+    "summary": {"type": "string"},
+    "changed_paths": {"type": "array", "items": {"type": "string"}},
+    "checks": {"type": "array", "items": {"type": "object", "additionalProperties": false, "properties": {"command": {"type": "string"}, "exit_code": {"type": "integer"}, "evidence": {"type": "string"}}, "required": ["command", "exit_code", "evidence"]}},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["task_id", "status", "input_commit", "summary", "changed_paths", "checks", "limitations"]
+}

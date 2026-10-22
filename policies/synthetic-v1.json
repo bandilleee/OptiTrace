@@ -1,0 +1,14 @@
+{
+  "version": "synthetic-v1",
+  "market": "ZA",
+  "subject": "synthetic-subject",
+  "scope": "ZA:account-verification",
+  "freshness_seconds": 60,
+  "recent_hours": 24,
+  "profiles": [
+    {"profile":"complete","compulsory":["number_verification","sim_swap","device_swap"]},
+    {"profile":"conditional","compulsory":["number_verification"]}
+  ],
+  "states":["available","stale","timeout","rate_limited","permission_denied","unavailable","skipped"],
+  "outcomes":["verified","additional_verification_required","indeterminate"]
+}

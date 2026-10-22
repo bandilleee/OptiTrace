@@ -1,0 +1,17 @@
+node_modules/
+.next/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.local
+*.exe
+*.test
+*.tsbuildinfo
+coverage.out
+.artifacts/
+.terraform/
+*.tfstate*
+*.tfvars
+!*.tfvars.example
+!*.env.example

@@ -1,0 +1,13 @@
+{
+  "region": "africa-south1",
+  "currency": "USD",
+  "components": [
+    {"name":"Cloud SQL staging compute","environment":"staging","units":730,"unit":"instance-hour (1 vCPU, 3.75GiB)","unit_price_usd":null,"source":"https://cloud.google.com/sql/pricing","verified_on":null},
+    {"name":"Cloud SQL production HA compute","environment":"production","units":730,"unit":"HA instance-hour (1 vCPU, 3.75GiB)","unit_price_usd":null,"source":"https://cloud.google.com/sql/pricing","verified_on":null},
+    {"name":"SQL SSD","environment":"all","units":10,"unit":"GiB-month","unit_price_usd":null,"source":"https://cloud.google.com/sql/pricing","verified_on":null},
+    {"name":"SQL backups","environment":"all","units":10,"unit":"GiB-month (assumption)","unit_price_usd":null,"source":"https://cloud.google.com/sql/pricing","verified_on":null},
+    {"name":"Cloud Run services and jobs","environment":"all","units":1,"unit":"monthly workload estimate","unit_price_usd":null,"source":"https://cloud.google.com/run/pricing","verified_on":null},
+    {"name":"Identity Platform","environment":"all","units":100,"unit":"monthly active users (assumption)","unit_price_usd":null,"source":"https://cloud.google.com/identity-platform/pricing","verified_on":null},
+    {"name":"Reports logs images secrets scheduler and egress","environment":"all","units":1,"unit":"monthly workload estimate","unit_price_usd":null,"source":"https://cloud.google.com/products/calculator","verified_on":null}
+  ]
+}

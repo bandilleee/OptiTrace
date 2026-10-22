@@ -1,0 +1,90 @@
+name: optitrace
+x-engine: &engine
+  image: optitrace-engine:local
+  build:
+    context: ..
+    dockerfile: infra/engine.Dockerfile
+x-common: &common
+  APP_ENV: development
+  APP_ORIGIN: http://localhost:3000
+  API_PUBLIC_URL: http://localhost:3000/api
+  AUTH_MODE: mock
+  AUTH_COOKIE_SECURE: "false"
+  DATABASE_URL: postgres://optitrace_login:local-app-only@postgres:5432/optitrace?sslmode=disable
+  SIMULATOR_URL: http://simulator:8090
+  MOCK_ISSUER: http://localhost:8090
+  MOCK_INTERNAL_URL: http://simulator:8090
+services:
+  postgres:
+    image: postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336
+    environment:
+      POSTGRES_DB: optitrace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local-postgres-only
+    ports: ["127.0.0.1:5432:5432"]
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./postgres-init.sql:/docker-entrypoint-initdb.d/01-optitrace.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d optitrace"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  migrate:
+    <<: *engine
+    entrypoint: ["/app/migrate"]
+    command: ["-seed"]
+    environment:
+      <<: *common
+      DATABASE_URL: postgres://postgres:local-postgres-only@postgres:5432/optitrace?sslmode=disable
+      APP_DATABASE_USER: optitrace_login
+    depends_on:
+      postgres: {condition: service_healthy}
+    restart: "no"
+  simulator:
+    <<: *engine
+    entrypoint: ["/app/simulator"]
+    environment: *common
+    ports: ["127.0.0.1:8090:8090"]
+    healthcheck:
+      test: ["CMD", "/app/healthcheck", "http://localhost:8090/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  api:
+    <<: *engine
+    environment: *common
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      simulator: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "/app/healthcheck", "http://localhost:8080/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  worker:
+    <<: *engine
+    entrypoint: ["/app/worker"]
+    environment: *common
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      simulator: {condition: service_healthy}
+    restart: unless-stopped
+  web:
+    image: optitrace-web:local
+    build:
+      context: ..
+      dockerfile: infra/web.Dockerfile
+    environment:
+      API_BASE_URL: http://api:8080
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "/nodejs/bin/node", "-e", "fetch('http://127.0.0.1:3000').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  postgres-data:

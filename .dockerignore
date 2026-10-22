@@ -1,0 +1,10 @@
+.git
+**/node_modules
+**/.next
+.artifacts
+.env*
+**/.terraform
+Context
+**/coverage
+**/test-results
+**/playwright-report
