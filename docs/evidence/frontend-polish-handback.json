@@ -1,0 +1,124 @@
+{
+  "task_id": "frontend-workflow-polish",
+  "status": "passed",
+  "input_commit": "01f3a5ae73e461763bd2d3d4725cb71e7fa69ccf",
+  "changed_paths": [
+    "apps/web/src/app/globals.css",
+    "apps/web/src/components/console.tsx",
+    "apps/web/src/components/field-error.tsx",
+    "apps/web/src/components/select-field.tsx",
+    "apps/web/src/components/ui/select.tsx",
+    "apps/web/src/features/administration.tsx",
+    "apps/web/src/features/benchmark-chart.tsx",
+    "apps/web/src/features/benchmarks.tsx",
+    "apps/web/src/features/overview.tsx",
+    "apps/web/src/features/playground.tsx",
+    "apps/web/src/features/policies.tsx",
+    "apps/web/src/features/traces.tsx",
+    "apps/web/src/lib/access.ts",
+    "apps/web/src/lib/use-items.ts",
+    "apps/web/src/lib/validation.ts",
+    "apps/web/tests/e2e/acceptance.live.ts",
+    "apps/web/tests/e2e/console.spec.ts",
+    "apps/web/tests/validation.test.ts",
+    "docs/design/FRONTEND.md",
+    "docs/evidence/frontend-polish-handback.json",
+    "docs/evidence/frontend-polish.md",
+    "docs/evidence/polish-browser-live.log",
+    "docs/evidence/polish-browser-production.log",
+    "docs/evidence/polish-go-tests.log",
+    "docs/evidence/polish-linux-validation-race.log",
+    "docs/evidence/screenshots/polish-benchmark-mobile.png",
+    "docs/evidence/screenshots/polish-benchmark.png",
+    "docs/evidence/screenshots/polish-overview.png",
+    "services/engine/internal/server/admin.go",
+    "services/engine/internal/server/integration_test.go",
+    "services/engine/internal/server/resources.go",
+    "services/engine/internal/server/validation.go",
+    "services/engine/internal/server/validation_test.go"
+  ],
+  "checks": [
+    {
+      "command": "npm run typecheck (apps/web)",
+      "exit_code": 0,
+      "result": "TypeScript passes"
+    },
+    {
+      "command": "npm run test (apps/web)",
+      "exit_code": 0,
+      "result": "13 unit tests pass"
+    },
+    {
+      "command": "npm run format:check (apps/web)",
+      "exit_code": 0,
+      "result": "Prettier passes"
+    },
+    {
+      "command": "docker compose -f infra/compose.yaml build web api",
+      "exit_code": 0,
+      "result": "Production application containers build"
+    },
+    {
+      "command": "PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run test:e2e",
+      "exit_code": 0,
+      "result": "12 production fixture browser tests pass; both-theme and report-dialog axe checks pass"
+    },
+    {
+      "command": "OPTITRACE_LIVE=1 PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run test:e2e",
+      "exit_code": 0,
+      "result": "4 production real local-stack journeys pass without API interception"
+    },
+    {
+      "command": "TEST_DATABASE_URL=<disposable PostgreSQL18> go test ./... (services/engine)",
+      "exit_code": 0,
+      "result": "Full suite passes; database integration tests execute"
+    },
+    {
+      "command": "go vet ./... (services/engine)",
+      "exit_code": 0,
+      "result": "Vet passes"
+    },
+    {
+      "command": "./scripts/Generate-Client.ps1 -Check",
+      "exit_code": 0,
+      "result": "No generated-contract drift"
+    },
+    {
+      "command": "npm audit --audit-level=high (apps/web)",
+      "exit_code": 0,
+      "result": "Zero vulnerabilities"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "No whitespace errors"
+    },
+    {
+      "command": "CGO_ENABLED=1 go test -race ./internal/server/validation.go ./internal/server/validation_test.go (Linux container, GCC/musl prerequisites installed)",
+      "exit_code": 0,
+      "result": "New Go validator tests pass with Linux race detection; full Go server race suite not rerun."
+    }
+  ],
+  "evidence_paths": [
+    "docs/evidence/frontend-polish.md",
+    "docs/evidence/polish-browser-production.log",
+    "docs/evidence/polish-browser-live.log",
+    "docs/evidence/polish-go-tests.log",
+    "docs/evidence/screenshots/polish-overview.png",
+    "docs/evidence/screenshots/polish-benchmark.png",
+    "docs/evidence/screenshots/polish-benchmark-mobile.png",
+    "docs/evidence/polish-linux-validation-race.log"
+  ],
+  "known_limitations": [
+    "No cloud mutation/deployment, hosted Google login or hosted CI acceptance.",
+    "Historical evaluator long-running reliability anomaly remains unresolved; see frontend-verification.md.",
+    "Full Linux race/performance/image-security acceptance was not rerun for this UI polish.",
+    "Invitations authorize sign-in without sending email; conventional Google email syntax supported.",
+    "Frontend search operates on loaded records; frontend benchmark seeds are limited to safe JavaScript integers.",
+    "Automated accessibility checks are bounded evidence, not full manual certification."
+  ],
+  "images": {
+    "web": "sha256:d316b2f8ea8102903e0229b166ad8a895fb7697a269ba23ac6f190445e8e3737",
+    "engine": "sha256:49c81848bcc0682856b7299bd6ec2f8516a8adf466fde422c4e2039c60bb8a77"
+  }
+}

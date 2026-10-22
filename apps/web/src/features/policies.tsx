@@ -1,7 +1,9 @@
 'use client';
+import { nameError } from '@/lib/validation';
+import { FieldError } from '@/components/field-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { NativeSelect } from '@/components/ui/native-select';
+import { SelectField } from '@/components/select-field';
 import { Label } from '@/components/ui/label';
 import {
   Table,
@@ -21,6 +23,8 @@ import { ErrorMessage, Panel, Badge } from '../components/ui';
 export function Policies({ tenant, identity }: Props) {
   const query = useItems<Policy>(tenant.id, 'policies');
   const client = useQueryClient();
+  const [validation, setValidation] = useState<string>();
+  const [notice, setNotice] = useState('');
   const [search, setSearch] = useState('');
   const [name, setName] = useState('');
   const [profile, setProfile] = useState('conditional');
@@ -29,9 +33,19 @@ export function Policies({ tenant, identity }: Props) {
       api(`/tenants/${tenant.id}/policies${id ? `/${id}/${action}` : ''}`, {
         method: 'POST',
         csrf: identity.csrf_token,
-        body: id ? undefined : { name, profile },
+        body: id ? undefined : { name: name.trim(), profile },
       }),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      setNotice(
+        (
+          {
+            create: 'Draft created.',
+            submit: 'Policy submitted for independent review.',
+            approve: 'Policy version approved.',
+            activate: 'Policy version activated.',
+          } as Record<string, string>
+        )[variables.action],
+      );
       setName('');
       client.invalidateQueries({ queryKey: [tenant.id, 'policies'] });
     },
@@ -39,6 +53,11 @@ export function Policies({ tenant, identity }: Props) {
   return (
     <>
       <ErrorMessage error={query.error ?? change.error} />
+      {notice && (
+        <p role="status" className="success-message">
+          {notice}
+        </p>
+      )}
       {query.isPending && (
         <p role="status" className="subtle">
           Loading policies…
@@ -48,27 +67,37 @@ export function Policies({ tenant, identity }: Props) {
         <Panel title="Create a policy draft">
           <form
             className="inline-form"
+            noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              change.mutate({ action: 'create' });
+              const error = nameError(name);
+              setValidation(error);
+              if (!error) change.mutate({ action: 'create' });
             }}
           >
             <Label>
               Policy name
               <Input
+                aria-invalid={!!validation}
+                aria-describedby="policy-name-error"
                 required
                 maxLength={120}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Account verification"
               />
+              <FieldError id="policy-name-error" error={validation} />
             </Label>
             <Label>
               Profile
-              <NativeSelect value={profile} onChange={(e) => setProfile(e.target.value)}>
+              <SelectField
+                aria-label="Profile"
+                value={profile}
+                onValueChange={(value) => setProfile(value)}
+              >
                 <option value="conditional">Conditional verification</option>
                 <option value="complete">Complete verification</option>
-              </NativeSelect>
+              </SelectField>
             </Label>
             <Button className="button primary" disabled={change.isPending}>
               Create draft

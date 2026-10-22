@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { NativeSelect } from '@/components/ui/native-select';
+import { SelectField } from '@/components/select-field';
 import { label, cost } from '@/lib/api';
 
 export function BenchmarkChart({ rows }: { rows: Record<string, unknown>[] }) {
@@ -22,25 +22,25 @@ export function BenchmarkChart({ rows }: { rows: Record<string, unknown>[] }) {
           <p>Each chart uses one policy profile and measurement type.</p>
         </div>
         <div>
-          <NativeSelect
+          <SelectField
             aria-label="Chart cohort"
             value={selected}
-            onChange={(e) => setCohort(e.target.value)}
+            onValueChange={(value) => setCohort(value)}
           >
             {cohorts.map((c) => (
               <option key={c} value={c}>
                 {c.split('|').map(label).join(' · ')}
               </option>
             ))}
-          </NativeSelect>
-          <NativeSelect
+          </SelectField>
+          <SelectField
             aria-label="Chart metric"
             value={metric}
-            onChange={(e) => setMetric(e.target.value)}
+            onValueChange={(value) => setMetric(value)}
           >
             <option value="mean_cost_microrand">Mean synthetic cost</option>
             <option value="p95_ms">p95 latency</option>
-          </NativeSelect>
+          </SelectField>
         </div>
       </div>
       <div className="chart-bars">

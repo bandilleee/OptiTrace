@@ -3,7 +3,7 @@ import { type Evaluation, label, duration, cost } from '@/lib/api';
 import { Badge, ErrorMessage, Panel, Empty } from '@/components/ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { NativeSelect } from '@/components/ui/native-select';
+import { SelectField } from '@/components/select-field';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
@@ -272,10 +272,10 @@ export function Traces({ tenant, initialTraceID = '' }: Props & { initialTraceID
           </label>
           <label>
             <span className="sr-only">Filter by outcome</span>
-            <NativeSelect
+            <SelectField
               aria-label="Filter by outcome"
               value={outcome}
-              onChange={(e) => setOutcome(e.target.value)}
+              onValueChange={(value) => setOutcome(value)}
             >
               <option value="all">All outcomes</option>
               {['verified', 'additional_verification_required', 'indeterminate'].map((v) => (
@@ -283,7 +283,7 @@ export function Traces({ tenant, initialTraceID = '' }: Props & { initialTraceID
                   {label(v)}
                 </option>
               ))}
-            </NativeSelect>
+            </SelectField>
           </label>
         </div>
         <Table>

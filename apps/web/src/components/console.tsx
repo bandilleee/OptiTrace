@@ -1,4 +1,7 @@
 'use client';
+import { canView } from '@/lib/access';
+import { Overview } from '@/features/overview';
+import { LayoutDashboard } from 'lucide-react';
 import { label, APIError } from '@/lib/api';
 import {
   SlidersHorizontal,
@@ -21,7 +24,7 @@ import { Logo, Login, BrandLoader } from './brand';
 import { PreferenceControls } from './preferences';
 import { ErrorMessage, Empty } from './ui';
 import { Button } from './ui/button';
-import { NativeSelect } from './ui/native-select';
+import { SelectField } from './select-field';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
@@ -34,6 +37,7 @@ import { Administration } from '@/features/administration';
 import { Audit } from '@/features/audit';
 
 export const tabs = [
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'playground', label: 'Playground', icon: SlidersHorizontal },
   { id: 'traces', label: 'Execution traces', icon: Route },
   { id: 'policies', label: 'Policy library', icon: Layers },
@@ -42,6 +46,7 @@ export const tabs = [
   { id: 'audit', label: 'Audit history', icon: ClipboardList },
 ];
 const headings: Record<string, string> = {
+  overview: 'Workspace overview',
   playground: 'Verification playground',
   traces: 'Execution traces',
   policies: 'Policy library',
@@ -50,6 +55,7 @@ const headings: Record<string, string> = {
   audit: 'Audit history',
 };
 export const descriptions: Record<string, string> = {
+  overview: 'Your roles. Your workflows. One accountable workspace.',
   playground: 'Follow the evidence. Understand every decision.',
   traces: 'A lasting record of every decision and the evidence behind it.',
   policies: 'Versioned decisions. Explicit obligations. Independent approval.',
@@ -114,7 +120,7 @@ export function Console() {
   );
 }
 export function Workspace() {
-  const [tab, setTab] = useState('playground');
+  const [requestedTab, setTab] = useState('overview');
   const [tenantID, setTenantID] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [traceID, setTraceID] = useState('');
@@ -141,6 +147,7 @@ export function Workspace() {
         }
       />
     );
+  const tab = canView(requestedTab, tenant?.roles ?? []) ? requestedTab : 'overview';
   const active = tabs.find((t) => t.id === tab)!;
   function navigate(id: string) {
     setTab(id);
@@ -155,11 +162,11 @@ export function Workspace() {
         <span className="workmark">{tenant?.name.slice(0, 1) ?? 'O'}</span>
         <label>
           <span className="sr-only">Select workspace</span>
-          <NativeSelect
+          <SelectField
             aria-label="Select workspace"
             value={tenant?.id ?? ''}
-            onChange={(e) => {
-              setTenantID(e.target.value);
+            onValueChange={(value) => {
+              setTenantID(value);
               setTraceID('');
             }}
           >
@@ -168,39 +175,45 @@ export function Workspace() {
                 {t.name}
               </option>
             ))}
-          </NativeSelect>
+          </SelectField>
           <small>South Africa · Synthetic</small>
         </label>
       </div>
       <div className="nav-label">Verification</div>
       <nav aria-label="Verification navigation">
-        {tabs.slice(0, 4).map((item) => (
-          <Button
-            key={item.id}
-            variant="ghost"
-            aria-current={tab === item.id ? 'page' : undefined}
-            className={'nav-item ' + (tab === item.id ? 'active' : '')}
-            onClick={() => navigate(item.id)}
-          >
-            <item.icon size={18} />
-            <span>{item.label}</span>
-          </Button>
-        ))}
+        {tabs
+          .slice(0, 5)
+          .filter((item) => canView(item.id, tenant?.roles ?? []))
+          .map((item) => (
+            <Button
+              key={item.id}
+              variant="ghost"
+              aria-current={tab === item.id ? 'page' : undefined}
+              className={'nav-item ' + (tab === item.id ? 'active' : '')}
+              onClick={() => navigate(item.id)}
+            >
+              <item.icon size={18} />
+              <span>{item.label}</span>
+            </Button>
+          ))}
       </nav>
       <div className="nav-label workspace-nav-label">Workspace</div>
       <nav aria-label="Workspace navigation">
-        {tabs.slice(4).map((item) => (
-          <Button
-            key={item.id}
-            variant="ghost"
-            aria-current={tab === item.id ? 'page' : undefined}
-            className={'nav-item ' + (tab === item.id ? 'active' : '')}
-            onClick={() => navigate(item.id)}
-          >
-            <item.icon size={18} />
-            <span>{item.label}</span>
-          </Button>
-        ))}
+        {tabs
+          .slice(5)
+          .filter((item) => canView(item.id, tenant?.roles ?? []))
+          .map((item) => (
+            <Button
+              key={item.id}
+              variant="ghost"
+              aria-current={tab === item.id ? 'page' : undefined}
+              className={'nav-item ' + (tab === item.id ? 'active' : '')}
+              onClick={() => navigate(item.id)}
+            >
+              <item.icon size={18} />
+              <span>{item.label}</span>
+            </Button>
+          ))}
       </nav>
       <div className="sidebar-bottom">
         <div className="sandbox">
@@ -329,6 +342,7 @@ export function Workspace() {
             <TenantContent
               key={tenant.id}
               tab={tab}
+              onNavigate={navigate}
               tenant={tenant}
               identity={identity.data}
               traceID={traceID}
@@ -352,8 +366,22 @@ export function TenantContent({
   tab,
   traceID,
   onOpenTrace,
+  onNavigate,
   ...props
-}: Props & { tab: string; traceID: string; onOpenTrace: (id: string) => void }) {
+}: Props & {
+  tab: string;
+  traceID: string;
+  onOpenTrace: (id: string) => void;
+  onNavigate: (view: string) => void;
+}) {
+  if (!canView(tab, props.tenant.roles))
+    return (
+      <Empty
+        title="No workflow access"
+        text="Ask your workspace administrator to assign an appropriate role."
+      />
+    );
+  if (tab === 'overview') return <Overview {...props} onNavigate={onNavigate} />;
   if (tab === 'playground') return <Playground {...props} onOpenTrace={onOpenTrace} />;
   if (tab === 'traces') return <Traces {...props} initialTraceID={traceID} />;
   if (tab === 'policies') return <Policies {...props} />;

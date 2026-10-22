@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Panel, ErrorMessage, Badge } from '@/components/ui';
 import { Button } from '@/components/ui/button';
-import { NativeSelect } from '@/components/ui/native-select';
+import { SelectField } from '@/components/select-field';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -155,9 +155,10 @@ export function Playground({
               </fieldset>
               <label className="field-label">
                 Approved policy
-                <NativeSelect
+                <SelectField
+                  aria-label="Approved policy"
                   value={selected?.id ?? ''}
-                  onChange={(e) => setPolicy(e.target.value)}
+                  onValueChange={(value) => setPolicy(value)}
                 >
                   {eligible.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -165,35 +166,37 @@ export function Playground({
                       {p.version}
                     </option>
                   ))}
-                </NativeSelect>
+                </SelectField>
               </label>
               <div className="two-col">
                 <label className="field-label">
                   Observation scenario
-                  <NativeSelect
+                  <SelectField
+                    aria-label="Observation scenario"
                     value={scenario}
-                    onChange={(e) => setScenario(e.target.value as typeof scenario)}
+                    onValueChange={(value) => setScenario(value as typeof scenario)}
                   >
                     {scenarios.map((s) => (
                       <option key={s} value={s}>
                         {label(s)}
                       </option>
                     ))}
-                  </NativeSelect>
+                  </SelectField>
                   <small>{scenarioHints[scenario]}</small>
                 </label>
                 <label className="field-label">
                   Execution strategy
-                  <NativeSelect
+                  <SelectField
+                    aria-label="Execution strategy"
                     value={strategy}
-                    onChange={(e) => setStrategy(e.target.value as typeof strategy)}
+                    onValueChange={(value) => setStrategy(value as typeof strategy)}
                   >
                     {strategies.map((s) => (
                       <option key={s} value={s}>
                         {label(s)}
                       </option>
                     ))}
-                  </NativeSelect>
+                  </SelectField>
                   <small>{strategyHints[strategy]}</small>
                 </label>
               </div>

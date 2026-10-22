@@ -9,7 +9,7 @@ async function signIn(page: Page, identity: string) {
     page.getByRole('heading', { name: 'OptiTrace synthetic identity provider' }),
   ).toBeVisible();
   await page.getByRole('link', { name: `${identity}@optitrace.test`, exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Verification playground' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
 }
 async function signOut(page: Page) {
   await page.getByRole('button', { name: 'Sign out' }).click();
@@ -20,14 +20,16 @@ test('real login, both policy profiles, evidence and persisted trace', async ({
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await signIn(page, 'admin');
+  await page.screenshot({ path: testInfo.outputPath('live-overview.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   for (const profile of ['conditional', 'complete']) {
-    await page.getByLabel('Approved policy').selectOption(`policy-${profile}`);
-    await page.getByLabel('Observation scenario').selectOption('clear');
+    await choose(page, 'Approved policy', `policy-${profile}`);
+    await choose(page, 'Observation scenario', 'clear');
     await page.getByRole('button', { name: 'Run verification', exact: true }).click();
     await expect(
       page.locator('.outcome-row').getByRole('heading', { name: 'Verified', exact: true }),
     ).toBeVisible();
-    await page.getByLabel('Observation scenario').selectOption('sim_change');
+    await choose(page, 'Observation scenario', 'sim_change');
     await page.getByRole('button', { name: 'Run verification', exact: true }).click();
     await expect(
       page
@@ -65,9 +67,7 @@ test('durable worker completes a real benchmark and exports its labelled report'
   await page.getByRole('button', { name: 'Benchmarks', exact: true }).click();
   await page.getByLabel('Observation count').fill('2');
   await page.getByRole('button', { name: 'Launch benchmark' }).click();
-  const report = page
-    .locator('.panel')
-    .filter({ has: page.getByRole('heading', { name: 'Comparison report', exact: true }) });
+  const report = page.getByRole('dialog', { name: 'Comparison report' });
   await expect(report.getByText('Completed', { exact: true })).toBeVisible({ timeout: 30000 });
   await expect(report.locator('tbody tr')).toHaveCount(20);
   const url = await report.getByRole('link', { name: 'Export JSON' }).getAttribute('href');
@@ -116,6 +116,7 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   await expect(page.locator('.secret-box')).toHaveCount(0);
   const keyRow = page.locator('tbody tr').filter({ hasText: keyName });
   await keyRow.getByRole('button', { name: 'Revoke credential' }).click();
+  await page.getByRole('button', { name: 'Confirm revocation', exact: true }).click();
   await expect(keyRow).toHaveCount(0);
   await page.getByRole('tab', { name: 'Invitations', exact: true }).click();
   const email = `acceptance-${Date.now()}@optitrace.test`;
@@ -124,9 +125,8 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   await expect(page.getByText(email, { exact: true })).toBeVisible();
   await signOut(page);
   await signIn(page, 'auditor');
-  await expect(page.getByRole('button', { name: 'Run verification', exact: true })).toBeDisabled();
-  await page.getByRole('button', { name: 'Administration', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Administration is restricted' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Playground', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Administration', exact: true })).toHaveCount(0);
   const session = await (await page.request.get('/api/v1/auth/me')).json();
   const tenant = session.tenants[0].id;
   const denied = await page.request.post(`/api/v1/tenants/${tenant}/evaluations`, {
@@ -139,3 +139,8 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   });
   expect(denied.status()).toBe(403);
 });
+
+async function choose(page: Page, name: string, value: string) {
+  await page.getByRole('combobox', { name, exact: true }).click();
+  await page.locator(`[role="option"][data-value="${value}"]`).click();
+}

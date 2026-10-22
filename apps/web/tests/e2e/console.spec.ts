@@ -71,6 +71,11 @@ async function setup(page: Page, roles = ['integration_developer', 'auditor']) {
 test('runs a verification and inspects skipped evidence', async ({ page }) => {
   await setup(page);
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Verification playground' })).toBeVisible();
   await page.getByRole('button', { name: 'Run verification', exact: true }).click();
   await expect(
@@ -84,22 +89,35 @@ test('runs a verification and inspects skipped evidence', async ({ page }) => {
 test('auditor cannot submit evaluations or administer membership', async ({ page }) => {
   await setup(page, ['auditor']);
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Run verification', exact: true })).toBeDisabled();
-  await page.getByRole('button', { name: 'Administration', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Administration is restricted' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Playground', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Administration', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Audit history', exact: true })).toBeVisible();
 });
 test('unauthenticated visitors see the invited Google sign-in flow', async ({ page }) => {
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ status: 401, json: { error: { message: 'Authentication required' } } }),
   );
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await expect(page.getByRole('link', { name: 'Continue with Google' })).toHaveAttribute(
     'href',
     '/api/v1/auth/login',
   );
   await expect(page.getByRole('heading', { name: 'Your verification workspace' })).toBeVisible();
 });
-test('a queued benchmark polls until its measured report is available', async ({ page }) => {
+test('a queued benchmark polls until its measured report is available', async ({
+  page,
+}, testInfo) => {
   await setup(page);
   let launched = false;
   let polls = 0;
@@ -134,6 +152,11 @@ test('a queued benchmark polls until its measured report is available', async ({
     }),
   );
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await page.getByRole('button', { name: 'Benchmarks', exact: true }).click();
   await page.getByRole('button', { name: 'Launch benchmark' }).click();
   await expect(page.getByText('Measured http', { exact: true })).toBeVisible({ timeout: 10000 });
@@ -142,11 +165,34 @@ test('a queued benchmark polls until its measured report is available', async ({
     'href',
     '/api/v1/tenants/t/benchmarks/job-123/export',
   );
+  await expect(page.getByRole('dialog', { name: 'Comparison report' })).toBeVisible();
+  const accessibility = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
+  expect(accessibility.violations, JSON.stringify(accessibility.violations, null, 2)).toEqual([]);
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Launch benchmark' })).toBeFocused();
+  await page.locator('.run-row').click();
+  await expect(page.getByRole('dialog', { name: 'Comparison report' })).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.screenshot({
+    path: testInfo.outputPath('benchmark-popup-mobile.png'),
+    fullPage: true,
+  });
 });
 test('the execution workspace remains usable on a narrow screen', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await setup(page);
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Run verification', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Run verification', exact: true }).click();
   await expect(
@@ -161,6 +207,11 @@ test('the execution workspace remains usable on a narrow screen', async ({ page 
 test('theme and motion choices persist, and the assumptions match the engine', async ({ page }) => {
   await setup(page);
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await page.getByRole('button', { name: 'Switch to light theme' }).click();
   await page.getByRole('button', { name: 'Pause motion' }).click();
   await page.reload();
@@ -183,6 +234,11 @@ test('mobile navigation closes after selection and tabs support the keyboard', a
   await setup(page);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await page
     .getByRole('dialog')
@@ -213,6 +269,11 @@ test('failed submissions show the server error without inventing a result', asyn
       : route.fulfill({ json: { items: [] } }),
   );
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await page.getByRole('button', { name: 'Run verification', exact: true }).click();
   await expect(page.locator('.error[role=alert]')).toContainText('Source execution is unavailable');
   await expect(page.locator('.outcome-row')).toHaveCount(0);
@@ -222,6 +283,11 @@ test('failed submissions show the server error without inventing a result', asyn
 test('workspace has no automated accessibility violations in either theme', async ({ page }) => {
   await setup(page);
   await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+  ).toBeVisible();
+  if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+    await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
   await page.getByRole('button', { name: 'Run verification', exact: true }).click();
   await expect(page.locator('.outcome-row')).toBeVisible();
   for (const theme of ['dark', 'light']) {
@@ -232,4 +298,91 @@ test('workspace has no automated accessibility violations in either theme', asyn
       .analyze();
     expect(result.violations, JSON.stringify(result.violations, null, 2)).toEqual([]);
   }
+});
+
+test('policy authors see their own dashboard without evaluation or administration access', async ({
+  page,
+}) => {
+  const requests: string[] = [];
+  page.on('request', (request) => requests.push(new URL(request.url()).pathname));
+  await setup(page, ['policy_author']);
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Policy author', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Benchmarks', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Administration', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Write and submit policies' }).click();
+  await page.getByLabel('Policy name', { exact: true }).fill('   ');
+  await page.getByRole('button', { name: 'Create draft', exact: true }).click();
+  await expect(page.getByText('Enter a name.', { exact: true })).toBeVisible();
+  expect(requests.some((path) => path.endsWith('/evaluations'))).toBe(false);
+});
+
+test('dropdowns support keyboard selection and invalid benchmark values stay in the form', async ({
+  page,
+}) => {
+  await setup(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
+  const strategy = page.getByRole('combobox', { name: 'Execution strategy', exact: true });
+  await strategy.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('listbox')).toBeVisible();
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(strategy).toBeFocused();
+  await page.getByRole('button', { name: 'Benchmarks', exact: true }).click();
+  await page.getByLabel('Observation count').fill('1');
+  await page.getByRole('button', { name: 'Launch benchmark' }).click();
+  await expect(
+    page.getByText('Enter a whole number between 2 and 1000.', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+test('administrators validate invitations and retain failed role edits for retry', async ({
+  page,
+}) => {
+  await setup(page, ['tenant_admin']);
+  let attempts = 0;
+  await page.route('**/api/v1/tenants/t/memberships', (route) =>
+    route.fulfill({
+      json: { items: [{ id: 'member', email: 'person@example.com', roles: ['auditor'] }] },
+    }),
+  );
+  await page.route('**/api/v1/tenants/t/memberships/member', (route) => {
+    attempts++;
+    return route.fulfill(
+      attempts === 1
+        ? { status: 409, json: { error: { message: 'Membership changed. Review and retry.' } } }
+        : { json: { id: 'member', roles: ['auditor', 'policy_author'] } },
+    );
+  });
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Tenant administrator', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Execution traces', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Administration', exact: true }).click();
+  await page.getByRole('button', { name: 'Edit roles', exact: true }).click();
+  await page.getByLabel('Policy author', { exact: true }).check();
+  await page.getByRole('button', { name: 'Save roles', exact: true }).click();
+  await expect(page.locator('.role-editor')).toContainText('Membership changed. Review and retry.');
+  await expect(page.getByLabel('Policy author', { exact: true })).toBeChecked();
+  await page.getByRole('button', { name: 'Save roles', exact: true }).click();
+  await expect(page.locator('.role-editor')).toHaveCount(0);
+  await expect(page.getByRole('status')).toContainText('Member roles saved.');
+  await page.getByRole('tab', { name: 'Invitations', exact: true }).click();
+  await page.getByLabel('Google account email').fill('a@@example.com');
+  await page.getByRole('button', { name: 'Create invitation' }).click();
+  await expect(
+    page.getByText('Enter a valid Google account email, such as teammate@example.com.', {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await page.getByRole('tab', { name: 'Integration credentials', exact: true }).click();
+  await page.getByLabel('Credential name').fill('   ');
+  await page.getByRole('button', { name: 'Create credential', exact: true }).click();
+  await expect(page.getByText('Enter a name.', { exact: true })).toBeVisible();
 });

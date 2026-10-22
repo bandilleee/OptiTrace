@@ -118,7 +118,7 @@ func (s *Server) admin(w http.ResponseWriter, r *http.Request, tx pgx.Tx, p prin
 			return nil
 		}
 		b.Email = strings.ToLower(strings.TrimSpace(b.Email))
-		if !strings.Contains(b.Email, "@") || len(b.Email) > 254 || !rolesValid(b.Roles) {
+		if !invitationEmailValid(b.Email) || !rolesValid(b.Roles) {
 			fail(w, 400, "invalid_invitation", "Valid email and roles required")
 			return nil
 		}
@@ -137,15 +137,18 @@ func (s *Server) admin(w http.ResponseWriter, r *http.Request, tx pgx.Tx, p prin
 		if !decode(w, r, &b) {
 			return nil
 		}
-		if b.Name == "" || len(b.Name) > 120 || len(b.Scopes) == 0 || len(b.Scopes) > 2 {
+		b.Name = strings.TrimSpace(b.Name)
+		if !resourceNameValid(b.Name) || len(b.Scopes) == 0 || len(b.Scopes) > 2 {
 			fail(w, 400, "invalid_credential", "Name and scopes required")
 			return nil
 		}
+		seenScopes := map[string]bool{}
 		for _, scope := range b.Scopes {
-			if scope != "evaluations:read" && scope != "evaluations:write" {
-				fail(w, 400, "invalid_scope", "Unknown scope")
+			if seenScopes[scope] || (scope != "evaluations:read" && scope != "evaluations:write") {
+				fail(w, 400, "invalid_scope", "Valid unique scopes required")
 				return nil
 			}
+			seenScopes[scope] = true
 		}
 		id = identity.Random()
 		secret := "ot_" + identity.Random()

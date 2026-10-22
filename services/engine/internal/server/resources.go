@@ -10,6 +10,7 @@ import (
 	"github.com/optitrace/optitrace/services/engine/internal/storage"
 	"github.com/optitrace/optitrace/services/engine/internal/storage/dbgen"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -47,7 +48,8 @@ func (s *Server) policies(w http.ResponseWriter, r *http.Request, tx pgx.Tx, p p
 		if !decode(w, r, &b) {
 			return nil
 		}
-		if len(b.Name) < 1 || len(b.Name) > 120 || b.Profile != "complete" && b.Profile != "conditional" {
+		b.Name = strings.TrimSpace(b.Name)
+		if !resourceNameValid(b.Name) || b.Profile != "complete" && b.Profile != "conditional" {
 			fail(w, 400, "invalid_policy", "Name and valid profile required")
 			return nil
 		}

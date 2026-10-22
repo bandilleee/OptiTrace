@@ -1,8 +1,18 @@
 'use client';
+import { emailError, nameError } from '@/lib/validation';
+import { FieldError } from '@/components/field-error';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { NativeSelect } from '@/components/ui/native-select';
+import { SelectField } from '@/components/select-field';
 import { Label } from '@/components/ui/label';
 import {
   Table,
@@ -53,6 +63,9 @@ export function Administration({ tenant, identity }: Props) {
   const invitations = useItems<Invitation>(tenant.id, 'invitations', allowed);
   const credentials = useItems<Credential>(tenant.id, 'credentials', allowed);
   const client = useQueryClient();
+  const [errors, setErrors] = useState<{ email?: string; name?: string }>({});
+  const [notice, setNotice] = useState('');
+  const [revoke, setRevoke] = useState<Credential | null>(null);
   const [email, setEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('integration_developer');
   const [keyName, setKeyName] = useState('');
@@ -71,10 +84,20 @@ export function Administration({ tenant, identity }: Props) {
       api<{
         secret?: string;
       }>(`/tenants/${tenant.id}/${path}`, { method, body, csrf: identity.csrf_token }),
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      setNotice(
+        variables.method === 'DELETE'
+          ? 'Credential revoked.'
+          : variables.method === 'PATCH'
+            ? 'Member roles saved.'
+            : variables.path === 'invitations'
+              ? 'Invitation created. No email was sent.'
+              : 'Credential created. Save the secret before dismissing it.',
+      );
+      if (variables.method === 'DELETE') setRevoke(null);
       if (data?.secret) setSecret(data.secret);
-      setEmail('');
-      setKeyName('');
+      if (variables.path === 'invitations') setEmail('');
+      if (variables.path === 'credentials') setKeyName('');
       client.invalidateQueries({ queryKey: ['identity'] });
       for (const resource of ['memberships', 'invitations', 'credentials'])
         client.invalidateQueries({ queryKey: [tenant.id, resource] });
@@ -92,6 +115,11 @@ export function Administration({ tenant, identity }: Props) {
       <ErrorMessage
         error={change.error ?? members.error ?? invitations.error ?? credentials.error}
       />
+      {notice && (
+        <p role="status" className="success-message">
+          {notice}
+        </p>
+      )}
       <Tabs defaultValue="members" className="administration-tabs">
         <TabsList aria-label="Administration sections">
           <TabsTrigger value="members">Members</TabsTrigger>
@@ -119,13 +147,13 @@ export function Administration({ tenant, identity }: Props) {
                         <RoleEditor
                           member={m}
                           pending={change.isPending}
-                          onSave={(roles) =>
-                            change.mutate({
+                          onSave={async (roles) => {
+                            await change.mutateAsync({
                               path: `memberships/${m.id}`,
                               method: 'PATCH',
                               body: { roles },
-                            })
-                          }
+                            });
+                          }}
                         />
                       </TableCell>
                     </TableRow>
@@ -139,30 +167,44 @@ export function Administration({ tenant, identity }: Props) {
           <Panel title="Invite a teammate">
             <form
               className="inline-form"
+              noValidate
               onSubmit={(e) => {
                 e.preventDefault();
-                change.mutate({ path: 'invitations', body: { email, roles: [inviteRole] } });
+                const error = emailError(email);
+                setErrors({ email: error });
+                if (!error)
+                  change.mutate({
+                    path: 'invitations',
+                    body: { email: email.trim().toLowerCase(), roles: [inviteRole] },
+                  });
               }}
             >
               <Label>
                 Google account email
                 <Input
+                  aria-invalid={!!errors.email}
+                  aria-describedby="invite-email-error"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="teammate@example.com"
                 />
+                <FieldError id="invite-email-error" error={errors.email} />
               </Label>
               <Label>
                 Initial role
-                <NativeSelect value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
+                <SelectField
+                  aria-label="Initial role"
+                  value={inviteRole}
+                  onValueChange={(value) => setInviteRole(value)}
+                >
                   {roles.map((r) => (
                     <option key={r} value={r}>
                       {label(r)}
                     </option>
                   ))}
-                </NativeSelect>
+                </SelectField>
               </Label>
               <Button className="button primary" disabled={change.isPending}>
                 Create invitation
@@ -190,27 +232,42 @@ export function Administration({ tenant, identity }: Props) {
           >
             <form
               className="inline-form"
+              noValidate
               onSubmit={(e) => {
                 e.preventDefault();
-                setSecret('');
-                change.mutate({ path: 'credentials', body: { name: keyName, scopes: [keyScope] } });
+                const error = nameError(keyName);
+                setErrors({ name: error });
+                if (!error) {
+                  setSecret('');
+                  change.mutate({
+                    path: 'credentials',
+                    body: { name: keyName.trim(), scopes: [keyScope] },
+                  });
+                }
               }}
             >
               <Label>
                 Credential name
                 <Input
                   required
+                  aria-invalid={!!errors.name}
+                  aria-describedby="credential-name-error"
                   value={keyName}
                   onChange={(e) => setKeyName(e.target.value)}
                   placeholder="Local integration"
                 />
+                <FieldError id="credential-name-error" error={errors.name} />
               </Label>
               <Label>
                 Scope
-                <NativeSelect value={keyScope} onChange={(e) => setKeyScope(e.target.value)}>
+                <SelectField
+                  aria-label="Scope"
+                  value={keyScope}
+                  onValueChange={(value) => setKeyScope(value)}
+                >
                   <option value="evaluations:write">Submit evaluations</option>
                   <option value="evaluations:read">Read evaluations</option>
-                </NativeSelect>
+                </SelectField>
               </Label>
               <Button className="button primary" disabled={change.isPending}>
                 Create credential
@@ -247,9 +304,10 @@ export function Administration({ tenant, identity }: Props) {
                             variant="ghost"
                             className="text-button danger"
                             disabled={change.isPending}
-                            onClick={() =>
-                              change.mutate({ path: `credentials/${c.id}`, method: 'DELETE' })
-                            }
+                            onClick={() => {
+                              change.reset();
+                              setRevoke(c);
+                            }}
                           >
                             Revoke credential
                           </Button>
@@ -263,6 +321,37 @@ export function Administration({ tenant, identity }: Props) {
           </Panel>
         </TabsContent>
       </Tabs>
+      <Dialog
+        open={!!revoke}
+        onOpenChange={(open) => {
+          if (!open && !change.isPending) setRevoke(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Revoke integration credential?</DialogTitle>
+            <DialogDescription>
+              Revoke {revoke?.name}. Clients using this secret will lose access immediately. This
+              cannot be undone; you can create a replacement credential.
+            </DialogDescription>
+          </DialogHeader>
+          <ErrorMessage error={change.error} />
+          <DialogFooter>
+            <Button variant="outline" disabled={change.isPending} onClick={() => setRevoke(null)}>
+              Cancel revocation
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={change.isPending}
+              onClick={() => {
+                if (revoke) change.mutate({ path: `credentials/${revoke.id}`, method: 'DELETE' });
+              }}
+            >
+              Confirm revocation
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -273,9 +362,10 @@ export function RoleEditor({
   pending,
 }: {
   member: Membership;
-  onSave: (roles: string[]) => void;
+  onSave: (roles: string[]) => Promise<void>;
   pending: boolean;
 }) {
+  const [error, setError] = useState('');
   const [editing, setEditing] = useState(false);
   const [selected, setSelected] = useState(member.roles);
   return editing ? (
@@ -292,12 +382,28 @@ export function RoleEditor({
           {label(r)}
         </Label>
       ))}
+      {error && (
+        <small role="alert" className="field-error">
+          {error}
+        </small>
+      )}
       <Button
         className="button secondary small"
         disabled={pending}
-        onClick={() => {
-          onSave(selected);
-          setEditing(false);
+        onClick={async () => {
+          if (!selected.length) {
+            setError('Choose at least one role.');
+            return;
+          }
+          setError('');
+          try {
+            await onSave(selected);
+            setEditing(false);
+          } catch (failure) {
+            setError(
+              failure instanceof Error ? failure.message : 'Roles were not saved. Try again.',
+            );
+          }
         }}
       >
         Save roles
@@ -307,7 +413,15 @@ export function RoleEditor({
       </Button>
     </div>
   ) : (
-    <Button variant="ghost" className="text-button" onClick={() => setEditing(true)}>
+    <Button
+      variant="ghost"
+      className="text-button"
+      onClick={() => {
+        setSelected(member.roles);
+        setError('');
+        setEditing(true);
+      }}
+    >
       Edit roles
     </Button>
   );

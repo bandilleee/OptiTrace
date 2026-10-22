@@ -135,6 +135,14 @@ func TestPostgresAuthenticatedWorkflow(t *testing.T) {
 		return v
 	}
 	admin, adminCSRF := loginAs("admin")
+	// Invalid forms must also fail when clients bypass browser validators.
+	request(admin, adminCSRF, "POST", "/v1/tenants/demo/credentials", `{"name":"   ","scopes":["evaluations:read"]}`, 400)
+	request(admin, adminCSRF, "POST", "/v1/tenants/demo/credentials", `{"name":"duplicate scope","scopes":["evaluations:read","evaluations:read"]}`, 400)
+	for _, email := range []string{"a@@example.com", "Display <a@example.com>", "a@-example.com"} {
+		body, _ := json.Marshal(map[string]any{"email": email, "roles": []string{"auditor"}})
+		request(admin, adminCSRF, "POST", "/v1/tenants/demo/invitations", string(body), 400)
+	}
+	request(admin, adminCSRF, "POST", "/v1/tenants/demo/benchmarks", `{"seed":42,"count":1}`, 400)
 	request(admin, adminCSRF, "GET", "/v1/tenants/other/policies", "", 403)
 	request(admin, "wrong", "POST", "/v1/tenants/demo/invitations", `{"email":"x@optitrace.test","roles":["auditor"]}`, 403)
 	ev := request(admin, adminCSRF, "POST", "/v1/tenants/demo/evaluations", `{"policy_id":"policy-conditional","scenario":"number_mismatch"}`, 201)
@@ -142,6 +150,7 @@ func TestPostgresAuthenticatedWorkflow(t *testing.T) {
 		t.Fatal(ev)
 	}
 	author, authorCSRF := loginAs("author")
+	request(author, authorCSRF, "POST", "/v1/tenants/demo/policies", `{"name":"   ","profile":"conditional"}`, 400)
 	policy := request(author, authorCSRF, "POST", "/v1/tenants/demo/policies", `{"name":"Independent approval","profile":"conditional"}`, 201)
 	pid := policy["id"].(string)
 	request(author, authorCSRF, "POST", "/v1/tenants/demo/policies/"+pid+"/submit", `{}`, 200)
