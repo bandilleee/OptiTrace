@@ -79,3 +79,5 @@ Terraform maps the API, console and private simulator to Cloud Run, benchmarks t
 Read `docs/ARCHITECTURE.md`, `docs/runbooks/RELEASE.md`, `docs/runbooks/AGENT-HARNESS.md`, `policies/README.md` and `benchmarks/README.md` for contracts and evidence boundaries. The release runbook requires explicit approval, current cost inputs, real-provider smoke tests, backup restoration and rollback rehearsal before hosting acceptance.
 
 Observed local results and remaining release prerequisites are recorded in [integration verification](docs/evidence/verification.md).
+
+The approved frontend uses shadcn/ui, Tailwind4, local Montserrat fonts, and the supplied animated logo kit. See the [design implementation notes](docs/design/FRONTEND.md) for the palette, component mappings, prototype adaptations, and browser checks.

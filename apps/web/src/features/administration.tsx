@@ -1,4 +1,17 @@
 'use client';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { NativeSelect } from '@/components/ui/native-select';
+import { Label } from '@/components/ui/label';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
 import { type Props } from '../lib/workspace-types';
 import { can, api, label } from '../lib/api';
 import { useItems } from '../lib/use-items';
@@ -79,162 +92,177 @@ export function Administration({ tenant, identity }: Props) {
       <ErrorMessage
         error={change.error ?? members.error ?? invitations.error ?? credentials.error}
       />
-      <Panel title="Workspace members">
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Member</th>
-                <th>Roles</th>
-                <th>Manage access</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members.data?.items.map((m) => (
-                <tr key={m.id}>
-                  <td>{m.email}</td>
-                  <td>{m.roles.map(label).join(', ') || 'No roles'}</td>
-                  <td>
-                    <RoleEditor
-                      member={m}
-                      pending={change.isPending}
-                      onSave={(roles) =>
-                        change.mutate({
-                          path: `memberships/${m.id}`,
-                          method: 'PATCH',
-                          body: { roles },
-                        })
-                      }
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Panel>
-      <Panel title="Invite a teammate">
-        <form
-          className="inline-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            change.mutate({ path: 'invitations', body: { email, roles: [inviteRole] } });
-          }}
-        >
-          <label>
-            Google account email
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="teammate@example.com"
-            />
-          </label>
-          <label>
-            Initial role
-            <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
-              {roles.map((r) => (
-                <option key={r} value={r}>
-                  {label(r)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button className="button primary" disabled={change.isPending}>
-            Create invitation
-          </button>
-        </form>
-        <div className="compact-list">
-          {invitations.data?.items.map((i) => (
-            <div key={i.id}>
-              <span>{i.email}</span>
-              <span className="subtle">
-                {i.roles.map(label).join(', ')} · {label(i.status ?? 'pending')}
-              </span>
+      <Tabs defaultValue="members" className="administration-tabs">
+        <TabsList aria-label="Administration sections">
+          <TabsTrigger value="members">Members</TabsTrigger>
+          <TabsTrigger value="invitations">Invitations</TabsTrigger>
+          <TabsTrigger value="credentials">Integration credentials</TabsTrigger>
+        </TabsList>
+        <TabsContent value="members">
+          {' '}
+          <Panel title="Workspace members">
+            <div className="table-scroll">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Member</TableHead>
+                    <TableHead>Roles</TableHead>
+                    <TableHead>Manage access</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {members.data?.items.map((m) => (
+                    <TableRow key={m.id}>
+                      <TableCell>{m.email}</TableCell>
+                      <TableCell>{m.roles.map(label).join(', ') || 'No roles'}</TableCell>
+                      <TableCell>
+                        <RoleEditor
+                          member={m}
+                          pending={change.isPending}
+                          onSave={(roles) =>
+                            change.mutate({
+                              path: `memberships/${m.id}`,
+                              method: 'PATCH',
+                              body: { roles },
+                            })
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-          ))}
-        </div>
-        <p className="panel-copy">
-          Invitations authorize sign-in; this action does not send an email.
-        </p>
-      </Panel>
-      <Panel
-        title="Integration credentials"
-        aside={<span className="subtle">Secrets are shown once</span>}
-      >
-        <form
-          className="inline-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSecret('');
-            change.mutate({ path: 'credentials', body: { name: keyName, scopes: [keyScope] } });
-          }}
-        >
-          <label>
-            Credential name
-            <input
-              required
-              value={keyName}
-              onChange={(e) => setKeyName(e.target.value)}
-              placeholder="Local integration"
-            />
-          </label>
-          <label>
-            Scope
-            <select value={keyScope} onChange={(e) => setKeyScope(e.target.value)}>
-              <option value="evaluations:write">Submit evaluations</option>
-              <option value="evaluations:read">Read evaluations</option>
-            </select>
-          </label>
-          <button className="button primary" disabled={change.isPending}>
-            Create credential
-          </button>
-        </form>
-        {secret && (
-          <div className="secret-box" role="status">
-            <strong>Copy this secret now. It will not be shown again.</strong>
-            <code>{secret}</code>
-            <button className="text-button" onClick={() => setSecret('')}>
-              Dismiss secret
-            </button>
-          </div>
-        )}
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Scopes</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {credentials.data?.items.map((c) => (
-                <tr key={c.id}>
-                  <td>{c.name}</td>
-                  <td>{c.scopes.join(', ')}</td>
-                  <td>{c.revoked_at ? 'Revoked' : 'Active'}</td>
-                  <td>
-                    {!c.revoked_at && (
-                      <button
-                        className="text-button danger"
-                        disabled={change.isPending}
-                        onClick={() =>
-                          change.mutate({ path: `credentials/${c.id}`, method: 'DELETE' })
-                        }
-                      >
-                        Revoke credential
-                      </button>
-                    )}
-                  </td>
-                </tr>
+          </Panel>
+        </TabsContent>
+        <TabsContent value="invitations">
+          <Panel title="Invite a teammate">
+            <form
+              className="inline-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                change.mutate({ path: 'invitations', body: { email, roles: [inviteRole] } });
+              }}
+            >
+              <Label>
+                Google account email
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="teammate@example.com"
+                />
+              </Label>
+              <Label>
+                Initial role
+                <NativeSelect value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
+                  {roles.map((r) => (
+                    <option key={r} value={r}>
+                      {label(r)}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </Label>
+              <Button className="button primary" disabled={change.isPending}>
+                Create invitation
+              </Button>
+            </form>
+            <div className="compact-list">
+              {invitations.data?.items.map((i) => (
+                <div key={i.id}>
+                  <span>{i.email}</span>
+                  <span className="subtle">
+                    {i.roles.map(label).join(', ')} · {label(i.status ?? 'pending')}
+                  </span>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </Panel>
+            </div>
+            <p className="panel-copy">
+              Invitations authorize sign-in; this action does not send an email.
+            </p>
+          </Panel>
+        </TabsContent>
+        <TabsContent value="credentials">
+          <Panel
+            title="Integration credentials"
+            aside={<span className="subtle">Secrets are shown once</span>}
+          >
+            <form
+              className="inline-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSecret('');
+                change.mutate({ path: 'credentials', body: { name: keyName, scopes: [keyScope] } });
+              }}
+            >
+              <Label>
+                Credential name
+                <Input
+                  required
+                  value={keyName}
+                  onChange={(e) => setKeyName(e.target.value)}
+                  placeholder="Local integration"
+                />
+              </Label>
+              <Label>
+                Scope
+                <NativeSelect value={keyScope} onChange={(e) => setKeyScope(e.target.value)}>
+                  <option value="evaluations:write">Submit evaluations</option>
+                  <option value="evaluations:read">Read evaluations</option>
+                </NativeSelect>
+              </Label>
+              <Button className="button primary" disabled={change.isPending}>
+                Create credential
+              </Button>
+            </form>
+            {secret && (
+              <div className="secret-box" role="status">
+                <strong>Copy this secret now. It will not be shown again.</strong>
+                <code>{secret}</code>
+                <Button variant="ghost" className="text-button" onClick={() => setSecret('')}>
+                  Dismiss secret
+                </Button>
+              </div>
+            )}
+            <div className="table-scroll">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Scopes</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {credentials.data?.items.map((c) => (
+                    <TableRow key={c.id}>
+                      <TableCell>{c.name}</TableCell>
+                      <TableCell>{c.scopes.join(', ')}</TableCell>
+                      <TableCell>{c.revoked_at ? 'Revoked' : 'Active'}</TableCell>
+                      <TableCell>
+                        {!c.revoked_at && (
+                          <Button
+                            variant="ghost"
+                            className="text-button danger"
+                            disabled={change.isPending}
+                            onClick={() =>
+                              change.mutate({ path: `credentials/${c.id}`, method: 'DELETE' })
+                            }
+                          >
+                            Revoke credential
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Panel>
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
@@ -253,8 +281,8 @@ export function RoleEditor({
   return editing ? (
     <div className="role-editor">
       {roles.map((r) => (
-        <label key={r}>
-          <input
+        <Label key={r}>
+          <Input
             type="checkbox"
             checked={selected.includes(r)}
             onChange={(e) =>
@@ -262,9 +290,9 @@ export function RoleEditor({
             }
           />
           {label(r)}
-        </label>
+        </Label>
       ))}
-      <button
+      <Button
         className="button secondary small"
         disabled={pending}
         onClick={() => {
@@ -273,14 +301,14 @@ export function RoleEditor({
         }}
       >
         Save roles
-      </button>
-      <button className="text-button" onClick={() => setEditing(false)}>
+      </Button>
+      <Button variant="ghost" className="text-button" onClick={() => setEditing(false)}>
         Cancel
-      </button>
+      </Button>
     </div>
   ) : (
-    <button className="text-button" onClick={() => setEditing(true)}>
+    <Button variant="ghost" className="text-button" onClick={() => setEditing(true)}>
       Edit roles
-    </button>
+    </Button>
   );
 }

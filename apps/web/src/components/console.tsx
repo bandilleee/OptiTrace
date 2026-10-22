@@ -1,48 +1,105 @@
 'use client';
-import { label, APIError } from '../lib/api';
+import { label, APIError } from '@/lib/api';
 import {
-  Workflow,
-  Activity,
-  GitBranch,
-  FlaskConical,
+  SlidersHorizontal,
+  Route,
+  Layers,
+  ChartNoAxesCombined,
   Users,
-  FileClock,
+  ClipboardList,
   ChevronRight,
-  ArrowRight,
   LogOut,
+  FlaskConical,
+  Menu,
+  BookOpen,
   ShieldCheck,
 } from 'lucide-react';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';
-import { getSession, logout as endSession } from '../lib/sdk';
-import { Logo, Login } from './brand';
+import { getSession, logout as endSession } from '@/lib/sdk';
+import { Logo, Login, BrandLoader } from './brand';
+import { PreferenceControls } from './preferences';
 import { ErrorMessage, Empty } from './ui';
-import { type Props } from '../lib/workspace-types';
-import { Playground } from '../features/playground';
-import { Traces } from '../features/traces';
-import { Policies } from '../features/policies';
-import { Benchmarks } from '../features/benchmarks';
-import { Administration } from '../features/administration';
-import { Audit } from '../features/audit';
+import { Button } from './ui/button';
+import { NativeSelect } from './ui/native-select';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { type Props } from '@/lib/workspace-types';
+import { Playground } from '@/features/playground';
+import { Traces } from '@/features/traces';
+import { Policies } from '@/features/policies';
+import { Benchmarks } from '@/features/benchmarks';
+import { Administration } from '@/features/administration';
+import { Audit } from '@/features/audit';
 
 export const tabs = [
-  { id: 'playground', label: 'Verification playground', icon: Workflow },
-  { id: 'traces', label: 'Execution traces', icon: Activity },
-  { id: 'policies', label: 'Policy library', icon: GitBranch },
-  { id: 'benchmarks', label: 'Benchmarks', icon: FlaskConical },
-  { id: 'workspace', label: 'Workspace', icon: Users },
-  { id: 'audit', label: 'Audit history', icon: FileClock },
+  { id: 'playground', label: 'Playground', icon: SlidersHorizontal },
+  { id: 'traces', label: 'Execution traces', icon: Route },
+  { id: 'policies', label: 'Policy library', icon: Layers },
+  { id: 'benchmarks', label: 'Benchmarks', icon: ChartNoAxesCombined },
+  { id: 'workspace', label: 'Administration', icon: Users },
+  { id: 'audit', label: 'Audit history', icon: ClipboardList },
 ];
-
+const headings: Record<string, string> = {
+  playground: 'Verification playground',
+  traces: 'Execution traces',
+  policies: 'Policy library',
+  benchmarks: 'Benchmarks',
+  workspace: 'Workspace administration',
+  audit: 'Audit history',
+};
 export const descriptions: Record<string, string> = {
-  playground: 'Follow a decision, one API call at a time.',
-  traces: 'Inspect the evidence behind every outcome.',
-  policies: 'Versioned decisions. Explicit obligations.',
-  benchmarks: 'Measure the optimiser against a fair baseline.',
+  playground: 'Follow the evidence. Understand every decision.',
+  traces: 'A lasting record of every decision and the evidence behind it.',
+  policies: 'Versioned decisions. Explicit obligations. Independent approval.',
+  benchmarks: 'Compare execution strategies on the same synthetic observations.',
   workspace: 'Manage who can work here and how they connect.',
-  audit: 'A record of changes and the people behind them.',
+  audit: 'Changes, decisions, and the people behind them.',
 };
 
+export function AssumptionsDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="link" className="assumptions-link">
+          View assumptions
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Versioned demonstration assumptions</DialogTitle>
+        </DialogHeader>
+        <div className="guide-copy">
+          <p>
+            Scenarios use synthetic South African data. No customer numbers or live network adapters
+            are used.
+          </p>
+          <ul>
+            <li>Evidence freshness: 60 seconds at the fixed evaluation observation time.</li>
+            <li>
+              A number mismatch or SIM/device change within 24 hours requires additional
+              verification.
+            </li>
+            <li>
+              Complete verification requires all three capabilities. Conditional verification always
+              requires Number Verification.
+            </li>
+            <li>
+              Every started billable call is charged, including failed or cancelled calls. Skipped
+              calls are not started.
+            </li>
+          </ul>
+          <p>
+            Trace charges come from the engine configuration. They are synthetic assumptions, not
+            supplier quotes or actual cloud expenditure. Runtime cost is an estimate. No commercial
+            savings are established.
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 export function Console() {
   const [client] = useState(
     () =>
@@ -56,10 +113,11 @@ export function Console() {
     </QueryClientProvider>
   );
 }
-
 export function Workspace() {
   const [tab, setTab] = useState('playground');
   const [tenantID, setTenantID] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [traceID, setTraceID] = useState('');
   const identity = useQuery({ queryKey: ['identity'], queryFn: () => getSession() });
   const tenant = identity.data?.tenants.find((t) => t.id === tenantID) ?? identity.data?.tenants[0];
   const logout = useMutation({
@@ -70,7 +128,7 @@ export function Workspace() {
     return (
       <div className="loading-page">
         <Logo />
-        <p>Opening your verification workspace…</p>
+        <BrandLoader />
       </div>
     );
   if (!identity.data)
@@ -84,109 +142,220 @@ export function Workspace() {
       />
     );
   const active = tabs.find((t) => t.id === tab)!;
-  return (
-    <div className="workspace">
-      <aside className="sidebar">
-        <Logo />
-        <div className="workspace-label">Verification operations</div>
-        <nav aria-label="Main navigation">
-          {tabs.map((item) => (
-            <button
-              key={item.id}
-              aria-current={tab === item.id ? 'page' : undefined}
-              className={tab === item.id ? 'nav-item active' : 'nav-item'}
-              onClick={() => setTab(item.id)}
-            >
-              <item.icon size={19} />
-              <span>{item.label}</span>
-              {tab === item.id && <ChevronRight size={15} />}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="environment">
-            <span />
-            Synthetic environment
-          </div>
-          <p>South Africa · Demonstration</p>
-          <a
-            href="https://cloud.google.com/identity-platform/docs"
-            target="_blank"
-            rel="noreferrer"
+  function navigate(id: string) {
+    setTab(id);
+    setMenuOpen(false);
+    if (id !== 'traces') setTraceID('');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  const navigation = (
+    <>
+      <Logo />
+      <div className="workspace-picker">
+        <span className="workmark">{tenant?.name.slice(0, 1) ?? 'O'}</span>
+        <label>
+          <span className="sr-only">Select workspace</span>
+          <NativeSelect
+            aria-label="Select workspace"
+            value={tenant?.id ?? ''}
+            onChange={(e) => {
+              setTenantID(e.target.value);
+              setTraceID('');
+            }}
           >
-            Google Cloud identity <ArrowRight size={14} />
-          </a>
+            {identity.data.tenants.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </NativeSelect>
+          <small>South Africa · Synthetic</small>
+        </label>
+      </div>
+      <div className="nav-label">Verification</div>
+      <nav aria-label="Verification navigation">
+        {tabs.slice(0, 4).map((item) => (
+          <Button
+            key={item.id}
+            variant="ghost"
+            aria-current={tab === item.id ? 'page' : undefined}
+            className={'nav-item ' + (tab === item.id ? 'active' : '')}
+            onClick={() => navigate(item.id)}
+          >
+            <item.icon size={18} />
+            <span>{item.label}</span>
+          </Button>
+        ))}
+      </nav>
+      <div className="nav-label workspace-nav-label">Workspace</div>
+      <nav aria-label="Workspace navigation">
+        {tabs.slice(4).map((item) => (
+          <Button
+            key={item.id}
+            variant="ghost"
+            aria-current={tab === item.id ? 'page' : undefined}
+            className={'nav-item ' + (tab === item.id ? 'active' : '')}
+            onClick={() => navigate(item.id)}
+          >
+            <item.icon size={18} />
+            <span>{item.label}</span>
+          </Button>
+        ))}
+      </nav>
+      <div className="sidebar-bottom">
+        <div className="sandbox">
+          <FlaskConical size={18} />
+          <strong>A safe place to explore</strong>
+          <p>Synthetic scenarios. Persisted decisions. No live network verification calls.</p>
         </div>
-      </aside>
+        <div className="profile">
+          <span className="avatar">{identity.data.user.email.slice(0, 2).toUpperCase()}</span>
+          <div>
+            <strong title={identity.data.user.email}>{identity.data.user.email}</strong>
+            <small>{tenant?.roles.map(label).join(' · ') || 'No workspace role'}</small>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+  return (
+    <div className="workspace-shell">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <aside className="sidebar">{navigation}</aside>
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
-            Workspace <ChevronRight size={14} />
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="mobile-menu"
+                  aria-label="Open navigation"
+                >
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="mobile-sidebar">
+                <SheetTitle className="sr-only">Workspace navigation</SheetTitle>
+                {navigation}
+              </SheetContent>
+            </Sheet>
+            <span className="breadcrumb-section">
+              {['workspace', 'audit'].includes(tab) ? 'Workspace' : 'Verification'}
+            </span>
+            <ChevronRight size={13} />
             <strong>{active.label}</strong>
           </div>
-          <div className="account">
-            <span className="avatar">{identity.data.user.email.slice(0, 1).toUpperCase()}</span>
-            <span className="account-email">{identity.data.user.email}</span>
-            <button className="icon-button" aria-label="Sign out" onClick={() => logout.mutate()}>
-              <LogOut size={17} />
-            </button>
-          </div>
-        </header>
-        <main>
-          <div className="page-heading">
-            <div>
-              <h1>{active.label}</h1>
-              <p>{descriptions[tab]}</p>
-            </div>
-            <label className="tenant-label">
-              Workspace
-              <select
-                aria-label="Select workspace"
-                value={tenant?.id ?? ''}
-                onChange={(e) => setTenantID(e.target.value)}
-              >
-                {identity.data.tenants.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="synthetic-banner">
-            <ShieldCheck size={17} />
-            <span>
-              <strong>Synthetic data only.</strong> Prices are configured assumptions. Results do
-              not represent observed network savings.
+          <div className="topbar-actions">
+            <PreferenceControls />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="quick-guide">
+                  <BookOpen />
+                  Quick guide
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Your verification workspace</DialogTitle>
+                </DialogHeader>
+                <div className="guide-copy">
+                  <p>
+                    Choose an approved policy, a synthetic scenario, and an execution strategy. Run
+                    a verification to inspect the actual engine decision and its persisted evidence.
+                  </p>
+                  <p>
+                    Authors submit policy drafts; a different reviewer approves and activates them.
+                    Integration developers run evaluations and benchmarks. Administrators manage
+                    access. Auditors read evidence.
+                  </p>
+                  <p>
+                    Use Execution traces to revisit earlier runs and Benchmarks to compare
+                    strategies. Missing or stale evidence never counts as clear.
+                  </p>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Sign out"
+                  disabled={logout.isPending}
+                  onClick={() => logout.mutate()}
+                >
+                  <LogOut size={17} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Sign out</TooltipContent>
+            </Tooltip>
+            <span className="avatar account-avatar" title={identity.data.user.email}>
+              {identity.data.user.email.slice(0, 2).toUpperCase()}
             </span>
           </div>
-          {logout.error && <ErrorMessage error={logout.error} />}{' '}
+        </header>
+        <main id="main-content" tabIndex={-1}>
+          <div className="page-heading">
+            <div>
+              <h1>{headings[tab]}</h1>
+              <p>{descriptions[tab]}</p>
+            </div>
+            <span className="workspace-status">
+              <ShieldCheck size={14} />
+              Invitation-only workspace
+            </span>
+          </div>
+          <div className="synthetic-banner">
+            <span>
+              <FlaskConical size={16} />
+              <span>
+                <strong>Synthetic sandbox.</strong> Scenarios and configured prices are
+                demonstration assumptions.
+              </span>
+            </span>
+            <AssumptionsDialog />
+          </div>
+          <ErrorMessage error={logout.error} />
           {!tenant ? (
             <Empty
               title="No workspace access"
               text="Ask your administrator for an invitation to a workspace."
             />
           ) : (
-            <TenantContent key={tenant.id} tab={tab} tenant={tenant} identity={identity.data} />
+            <TenantContent
+              key={tenant.id}
+              tab={tab}
+              tenant={tenant}
+              identity={identity.data}
+              traceID={traceID}
+              onOpenTrace={(id) => {
+                setTraceID(id);
+                setTab('traces');
+                window.scrollTo({ top: 0 });
+              }}
+            />
           )}
+          <footer>
+            <span>OptiTrace · Evidence before optimisation</span>
+            <span>Synthetic data only. No live network services.</span>
+          </footer>
         </main>
-        <footer>
-          <span>OptiTrace · Evidence before optimisation</span>
-          <span>Google Cloud Identity Platform</span>
-        </footer>
       </div>
     </div>
   );
 }
-
 export function TenantContent({
   tab,
+  traceID,
+  onOpenTrace,
   ...props
-}: Props & {
-  tab: string;
-}) {
-  if (tab === 'playground') return <Playground {...props} />;
-  if (tab === 'traces') return <Traces {...props} />;
+}: Props & { tab: string; traceID: string; onOpenTrace: (id: string) => void }) {
+  if (tab === 'playground') return <Playground {...props} onOpenTrace={onOpenTrace} />;
+  if (tab === 'traces') return <Traces {...props} initialTraceID={traceID} />;
   if (tab === 'policies') return <Policies {...props} />;
   if (tab === 'benchmarks') return <Benchmarks {...props} />;
   if (tab === 'workspace') return <Administration {...props} />;

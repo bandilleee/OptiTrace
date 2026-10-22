@@ -24,10 +24,16 @@ test('real login, both policy profiles, evidence and persisted trace', async ({
     await page.getByLabel('Approved policy').selectOption(`policy-${profile}`);
     await page.getByLabel('Observation scenario').selectOption('clear');
     await page.getByRole('button', { name: 'Run verification', exact: true }).click();
-    await expect(page.getByText('Verified', { exact: true })).toBeVisible();
+    await expect(
+      page.locator('.outcome-row').getByRole('heading', { name: 'Verified', exact: true }),
+    ).toBeVisible();
     await page.getByLabel('Observation scenario').selectOption('sim_change');
     await page.getByRole('button', { name: 'Run verification', exact: true }).click();
-    await expect(page.getByText('Additional verification required', { exact: true })).toBeVisible();
+    await expect(
+      page
+        .locator('.outcome-row')
+        .getByRole('heading', { name: 'Additional verification required', exact: true }),
+    ).toBeVisible();
     if (profile === 'complete')
       await expect(page.getByText('Compulsory', { exact: true })).toHaveCount(3);
   }
@@ -45,6 +51,7 @@ test('real login, both policy profiles, evidence and persisted trace', async ({
     path: testInfo.outputPath('live-playground-mobile.png'),
     fullPage: true,
   });
+  await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
   await page.getByRole('button', { name: 'Execution traces', exact: true }).click();
   const row = page.locator('tbody tr').first();
   await row.getByRole('button').click();
@@ -99,7 +106,8 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   page,
 }) => {
   await signIn(page, 'admin');
-  await page.getByRole('button', { name: 'Workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Administration', exact: true }).click();
+  await page.getByRole('tab', { name: 'Integration credentials', exact: true }).click();
   const keyName = `Acceptance integration ${Date.now()}`;
   await page.getByLabel('Credential name').fill(keyName);
   await page.getByRole('button', { name: 'Create credential' }).click();
@@ -109,6 +117,7 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   const keyRow = page.locator('tbody tr').filter({ hasText: keyName });
   await keyRow.getByRole('button', { name: 'Revoke credential' }).click();
   await expect(keyRow).toHaveCount(0);
+  await page.getByRole('tab', { name: 'Invitations', exact: true }).click();
   const email = `acceptance-${Date.now()}@optitrace.test`;
   await page.getByLabel('Google account email').fill(email);
   await page.getByRole('button', { name: 'Create invitation' }).click();
@@ -116,7 +125,7 @@ test('admin creates one-time credentials and invitations, auditor remains read-o
   await signOut(page);
   await signIn(page, 'auditor');
   await expect(page.getByRole('button', { name: 'Run verification', exact: true })).toBeDisabled();
-  await page.getByRole('button', { name: 'Workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Administration', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Administration is restricted' })).toBeVisible();
   const session = await (await page.request.get('/api/v1/auth/me')).json();
   const tenant = session.tenants[0].id;

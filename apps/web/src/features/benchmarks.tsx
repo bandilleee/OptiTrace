@@ -1,4 +1,16 @@
 'use client';
+import { BenchmarkChart } from './benchmark-chart';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table';
 import { type Props } from '../lib/workspace-types';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import { createBenchmark, getBenchmark } from '../lib/sdk';
@@ -54,19 +66,19 @@ export function Benchmarks({ tenant, identity }: Props) {
             start.mutate();
           }}
         >
-          <label>
+          <Label>
             Random seed
-            <input
+            <Input
               type="number"
               value={seed}
               onChange={(e) => setSeed(Number(e.target.value))}
               min={0}
               required
             />
-          </label>
-          <label>
+          </Label>
+          <Label>
             Observation count
-            <input
+            <Input
               type="number"
               min={2}
               max={1000}
@@ -74,21 +86,21 @@ export function Benchmarks({ tenant, identity }: Props) {
               value={count}
               onChange={(e) => setCount(Number(e.target.value))}
             />
-          </label>
-          <button
+          </Label>
+          <Button
             className="button primary"
             disabled={start.isPending || !can(tenant.roles, 'integration_developer')}
           >
             <FlaskConical size={17} />
             Launch benchmark
-          </button>
+          </Button>
         </form>
         <ErrorMessage error={start.error ?? runs.error ?? run.error} />
       </Panel>
       <Panel title="Benchmark runs">
         <div className="run-list">
           {runs.data?.items.map((r) => (
-            <button
+            <Button
               className={selected === r.id ? 'run-row selected' : 'run-row'}
               key={r.id}
               onClick={() => setSelected(r.id)}
@@ -101,7 +113,7 @@ export function Benchmarks({ tenant, identity }: Props) {
               </span>
               <Badge value={selected === r.id && current ? current.status : r.status} />
               <ChevronRight size={17} />
-            </button>
+            </Button>
           ))}
           {runs.data && !runs.data.items.length && (
             <Empty
@@ -135,33 +147,34 @@ export function Benchmarks({ tenant, identity }: Props) {
             supplier charges are synthetic.
           </p>
           {current.error && <ErrorMessage error={new Error(current.error)} />}
+          <BenchmarkChart rows={rows} />
           <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Strategy</th>
-                  <th>Profile</th>
-                  <th>Measurement</th>
-                  <th>Agreement</th>
-                  <th>Compulsory violations</th>
-                  <th>Mean cost</th>
-                  <th>p95</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Strategy</TableHead>
+                  <TableHead>Profile</TableHead>
+                  <TableHead>Measurement</TableHead>
+                  <TableHead>Agreement</TableHead>
+                  <TableHead>Compulsory violations</TableHead>
+                  <TableHead>Mean cost</TableHead>
+                  <TableHead>p95</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {rows.map((r, i) => (
-                  <tr key={i}>
-                    <td>{label(String(r.strategy ?? ''))}</td>
-                    <td>{label(String(r.profile ?? ''))}</td>
-                    <td>{label(String(r.measurement ?? 'Unspecified'))}</td>
-                    <td>{(Number(r.agreement_rate ?? 0) * 100).toFixed(1)}%</td>
-                    <td>{String(r.compulsory_violations ?? '—')}</td>
-                    <td>{cost(Number(r.mean_cost_microrand ?? 0))}</td>
-                    <td>{Number(r.p95_ms ?? 0).toFixed(1)} ms</td>
-                  </tr>
+                  <TableRow key={i}>
+                    <TableCell>{label(String(r.strategy ?? ''))}</TableCell>
+                    <TableCell>{label(String(r.profile ?? ''))}</TableCell>
+                    <TableCell>{label(String(r.measurement ?? 'Unspecified'))}</TableCell>
+                    <TableCell>{(Number(r.agreement_rate ?? 0) * 100).toFixed(1)}%</TableCell>
+                    <TableCell>{String(r.compulsory_violations ?? '—')}</TableCell>
+                    <TableCell>{cost(Number(r.mean_cost_microrand ?? 0))}</TableCell>
+                    <TableCell>{Number(r.p95_ms ?? 0).toFixed(1)} ms</TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
           {!rows.length && (
             <p className="panel-copy">

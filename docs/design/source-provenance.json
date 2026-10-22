@@ -1,0 +1,9 @@
+{
+  "approved_html": "C:\\Users\\bandi\\.codex\\visualizations\\2026\\10\\22\\01a1633e-5dfb-71c2-a712-6c8387a21cb0\\optitrace-design\\index.html",
+  "approved_html_sha256": "b7e2ed1ceb3e8150a23b6891139ae6ad8375df9c9ee3f6efb5a0d188c478fd7d",
+  "supplied_logo_kit": "artifacts\\OptiTrace-logo-motion.zip",
+  "supplied_logo_kit_sha256": "726eacc34277f9f8d3d74d1a3d12dc3e85c5dcdcb9785c291babd167f2605956",
+  "fonts": "Montserrat 400, 500, 600, 700 decoded from supplied HTML; served locally",
+  "logos": "Six production SVG assets extracted unchanged from supplied ZIP; static fallback used for explicit pause",
+  "implementation_base_commit": "709d5be6ff90e25b39c658a0991f79b3d696404a"
+}

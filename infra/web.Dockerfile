@@ -10,6 +10,7 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000
 WORKDIR /app
 COPY --from=build --chown=65532:65532 /src/.next/standalone ./
 COPY --from=build --chown=65532:65532 /src/.next/static ./.next/static
+COPY --from=build --chown=65532:65532 /src/public ./public
 USER 65532:65532
 EXPOSE 3000
 CMD ["server.js"]
