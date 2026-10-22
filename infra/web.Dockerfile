@@ -1,7 +1,8 @@
 FROM node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d AS build
 WORKDIR /src
 COPY apps/web/package*.json apps/web/.npmrc ./
-RUN npm ci
+ARG NPM_LOGLEVEL=warn
+RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund --fetch-timeout=60000 --fetch-retries=2 --loglevel=$NPM_LOGLEVEL
 COPY apps/web/ ./
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build

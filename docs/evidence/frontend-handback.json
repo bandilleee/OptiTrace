@@ -1,0 +1,113 @@
+{
+  "task_id": "approved-frontend-design",
+  "status": "passed",
+  "input_commit": "709d5be6ff90e25b39c658a0991f79b3d696404a",
+  "implementation_commit": "3f79186f7e7b7f1d2d646295f053b31ee5706797",
+  "changed_paths": [
+    "README.md",
+    "apps/web/.npmrc",
+    "apps/web/AGENTS.md",
+    "apps/web/components.json",
+    "apps/web/next.config.ts",
+    "apps/web/package-lock.json",
+    "apps/web/package.json",
+    "apps/web/postcss.config.mjs",
+    "apps/web/public/brand/loader.svg",
+    "apps/web/public/brand/sidebar-lockup-light.svg",
+    "apps/web/public/brand/sidebar-lockup.svg",
+    "apps/web/public/brand/sidebar.svg",
+    "apps/web/public/brand/static.svg",
+    "apps/web/public/brand/wordmark.svg",
+    "apps/web/public/fonts/montserrat-400.ttf",
+    "apps/web/public/fonts/montserrat-500.ttf",
+    "apps/web/public/fonts/montserrat-600.ttf",
+    "apps/web/public/fonts/montserrat-700.ttf",
+    "apps/web/src/app/globals.css",
+    "apps/web/src/app/layout.tsx",
+    "apps/web/src/components/brand.tsx",
+    "apps/web/src/components/console.tsx",
+    "apps/web/src/components/preferences.tsx",
+    "apps/web/src/components/ui.tsx",
+    "apps/web/src/components/ui/alert.tsx",
+    "apps/web/src/components/ui/badge.tsx",
+    "apps/web/src/components/ui/button.tsx",
+    "apps/web/src/components/ui/card.tsx",
+    "apps/web/src/components/ui/dialog.tsx",
+    "apps/web/src/components/ui/dropdown-menu.tsx",
+    "apps/web/src/components/ui/input.tsx",
+    "apps/web/src/components/ui/label.tsx",
+    "apps/web/src/components/ui/native-select.tsx",
+    "apps/web/src/components/ui/radio-group.tsx",
+    "apps/web/src/components/ui/separator.tsx",
+    "apps/web/src/components/ui/sheet.tsx",
+    "apps/web/src/components/ui/skeleton.tsx",
+    "apps/web/src/components/ui/table.tsx",
+    "apps/web/src/components/ui/tabs.tsx",
+    "apps/web/src/components/ui/tooltip.tsx",
+    "apps/web/src/features/administration.tsx",
+    "apps/web/src/features/audit.tsx",
+    "apps/web/src/features/benchmark-chart.tsx",
+    "apps/web/src/features/benchmarks.tsx",
+    "apps/web/src/features/playground.tsx",
+    "apps/web/src/features/policies.tsx",
+    "apps/web/src/features/traces.tsx",
+    "apps/web/src/lib/utils.ts",
+    "apps/web/tests/e2e/acceptance.live.ts",
+    "apps/web/tests/e2e/console.spec.ts",
+    "docs/design/FRONTEND.md",
+    "docs/design/source-provenance.json",
+    "docs/evidence/frontend-handback.json",
+    "docs/evidence/frontend-verification.md",
+    "docs/evidence/screenshots/frontend-benchmark.png",
+    "docs/evidence/screenshots/frontend-login.png",
+    "docs/evidence/screenshots/frontend-playground-dark.png",
+    "docs/evidence/screenshots/frontend-playground-light.png",
+    "docs/evidence/screenshots/frontend-playground-mobile.png",
+    "docs/evidence/security-summary.json",
+    "infra/web.Dockerfile"
+  ],
+  "runtime_image": "sha256:95bf36a4292e85c0c391e4bcf0e6e5e484a629d38ca5d4abc492fc857aefcc88",
+  "checks": [
+    {
+      "command": "npm run format:check; npm run typecheck; npm run test; npm audit --json",
+      "exit_code": 0,
+      "evidence": ".artifacts/frontend-npm-audit.json; docs/evidence/frontend-verification.md"
+    },
+    {
+      "command": "npm run build",
+      "exit_code": 0,
+      "evidence": ".artifacts/frontend-production-build.log"
+    },
+    {
+      "command": "docker compose -f infra/compose.yaml build web",
+      "exit_code": 0,
+      "evidence": ".artifacts/frontend-container-verified-cache.log"
+    },
+    {
+      "command": "PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run test:e2e",
+      "exit_code": 0,
+      "evidence": ".artifacts/frontend-fixtures-production.log; 9 browser tests"
+    },
+    {
+      "command": "OPTITRACE_LIVE=1 PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run test:e2e",
+      "exit_code": 0,
+      "evidence": ".artifacts/frontend-live-production.log; 4 live browser tests"
+    },
+    {
+      "command": "Generate-Client.ps1 -Check; python contracts/check_contract.py",
+      "exit_code": 0,
+      "evidence": "Generated files unchanged; 26 operations checked"
+    },
+    {
+      "command": "trivy image --skip-db-update --severity HIGH,CRITICAL --exit-code 1 optitrace-web:local",
+      "exit_code": 0,
+      "evidence": ".artifacts/scans/web-redesign.json"
+    }
+  ],
+  "limitations": [
+    "Local Chromium evidence; no hosted/live Google acceptance or cloud deployment.",
+    "Automated accessibility checks cover the playground in both themes, not complete manual certification.",
+    "Initial long-running engine failures cleared after restart; no engine fix or long-duration reliability claim.",
+    "Supplied artifacts/ files remain preserved outside the implementation commit."
+  ]
+}

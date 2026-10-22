@@ -8,9 +8,11 @@
   },
   {
     "image": "optitrace-web:local",
-    "image_id": "sha256:42d2d46c4a249ffa21234927904cbbac37dde549f250b1612c850bac91ff5511",
+    "image_id": "sha256:95bf36a4292e85c0c391e4bcf0e6e5e484a629d38ca5d4abc492fc857aefcc88",
     "high_critical_findings": 0,
     "scanner": "Trivy 0.68.1",
-    "ignore_unfixed": false
+    "ignore_unfixed": false,
+    "scan_profile": "Cached Trivy database; no database refresh during frontend scan",
+    "observed_date": "2026-10-22"
   }
 ]
