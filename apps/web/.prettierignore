@@ -1,4 +1,5 @@
 src/lib/api-schema.d.ts
+src/lib/sdk.ts
 next-env.d.ts
 .next/
 node_modules/

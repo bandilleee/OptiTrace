@@ -1,5 +1,5 @@
 'use client';
-import { label, api, type Identity, APIError } from '../lib/api';
+import { label, APIError } from '../lib/api';
 import {
   Workflow,
   Activity,
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';
+import { getSession, logout as endSession } from '../lib/sdk';
 import { Logo, Login } from './brand';
 import { ErrorMessage, Empty } from './ui';
 import { type Props } from '../lib/workspace-types';
@@ -59,10 +60,10 @@ export function Console() {
 export function Workspace() {
   const [tab, setTab] = useState('playground');
   const [tenantID, setTenantID] = useState('');
-  const identity = useQuery({ queryKey: ['identity'], queryFn: () => api<Identity>('/auth/me') });
+  const identity = useQuery({ queryKey: ['identity'], queryFn: () => getSession() });
   const tenant = identity.data?.tenants.find((t) => t.id === tenantID) ?? identity.data?.tenants[0];
   const logout = useMutation({
-    mutationFn: () => api('/auth/logout', { method: 'POST', csrf: identity.data?.csrf_token }),
+    mutationFn: () => endSession({ csrf: identity.data?.csrf_token }),
     onSuccess: () => window.location.assign('/'),
   });
   if (identity.isPending)

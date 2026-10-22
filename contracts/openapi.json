@@ -3,7 +3,7 @@
   "info": {
     "title": "OptiTrace API",
     "version": "0.1.0",
-    "description": "Invitation-only synthetic verification execution and evidence API. Prices and performance are simulated unless explicitly labelled measured."
+    "description": "Invitation-only synthetic verification execution and evidence API. Prices and performance are simulated unless explicitly labelled measured. Frozen against b39abee7dbd3258fc793050be773305827dbbac0; see POLICY.md and AUTHORIZATION.md. Shared changes require integrator review."
   },
   "servers": [
     {
@@ -478,11 +478,9 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
-        ]
+        ],
+        "description": "See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/auth/logout": {
@@ -596,22 +594,29 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/policies": {
@@ -744,9 +749,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -758,7 +760,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       },
       "post": {
         "operationId": "createPolicy",
@@ -877,9 +880,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -894,8 +894,17 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -910,7 +919,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/evaluations": {
@@ -1057,7 +1067,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       },
       "post": {
         "operationId": "createEvaluation",
@@ -1204,7 +1215,7 @@
             "name": "X-CSRF-Token",
             "in": "header",
             "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -1213,6 +1224,18 @@
             "name": "Idempotency-Key",
             "in": "header",
             "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": "Tenant-scoped request-hash binding. Completed replay returns 200; conflicting or unconfirmed executions return 409 without source replay."
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": false,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -1227,7 +1250,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/benchmarks": {
@@ -1360,9 +1384,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -1374,7 +1395,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       },
       "post": {
         "operationId": "createBenchmark",
@@ -1493,9 +1515,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -1510,8 +1529,17 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -1526,7 +1554,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/memberships": {
@@ -1659,9 +1688,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -1673,7 +1699,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/invitations": {
@@ -1806,9 +1833,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -1820,7 +1844,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       },
       "post": {
         "operationId": "createInvitation",
@@ -1939,9 +1964,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -1956,8 +1978,17 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -1972,7 +2003,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/credentials": {
@@ -2105,9 +2137,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -2119,7 +2148,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       },
       "post": {
         "operationId": "createCredential",
@@ -2238,9 +2268,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -2255,8 +2282,17 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -2271,7 +2307,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/audit": {
@@ -2404,9 +2441,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -2418,7 +2452,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/evaluations/{id}": {
@@ -2561,7 +2596,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/benchmarks/{id}": {
@@ -2682,9 +2718,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -2704,7 +2737,8 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/policies/{id}/submit": {
@@ -2825,9 +2859,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -2850,13 +2881,23 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/policies/{id}/approve": {
@@ -2977,9 +3018,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -3002,13 +3040,23 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/policies/{id}/activate": {
@@ -3129,9 +3177,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -3154,13 +3199,23 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/memberships/{id}": {
@@ -3172,7 +3227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Membership"
+                  "$ref": "#/components/schemas/MembershipUpdate"
                 }
               }
             }
@@ -3281,9 +3336,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -3306,8 +3358,17 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
@@ -3322,7 +3383,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/credentials/{id}": {
@@ -3436,9 +3498,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -3461,13 +3520,23 @@
           {
             "name": "X-CSRF-Token",
             "in": "header",
-            "required": false,
-            "description": "Required for cookie-authenticated mutations. Integration credentials are exempt.",
+            "required": true,
+            "description": "Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Origin",
+            "in": "header",
+            "required": true,
+            "description": "Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt.",
             "schema": {
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     },
     "/v1/tenants/{tenant}/benchmarks/{id}/export": {
@@ -3589,9 +3658,6 @@
         "security": [
           {
             "session": []
-          },
-          {
-            "integrationKey": []
           }
         ],
         "parameters": [
@@ -3611,7 +3677,149 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
+      }
+    },
+    "/v1/tenants/{tenant}/policies/{id}": {
+      "get": {
+        "operationId": "getPolicy",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "429",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request could not complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Request could not complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request could not complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
     }
   },
@@ -3870,6 +4078,16 @@
           },
           "reason": {
             "type": "string"
+          },
+          "event_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
           }
         },
         "required": [
@@ -3881,7 +4099,8 @@
           "cost_microrand",
           "compulsory"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Normalized synthetic observation; true is adverse, false clear only when available. Unknown is unavailable; skipped is unfetched. Failed/skipped timestamp zero values are absence sentinels. Optional event_time, subject and scope describe existing Go output."
       },
       "EvaluationInput": {
         "type": "object",
@@ -3893,7 +4112,8 @@
             "$ref": "#/components/schemas/Scenario"
           },
           "strategy": {
-            "$ref": "#/components/schemas/Strategy"
+            "$ref": "#/components/schemas/Strategy",
+            "default": "optitrace"
           }
         },
         "required": [
@@ -4014,19 +4234,30 @@
           "elapsed_ms",
           "created_at"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Completed traces are immutable. execution_unconfirmed retains journal and null aggregate costs/elapsed_ms; null is uncertainty, not zero. starting is an uncertain intention, completed records an observed result. See POLICY.md."
       },
       "BenchmarkInput": {
         "type": "object",
         "properties": {
           "seed": {
             "type": "integer",
-            "minimum": 1
+            "format": "int64",
+            "default": 42,
+            "description": "Omitted/zero defaults to 42; nonzero signed int64 accepted."
           },
           "count": {
             "type": "integer",
-            "minimum": 2,
-            "maximum": 1000
+            "maximum": 1000,
+            "description": "Omitted/zero defaults to 50; otherwise 2..1000.",
+            "anyOf": [
+              {
+                "const": 0
+              },
+              {
+                "minimum": 2
+              }
+            ]
           }
         },
         "required": [],
@@ -4141,8 +4372,11 @@
           "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Role"
-            }
+              "$ref": "#/components/schemas/TenantRole"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true
           }
         },
         "required": [
@@ -4192,8 +4426,11 @@
           "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Role"
-            }
+              "$ref": "#/components/schemas/TenantRole"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true
           }
         },
         "required": [
@@ -4298,6 +4535,36 @@
           "created_at"
         ],
         "additionalProperties": true
+      },
+      "TenantRole": {
+        "type": "string",
+        "enum": [
+          "tenant_admin",
+          "policy_author",
+          "policy_reviewer",
+          "integration_developer",
+          "auditor"
+        ],
+        "description": "Assignable tenant roles; platform_operator is reserved for provisioning CLI."
+      },
+      "MembershipUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "roles"
+        ],
+        "additionalProperties": false
       }
     }
   }

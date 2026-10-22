@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "api:generate": "openapi-typescript ../../contracts/openapi.json -o src/lib/api-schema.d.ts",
+    "api:generate": "openapi-typescript ../../contracts/openapi.json -o src/lib/api-schema.d.ts && node ../../scripts/Generate-SDK.mjs",
     "format:check": "prettier --check src tests *.ts package.json"
   },
   "dependencies": {

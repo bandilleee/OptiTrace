@@ -59,6 +59,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["getSession"];
         put?: never;
         post?: never;
@@ -77,6 +78,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** @description See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["logout"];
         delete?: never;
         options?: never;
@@ -91,8 +93,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listPolicies"];
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["createPolicy"];
         delete?: never;
         options?: never;
@@ -107,8 +111,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listEvaluations"];
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["createEvaluation"];
         delete?: never;
         options?: never;
@@ -123,8 +129,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listBenchmarks"];
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["createBenchmark"];
         delete?: never;
         options?: never;
@@ -139,6 +147,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listMemberships"];
         put?: never;
         post?: never;
@@ -155,8 +164,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listInvitations"];
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["createInvitation"];
         delete?: never;
         options?: never;
@@ -171,8 +182,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listCredentials"];
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["createCredential"];
         delete?: never;
         options?: never;
@@ -187,6 +200,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["listAudit"];
         put?: never;
         post?: never;
@@ -203,6 +217,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["getEvaluation"];
         put?: never;
         post?: never;
@@ -219,6 +234,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["getBenchmark"];
         put?: never;
         post?: never;
@@ -237,6 +253,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["submitPolicy"];
         delete?: never;
         options?: never;
@@ -253,6 +270,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["approvePolicy"];
         delete?: never;
         options?: never;
@@ -269,6 +287,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         post: operations["activatePolicy"];
         delete?: never;
         options?: never;
@@ -289,6 +308,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         patch: operations["updateMembership"];
         trace?: never;
     };
@@ -302,6 +322,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         delete: operations["revokeCredential"];
         options?: never;
         head?: never;
@@ -315,7 +336,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
         get: operations["exportBenchmark"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/tenants/{tenant}/policies/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries. */
+        get: operations["getPolicy"];
         put?: never;
         post?: never;
         delete?: never;
@@ -372,6 +411,7 @@ export interface components {
             name: string;
             profile: components["schemas"]["Profile"];
         };
+        /** @description Normalized synthetic observation; true is adverse, false clear only when available. Unknown is unavailable; skipped is unfetched. Failed/skipped timestamp zero values are absence sentinels. Optional event_time, subject and scope describe existing Go output. */
         Check: {
             /** @enum {string} */
             capability: "number_verification" | "sim_swap" | "device_swap";
@@ -384,12 +424,18 @@ export interface components {
             cost_microrand: number;
             compulsory: boolean;
             reason?: string;
+            /** Format: date-time */
+            event_time?: string;
+            subject?: string;
+            scope?: string;
         };
         EvaluationInput: {
             policy_id: string;
             scenario: components["schemas"]["Scenario"];
-            strategy?: components["schemas"]["Strategy"];
+            /** @default optitrace */
+            strategy: components["schemas"]["Strategy"];
         };
+        /** @description Completed traces are immutable. execution_unconfirmed retains journal and null aggregate costs/elapsed_ms; null is uncertainty, not zero. starting is an uncertain intention, completed records an observed result. See POLICY.md. */
         Evaluation: {
             id: string;
             tenant_id: string;
@@ -416,8 +462,14 @@ export interface components {
             }[];
         };
         BenchmarkInput: {
-            seed?: number;
-            count?: number;
+            /**
+             * Format: int64
+             * @description Omitted/zero defaults to 42; nonzero signed int64 accepted.
+             * @default 42
+             */
+            seed: number;
+            /** @description Omitted/zero defaults to 50; otherwise 2..1000. */
+            count?: number | 0 | unknown;
         };
         BenchmarkMetric: {
             strategy?: components["schemas"]["Strategy"];
@@ -453,7 +505,7 @@ export interface components {
             roles: components["schemas"]["Role"][];
         };
         MembershipInput: {
-            roles: components["schemas"]["Role"][];
+            roles: components["schemas"]["TenantRole"][];
         };
         Invitation: {
             id: string;
@@ -467,7 +519,7 @@ export interface components {
         InvitationInput: {
             /** Format: email */
             email: string;
-            roles: components["schemas"]["Role"][];
+            roles: components["schemas"]["TenantRole"][];
         };
         Credential: {
             id: string;
@@ -494,6 +546,15 @@ export interface components {
             created_at: string;
         } & {
             [key: string]: unknown;
+        };
+        /**
+         * @description Assignable tenant roles; platform_operator is reserved for provisioning CLI.
+         * @enum {string}
+         */
+        TenantRole: "tenant_admin" | "policy_author" | "policy_reviewer" | "integration_developer" | "auditor";
+        MembershipUpdate: {
+            id: string;
+            roles: components["schemas"]["Role"][];
         };
     };
     responses: never;
@@ -945,9 +1006,11 @@ export interface operations {
     logout: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path?: never;
             cookie?: never;
@@ -1170,9 +1233,11 @@ export interface operations {
     createPolicy: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -1404,9 +1469,12 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
                 "X-CSRF-Token"?: string;
+                /** @description Tenant-scoped request-hash binding. Completed replay returns 200; conflicting or unconfirmed executions return 409 without source replay. */
                 "Idempotency-Key": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin?: string;
             };
             path: {
                 tenant: string;
@@ -1646,9 +1714,11 @@ export interface operations {
     createBenchmark: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -1993,9 +2063,11 @@ export interface operations {
     createInvitation: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -2226,9 +2298,11 @@ export interface operations {
     createCredential: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -2685,9 +2759,11 @@ export interface operations {
     submitPolicy: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -2801,9 +2877,11 @@ export interface operations {
     approvePolicy: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -2917,9 +2995,11 @@ export interface operations {
     activatePolicy: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -3033,9 +3113,11 @@ export interface operations {
     updateMembership: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -3055,7 +3137,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Membership"];
+                    "application/json": components["schemas"]["MembershipUpdate"];
                 };
             };
             /** @description 400 */
@@ -3153,9 +3235,11 @@ export interface operations {
     revokeCredential: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for cookie-authenticated mutations. Integration credentials are exempt. */
-                "X-CSRF-Token"?: string;
+            header: {
+                /** @description Required with a session cookie; matching APP_ORIGIN Origin is also required. Only scoped evaluation integration credentials are exempt. */
+                "X-CSRF-Token": string;
+                /** @description Must equal APP_ORIGIN for cookie mutations. Automated evaluation bearer credentials are exempt. */
+                Origin: string;
             };
             path: {
                 tenant: string;
@@ -3285,6 +3369,119 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+            /** @description 400 */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 401 */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 403 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 404 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Request could not complete */
+            405: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 409 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 429 */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description 500 */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Request could not complete */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Request could not complete */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    getPolicy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Policy"];
                 };
             };
             /** @description 400 */

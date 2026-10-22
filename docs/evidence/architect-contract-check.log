@@ -1,0 +1,2 @@
+PASS: 26 operations; local refs, path parameters, unique operation IDs, error envelopes, credential/CSRF boundaries, Go Check fields, tenant roles and policy fixture enums agree.
+LIMIT: structural/cross-file check only; not full OpenAPI validation or runtime authorization acceptance.

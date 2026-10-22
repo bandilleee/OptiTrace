@@ -35,12 +35,12 @@ The first image scans identified High/Critical findings in the unnecessary gener
 
 The final local Docker smoke profile sends 100 authenticated all-clear evaluations through the Next.js proxy, alternating the two seeded policy profiles. It includes authentication, source work, durable journal/persistence and HTTP response transfer.
 
-- p50: **83.12ms**
-- p95: **128.77ms**
-- p99: **131.87ms**
+- p50: **90.04ms**
+- p95: **124.01ms**
+- p99: **127.66ms**
 - Absolute local warm p95 <=500ms: **pass**
 
-See `local-performance.json`. This is a local synthetic smoke profile under concurrent verification load. It does **not** establish a representative production SLA, cold-start behaviour, live Google latency, the relative10% regression gate, or20% cost savings. Engine benchmark reports separately label virtual estimates and capped20-row measured HTTP cohorts. Negative/no-benefit benchmark results are retained.
+See `local-performance.json`. This is a local synthetic smoke profile. It does **not** establish a representative production SLA, cold-start behaviour, live Google latency, the relative10% regression gate, or20% cost savings. Engine benchmark reports separately label virtual estimates and capped20-row measured HTTP cohorts. Negative/no-benefit benchmark results are retained.
 
 ## Important repaired behaviours
 
@@ -50,13 +50,14 @@ See `local-performance.json`. This is a local synthetic smoke profile under conc
 - Application logins shed managed-service default elevated groups and fail startup if still privileged or table-owning. Cloud SQL compatibility still requires real-cloud acceptance.
 - Harness acceptance runs in a credential-scrubbed child process; explicit disabled ADC configuration prevents accidental default credential fallback. QA/integrator acceptance requires a disposable DB.
 - Report objects are unique to a lease attempt, referenced by the completed report and uploaded with generation preconditions. A retry cannot silently pair a different report with an earlier object's contents.
+- Migration2 closes the independent architect review finding: approved policies cannot be downgraded, have their identity/kind changed, lose status, or be inserted with a self-reviewer. Runtime-role PostgreSQL regression tests pass.
 - Worker warning logs and alert filters use the same JSON field name.
 
 ## Release limitations and prerequisites
 
 - No live Google/Identity Platform, Cloud SQL, Cloud Run, IAM/WIF or notification-delivery acceptance was performed. Supply an approved project/OAuth client, exact callback origin and secret configuration through the release process.
 - No hosted GitHub Actions run was observed; workflows are implemented locally. The manual release workflow requires a successful CI run for its exact commit and protected-environment approval.
-- Real Codex CLI orchestration was not launched end-to-end after the build agents reached the account usage limit. The local controller, ownership checks, schemas, independent acceptance commands and review checkpoints are implemented; actual account-backed harness execution remains to be exercised when capacity is available.
+- An actual account-backed architect task completed in an isolated worktree (run `20261022-062035-a56abd61`): schema-valid handback, ownership gate and independently rerun infrastructure acceptance passed. The controller returned `passed_pending_review` and preserved the worktree without merging. The complete seven-role delivery graph has not been exercised end-to-end.
 - The initial bootstrap used disjoint agent path ownership in the shared checkout before a first commit existed. Subsequent controller runs require a clean reviewed commit and use isolated worktrees; initial bootstrap is not presented as a completed run of that controller.
 - No production backup restore/PITR or staged cloud rollback was executed. The runbook makes these acceptance prerequisites, not completed claims.
 - Cloud cost inputs are deliberately unfilled rather than invented. Complete the price/provenance file and estimator before approving cloud spend.

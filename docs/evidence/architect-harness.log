@@ -1,0 +1,1 @@
+PASS: scripts parse, 7 task definitions form an acyclic graph, handback validation fails closed, and native arguments preserve literal data.

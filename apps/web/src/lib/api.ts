@@ -67,8 +67,14 @@ export const scenarios = [
   'permission_denied',
   'source_failure',
   'correlated',
-];
-export const strategies = ['optitrace', 'full_sequential', 'full_parallel', 'staged', 'opa'];
+] as const;
+export const strategies = [
+  'optitrace',
+  'full_sequential',
+  'full_parallel',
+  'staged',
+  'opa',
+] as const;
 
 export function duration(value: number | null) {
   return value === null ? 'Unconfirmed' : `${value.toFixed(1)} ms`;

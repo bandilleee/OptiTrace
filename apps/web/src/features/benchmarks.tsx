@@ -1,9 +1,10 @@
 'use client';
 import { type Props } from '../lib/workspace-types';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
+import { createBenchmark, getBenchmark } from '../lib/sdk';
 import { useState } from 'react';
 import { useItems } from '../lib/use-items';
-import { type Benchmark, api, label, can, cost } from '../lib/api';
+import { type Benchmark, label, can, cost } from '../lib/api';
 import { Panel, ErrorMessage, Badge, Empty } from '../components/ui';
 import { FlaskConical, ChevronRight, Download } from 'lucide-react';
 
@@ -16,7 +17,7 @@ export function Benchmarks({ tenant, identity }: Props) {
   const run = useQuery({
     queryKey: [tenant.id, 'benchmark', selected],
     enabled: !!selected,
-    queryFn: () => api<Benchmark>(`/tenants/${tenant.id}/benchmarks/${selected}`),
+    queryFn: () => getBenchmark({ path: { tenant: tenant.id, id: selected } }),
     refetchInterval: (q) =>
       q.state.data && ['completed', 'succeeded', 'failed'].includes(q.state.data.status)
         ? false
@@ -24,8 +25,8 @@ export function Benchmarks({ tenant, identity }: Props) {
   });
   const start = useMutation({
     mutationFn: () =>
-      api<Benchmark>(`/tenants/${tenant.id}/benchmarks`, {
-        method: 'POST',
+      createBenchmark({
+        path: { tenant: tenant.id },
         csrf: identity.csrf_token,
         body: { seed, count },
       }),

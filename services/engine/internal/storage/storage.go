@@ -12,6 +12,9 @@ import (
 //go:embed schema.sql
 var schema string
 
+//go:embed 002_policy_guards.sql
+var policyGuards string
+
 func Open(ctx context.Context, url string) (*pgxpool.Pool, error) {
 	p, e := pgxpool.New(ctx, url)
 	if e != nil {
@@ -35,21 +38,24 @@ func Migrate(ctx context.Context, p *pgxpool.Pool) error {
 	if _, e = tx.Exec(ctx, `CREATE TABLE IF NOT EXISTS schema_migrations(version integer PRIMARY KEY,checksum text NOT NULL,applied_at timestamptz NOT NULL DEFAULT now())`); e != nil {
 		return e
 	}
-	checksum := fmt.Sprintf("%x", sha256.Sum256([]byte(schema)))
-	var applied string
-	e = tx.QueryRow(ctx, `SELECT checksum FROM schema_migrations WHERE version=1`).Scan(&applied)
-	if e != nil && e != pgx.ErrNoRows {
-		return e
-	}
-	if e == pgx.ErrNoRows {
-		if _, e = tx.Exec(ctx, schema); e != nil {
-			return fmt.Errorf("schema: %w", e)
-		}
-		if _, e = tx.Exec(ctx, `INSERT INTO schema_migrations(version,checksum) VALUES(1,$1)`, checksum); e != nil {
+	for i, migration := range []string{schema, policyGuards} {
+		version := i + 1
+		checksum := fmt.Sprintf("%x", sha256.Sum256([]byte(migration)))
+		var applied string
+		e = tx.QueryRow(ctx, `SELECT checksum FROM schema_migrations WHERE version=$1`, version).Scan(&applied)
+		if e != nil && e != pgx.ErrNoRows {
 			return e
 		}
-	} else if applied != checksum {
-		return fmt.Errorf("migration 1 checksum changed; add a new version instead")
+		if e == pgx.ErrNoRows {
+			if _, e = tx.Exec(ctx, migration); e != nil {
+				return fmt.Errorf("migration %d: %w", version, e)
+			}
+			if _, e = tx.Exec(ctx, `INSERT INTO schema_migrations(version,checksum) VALUES($1,$2)`, version, checksum); e != nil {
+				return e
+			}
+		} else if applied != checksum {
+			return fmt.Errorf("migration %d checksum changed; add a new version instead", version)
+		}
 	}
 	return tx.Commit(ctx)
 }

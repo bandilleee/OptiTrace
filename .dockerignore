@@ -3,6 +3,9 @@
 **/.next
 .artifacts
 .env*
+**/.env*
+**/*.tfstate*
+**/*.tfvars
 **/.terraform
 Context
 **/coverage

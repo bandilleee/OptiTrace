@@ -1,12 +1,12 @@
 {
-  "measured_at": "2026-10-22T06:13:40.6082722Z",
+  "measured_at": "2026-10-22T06:47:35.9664029Z",
   "measurement": "local authenticated HTTP via Next proxy, includes auth/planning/adapters/persistence/response transfer",
   "scenario": "all clear, alternating active policy profiles",
   "samples": 100,
-  "first_unwarmed_request_ms": 79.8093,
-  "p50_ms": 83.1195,
-  "p95_ms": 128.772,
-  "p99_ms": 131.8712,
+  "first_unwarmed_request_ms": 90.0597,
+  "p50_ms": 90.0413,
+  "p95_ms": 124.0074,
+  "p99_ms": 127.6642,
   "absolute_500ms_target_passed": true,
   "baseline_regression_gate": "not established by this single-strategy smoke profile",
   "limitations": [
@@ -18,607 +18,607 @@
     {
       "sample": 0,
       "profile": "complete",
-      "elapsed_ms": 79.8093,
+      "elapsed_ms": 90.0597,
       "outcome": "verified"
     },
     {
       "sample": 1,
       "profile": "conditional",
-      "elapsed_ms": 106.3068,
+      "elapsed_ms": 110.7834,
       "outcome": "verified"
     },
     {
       "sample": 2,
       "profile": "complete",
-      "elapsed_ms": 66.5863,
+      "elapsed_ms": 59.1922,
       "outcome": "verified"
     },
     {
       "sample": 3,
       "profile": "conditional",
-      "elapsed_ms": 111.6352,
+      "elapsed_ms": 119.6996,
       "outcome": "verified"
     },
     {
       "sample": 4,
       "profile": "complete",
-      "elapsed_ms": 56.9902,
+      "elapsed_ms": 60.1554,
       "outcome": "verified"
     },
     {
       "sample": 5,
       "profile": "conditional",
-      "elapsed_ms": 120.582,
+      "elapsed_ms": 122.3362,
       "outcome": "verified"
     },
     {
       "sample": 6,
       "profile": "complete",
-      "elapsed_ms": 77.5695,
+      "elapsed_ms": 70.3453,
       "outcome": "verified"
     },
     {
       "sample": 7,
       "profile": "conditional",
-      "elapsed_ms": 109.2552,
+      "elapsed_ms": 122.6927,
       "outcome": "verified"
     },
     {
       "sample": 8,
       "profile": "complete",
-      "elapsed_ms": 66.4162,
+      "elapsed_ms": 70.0783,
       "outcome": "verified"
     },
     {
       "sample": 9,
       "profile": "conditional",
-      "elapsed_ms": 104.0447,
+      "elapsed_ms": 118.9934,
       "outcome": "verified"
     },
     {
       "sample": 10,
       "profile": "complete",
-      "elapsed_ms": 61.1531,
+      "elapsed_ms": 53.497,
       "outcome": "verified"
     },
     {
       "sample": 11,
       "profile": "conditional",
-      "elapsed_ms": 104.9933,
+      "elapsed_ms": 115.1283,
       "outcome": "verified"
     },
     {
       "sample": 12,
       "profile": "complete",
-      "elapsed_ms": 59.0957,
+      "elapsed_ms": 87.4785,
       "outcome": "verified"
     },
     {
       "sample": 13,
       "profile": "conditional",
-      "elapsed_ms": 107.8775,
+      "elapsed_ms": 120.7731,
       "outcome": "verified"
     },
     {
       "sample": 14,
       "profile": "complete",
-      "elapsed_ms": 59.2818,
+      "elapsed_ms": 72.673,
       "outcome": "verified"
     },
     {
       "sample": 15,
       "profile": "conditional",
-      "elapsed_ms": 114.297,
+      "elapsed_ms": 121.8493,
       "outcome": "verified"
     },
     {
       "sample": 16,
       "profile": "complete",
-      "elapsed_ms": 57.9141,
+      "elapsed_ms": 69.743,
       "outcome": "verified"
     },
     {
       "sample": 17,
       "profile": "conditional",
-      "elapsed_ms": 104.8345,
+      "elapsed_ms": 107.3822,
       "outcome": "verified"
     },
     {
       "sample": 18,
       "profile": "complete",
-      "elapsed_ms": 71.4004,
+      "elapsed_ms": 65.3153,
       "outcome": "verified"
     },
     {
       "sample": 19,
       "profile": "conditional",
-      "elapsed_ms": 106.2456,
+      "elapsed_ms": 114.6969,
       "outcome": "verified"
     },
     {
       "sample": 20,
       "profile": "complete",
-      "elapsed_ms": 58.3492,
+      "elapsed_ms": 68.4596,
       "outcome": "verified"
     },
     {
       "sample": 21,
       "profile": "conditional",
-      "elapsed_ms": 99.503,
+      "elapsed_ms": 119.968,
       "outcome": "verified"
     },
     {
       "sample": 22,
       "profile": "complete",
-      "elapsed_ms": 56.8493,
+      "elapsed_ms": 72.4774,
       "outcome": "verified"
     },
     {
       "sample": 23,
       "profile": "conditional",
-      "elapsed_ms": 115.0974,
+      "elapsed_ms": 118.9809,
       "outcome": "verified"
     },
     {
       "sample": 24,
       "profile": "complete",
-      "elapsed_ms": 76.6323,
+      "elapsed_ms": 75.9867,
       "outcome": "verified"
     },
     {
       "sample": 25,
       "profile": "conditional",
-      "elapsed_ms": 112.2078,
+      "elapsed_ms": 117.9953,
       "outcome": "verified"
     },
     {
       "sample": 26,
       "profile": "complete",
-      "elapsed_ms": 64.2506,
+      "elapsed_ms": 65.1901,
       "outcome": "verified"
     },
     {
       "sample": 27,
       "profile": "conditional",
-      "elapsed_ms": 128.772,
+      "elapsed_ms": 113.4531,
       "outcome": "verified"
     },
     {
       "sample": 28,
       "profile": "complete",
-      "elapsed_ms": 65.3857,
+      "elapsed_ms": 69.7376,
       "outcome": "verified"
     },
     {
       "sample": 29,
       "profile": "conditional",
-      "elapsed_ms": 113.353,
+      "elapsed_ms": 104.0735,
       "outcome": "verified"
     },
     {
       "sample": 30,
       "profile": "complete",
-      "elapsed_ms": 56.8596,
+      "elapsed_ms": 70.8265,
       "outcome": "verified"
     },
     {
       "sample": 31,
       "profile": "conditional",
-      "elapsed_ms": 117.657,
+      "elapsed_ms": 115.0393,
       "outcome": "verified"
     },
     {
       "sample": 32,
       "profile": "complete",
-      "elapsed_ms": 60.3473,
+      "elapsed_ms": 55.3213,
       "outcome": "verified"
     },
     {
       "sample": 33,
       "profile": "conditional",
-      "elapsed_ms": 105.8241,
+      "elapsed_ms": 121.2422,
       "outcome": "verified"
     },
     {
       "sample": 34,
       "profile": "complete",
-      "elapsed_ms": 81.9574,
+      "elapsed_ms": 61.4967,
       "outcome": "verified"
     },
     {
       "sample": 35,
       "profile": "conditional",
-      "elapsed_ms": 107.0625,
+      "elapsed_ms": 113.7747,
       "outcome": "verified"
     },
     {
       "sample": 36,
       "profile": "complete",
-      "elapsed_ms": 55.7047,
+      "elapsed_ms": 67.7324,
       "outcome": "verified"
     },
     {
       "sample": 37,
       "profile": "conditional",
-      "elapsed_ms": 101.7814,
+      "elapsed_ms": 123.4223,
       "outcome": "verified"
     },
     {
       "sample": 38,
       "profile": "complete",
-      "elapsed_ms": 57.4321,
+      "elapsed_ms": 68.3635,
       "outcome": "verified"
     },
     {
       "sample": 39,
       "profile": "conditional",
-      "elapsed_ms": 116.4817,
+      "elapsed_ms": 123.986,
       "outcome": "verified"
     },
     {
       "sample": 40,
       "profile": "complete",
-      "elapsed_ms": 60.3856,
+      "elapsed_ms": 70.501,
       "outcome": "verified"
     },
     {
       "sample": 41,
       "profile": "conditional",
-      "elapsed_ms": 107.019,
+      "elapsed_ms": 116.0828,
       "outcome": "verified"
     },
     {
       "sample": 42,
       "profile": "complete",
-      "elapsed_ms": 57.6765,
+      "elapsed_ms": 70.7471,
       "outcome": "verified"
     },
     {
       "sample": 43,
       "profile": "conditional",
-      "elapsed_ms": 102.3179,
+      "elapsed_ms": 122.9022,
       "outcome": "verified"
     },
     {
       "sample": 44,
       "profile": "complete",
-      "elapsed_ms": 57.9957,
+      "elapsed_ms": 60.8148,
       "outcome": "verified"
     },
     {
       "sample": 45,
       "profile": "conditional",
-      "elapsed_ms": 105.4412,
+      "elapsed_ms": 112.5591,
       "outcome": "verified"
     },
     {
       "sample": 46,
       "profile": "complete",
-      "elapsed_ms": 68.3374,
+      "elapsed_ms": 55.1253,
       "outcome": "verified"
     },
     {
       "sample": 47,
       "profile": "conditional",
-      "elapsed_ms": 122.7446,
+      "elapsed_ms": 119.4993,
       "outcome": "verified"
     },
     {
       "sample": 48,
       "profile": "complete",
-      "elapsed_ms": 59.5233,
+      "elapsed_ms": 57.4758,
       "outcome": "verified"
     },
     {
       "sample": 49,
       "profile": "conditional",
-      "elapsed_ms": 111.0567,
+      "elapsed_ms": 121.7284,
       "outcome": "verified"
     },
     {
       "sample": 50,
       "profile": "complete",
-      "elapsed_ms": 63.6378,
+      "elapsed_ms": 64.102,
       "outcome": "verified"
     },
     {
       "sample": 51,
       "profile": "conditional",
-      "elapsed_ms": 111.5675,
+      "elapsed_ms": 120.4926,
       "outcome": "verified"
     },
     {
       "sample": 52,
       "profile": "complete",
-      "elapsed_ms": 74.0745,
+      "elapsed_ms": 74.3091,
       "outcome": "verified"
     },
     {
       "sample": 53,
       "profile": "conditional",
-      "elapsed_ms": 109.469,
+      "elapsed_ms": 122.6951,
       "outcome": "verified"
     },
     {
       "sample": 54,
       "profile": "complete",
-      "elapsed_ms": 71.0292,
+      "elapsed_ms": 72.1089,
       "outcome": "verified"
     },
     {
       "sample": 55,
       "profile": "conditional",
-      "elapsed_ms": 131.8712,
+      "elapsed_ms": 124.7485,
       "outcome": "verified"
     },
     {
       "sample": 56,
       "profile": "complete",
-      "elapsed_ms": 56.0683,
+      "elapsed_ms": 78.4917,
       "outcome": "verified"
     },
     {
       "sample": 57,
       "profile": "conditional",
-      "elapsed_ms": 105.3873,
+      "elapsed_ms": 119.9872,
       "outcome": "verified"
     },
     {
       "sample": 58,
       "profile": "complete",
-      "elapsed_ms": 66.5514,
+      "elapsed_ms": 62.3487,
       "outcome": "verified"
     },
     {
       "sample": 59,
       "profile": "conditional",
-      "elapsed_ms": 125.4453,
+      "elapsed_ms": 125.8565,
       "outcome": "verified"
     },
     {
       "sample": 60,
       "profile": "complete",
-      "elapsed_ms": 69.1578,
+      "elapsed_ms": 71.4056,
       "outcome": "verified"
     },
     {
       "sample": 61,
       "profile": "conditional",
-      "elapsed_ms": 113.3802,
+      "elapsed_ms": 117.822,
       "outcome": "verified"
     },
     {
       "sample": 62,
       "profile": "complete",
-      "elapsed_ms": 76.765,
+      "elapsed_ms": 64.868,
       "outcome": "verified"
     },
     {
       "sample": 63,
       "profile": "conditional",
-      "elapsed_ms": 145.2643,
+      "elapsed_ms": 122.6379,
       "outcome": "verified"
     },
     {
       "sample": 64,
       "profile": "complete",
-      "elapsed_ms": 62.9581,
+      "elapsed_ms": 80.207,
       "outcome": "verified"
     },
     {
       "sample": 65,
       "profile": "conditional",
-      "elapsed_ms": 109.409,
+      "elapsed_ms": 120.5369,
       "outcome": "verified"
     },
     {
       "sample": 66,
       "profile": "complete",
-      "elapsed_ms": 66.775,
+      "elapsed_ms": 73.7532,
       "outcome": "verified"
     },
     {
       "sample": 67,
       "profile": "conditional",
-      "elapsed_ms": 110.27,
+      "elapsed_ms": 103.0157,
       "outcome": "verified"
     },
     {
       "sample": 68,
       "profile": "complete",
-      "elapsed_ms": 82.033,
+      "elapsed_ms": 73.0707,
       "outcome": "verified"
     },
     {
       "sample": 69,
       "profile": "conditional",
-      "elapsed_ms": 131.4651,
+      "elapsed_ms": 98.9441,
       "outcome": "verified"
     },
     {
       "sample": 70,
       "profile": "complete",
-      "elapsed_ms": 70.1787,
+      "elapsed_ms": 56.8377,
       "outcome": "verified"
     },
     {
       "sample": 71,
       "profile": "conditional",
-      "elapsed_ms": 130.1651,
+      "elapsed_ms": 120.9726,
       "outcome": "verified"
     },
     {
       "sample": 72,
       "profile": "complete",
-      "elapsed_ms": 68.9515,
+      "elapsed_ms": 64.3643,
       "outcome": "verified"
     },
     {
       "sample": 73,
       "profile": "conditional",
-      "elapsed_ms": 109.9702,
+      "elapsed_ms": 120.7743,
       "outcome": "verified"
     },
     {
       "sample": 74,
       "profile": "complete",
-      "elapsed_ms": 54.4375,
+      "elapsed_ms": 65.2904,
       "outcome": "verified"
     },
     {
       "sample": 75,
       "profile": "conditional",
-      "elapsed_ms": 102.3754,
+      "elapsed_ms": 112.2669,
       "outcome": "verified"
     },
     {
       "sample": 76,
       "profile": "complete",
-      "elapsed_ms": 59.9861,
+      "elapsed_ms": 66.7862,
       "outcome": "verified"
     },
     {
       "sample": 77,
       "profile": "conditional",
-      "elapsed_ms": 111.0659,
+      "elapsed_ms": 122.8884,
       "outcome": "verified"
     },
     {
       "sample": 78,
       "profile": "complete",
-      "elapsed_ms": 66.1988,
+      "elapsed_ms": 57.9764,
       "outcome": "verified"
     },
     {
       "sample": 79,
       "profile": "conditional",
-      "elapsed_ms": 117.2442,
+      "elapsed_ms": 121.7657,
       "outcome": "verified"
     },
     {
       "sample": 80,
       "profile": "complete",
-      "elapsed_ms": 83.0764,
+      "elapsed_ms": 80.8905,
       "outcome": "verified"
     },
     {
       "sample": 81,
       "profile": "conditional",
-      "elapsed_ms": 109.4637,
+      "elapsed_ms": 124.2991,
       "outcome": "verified"
     },
     {
       "sample": 82,
       "profile": "complete",
-      "elapsed_ms": 56.344,
+      "elapsed_ms": 74.4098,
       "outcome": "verified"
     },
     {
       "sample": 83,
       "profile": "conditional",
-      "elapsed_ms": 104.3793,
+      "elapsed_ms": 104.0252,
       "outcome": "verified"
     },
     {
       "sample": 84,
       "profile": "complete",
-      "elapsed_ms": 75.0221,
+      "elapsed_ms": 90.0413,
       "outcome": "verified"
     },
     {
       "sample": 85,
       "profile": "conditional",
-      "elapsed_ms": 116.4709,
+      "elapsed_ms": 106.3807,
       "outcome": "verified"
     },
     {
       "sample": 86,
       "profile": "complete",
-      "elapsed_ms": 70.9128,
+      "elapsed_ms": 77.0722,
       "outcome": "verified"
     },
     {
       "sample": 87,
       "profile": "conditional",
-      "elapsed_ms": 115.3003,
+      "elapsed_ms": 119.4313,
       "outcome": "verified"
     },
     {
       "sample": 88,
       "profile": "complete",
-      "elapsed_ms": 65.8397,
+      "elapsed_ms": 62.5888,
       "outcome": "verified"
     },
     {
       "sample": 89,
       "profile": "conditional",
-      "elapsed_ms": 130.219,
+      "elapsed_ms": 122.178,
       "outcome": "verified"
     },
     {
       "sample": 90,
       "profile": "complete",
-      "elapsed_ms": 80.1417,
+      "elapsed_ms": 56.0905,
       "outcome": "verified"
     },
     {
       "sample": 91,
       "profile": "conditional",
-      "elapsed_ms": 121.8961,
+      "elapsed_ms": 127.6748,
       "outcome": "verified"
     },
     {
       "sample": 92,
       "profile": "complete",
-      "elapsed_ms": 83.1195,
+      "elapsed_ms": 66.0221,
       "outcome": "verified"
     },
     {
       "sample": 93,
       "profile": "conditional",
-      "elapsed_ms": 124.9565,
+      "elapsed_ms": 124.0074,
       "outcome": "verified"
     },
     {
       "sample": 94,
       "profile": "complete",
-      "elapsed_ms": 75.4889,
+      "elapsed_ms": 72.7623,
       "outcome": "verified"
     },
     {
       "sample": 95,
       "profile": "conditional",
-      "elapsed_ms": 126.2602,
+      "elapsed_ms": 123.2069,
       "outcome": "verified"
     },
     {
       "sample": 96,
       "profile": "complete",
-      "elapsed_ms": 67.515,
+      "elapsed_ms": 76.1636,
       "outcome": "verified"
     },
     {
       "sample": 97,
       "profile": "conditional",
-      "elapsed_ms": 117.1721,
+      "elapsed_ms": 127.6642,
       "outcome": "verified"
     },
     {
       "sample": 98,
       "profile": "complete",
-      "elapsed_ms": 76.4702,
+      "elapsed_ms": 75.5566,
       "outcome": "verified"
     },
     {
       "sample": 99,
       "profile": "conditional",
-      "elapsed_ms": 124.2945,
+      "elapsed_ms": 122.5891,
       "outcome": "verified"
     },
     {
       "sample": 100,
       "profile": "complete",
-      "elapsed_ms": 73.8557,
+      "elapsed_ms": 68.6189,
       "outcome": "verified"
     }
   ]

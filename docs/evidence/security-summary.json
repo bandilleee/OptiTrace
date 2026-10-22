@@ -1,14 +1,14 @@
 [
   {
     "image": "optitrace-engine:local",
-    "image_id": "sha256:10fe1f6a1f2390c05b4c0774246322b0aabcb1b89f8d275f88f7af48e8b894c8",
+    "image_id": "sha256:5810c318399d71f6673c30cc7183fa24b75aac852e8638aca1cc986b2c0f1639",
     "high_critical_findings": 0,
     "scanner": "Trivy 0.68.1",
     "ignore_unfixed": false
   },
   {
     "image": "optitrace-web:local",
-    "image_id": "sha256:20fe453b7c3cf4ae765c7830512128630b0306dd1723f68bcc24ebd8fe895290",
+    "image_id": "sha256:42d2d46c4a249ffa21234927904cbbac37dde549f250b1612c850bac91ff5511",
     "high_critical_findings": 0,
     "scanner": "Trivy 0.68.1",
     "ignore_unfixed": false

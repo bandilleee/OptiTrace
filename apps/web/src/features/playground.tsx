@@ -1,7 +1,8 @@
 'use client';
 import { type Props } from '../lib/workspace-types';
 import { useItems } from '../lib/use-items';
-import { type Policy, api, type Evaluation, label, scenarios, strategies, can } from '../lib/api';
+import { type Policy, label, scenarios, strategies, can } from '../lib/api';
+import { createEvaluation } from '../lib/sdk';
 import { useState } from 'react';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Panel, ErrorMessage } from '../components/ui';
@@ -11,15 +12,15 @@ import { Trace, TraceRail } from './traces';
 export function Playground({ tenant, identity }: Props) {
   const policies = useItems<Policy>(tenant.id, 'policies');
   const [policy, setPolicy] = useState('');
-  const [scenario, setScenario] = useState('sim_change');
-  const [strategy, setStrategy] = useState('optitrace');
+  const [scenario, setScenario] = useState<(typeof scenarios)[number]>('sim_change');
+  const [strategy, setStrategy] = useState<(typeof strategies)[number]>('optitrace');
   const client = useQueryClient();
   const eligible = policies.data?.items.filter((p) => p.status === 'active') ?? [];
   const selected = policy || eligible[0]?.id || '';
   const evaluation = useMutation({
     mutationFn: () =>
-      api<Evaluation>(`/tenants/${tenant.id}/evaluations`, {
-        method: 'POST',
+      createEvaluation({
+        path: { tenant: tenant.id },
         csrf: identity.csrf_token,
         idempotency: crypto.randomUUID(),
         body: { policy_id: selected, scenario, strategy },
@@ -52,7 +53,10 @@ export function Playground({ tenant, identity }: Props) {
             </label>
             <label>
               Observation scenario
-              <select value={scenario} onChange={(e) => setScenario(e.target.value)}>
+              <select
+                value={scenario}
+                onChange={(e) => setScenario(e.target.value as (typeof scenarios)[number])}
+              >
                 {scenarios.map((s) => (
                   <option value={s} key={s}>
                     {label(s)}
@@ -62,7 +66,10 @@ export function Playground({ tenant, identity }: Props) {
             </label>
             <label>
               Execution strategy
-              <select value={strategy} onChange={(e) => setStrategy(e.target.value)}>
+              <select
+                value={strategy}
+                onChange={(e) => setStrategy(e.target.value as (typeof strategies)[number])}
+              >
                 {strategies.map((s) => (
                   <option key={s} value={s}>
                     {label(s)}

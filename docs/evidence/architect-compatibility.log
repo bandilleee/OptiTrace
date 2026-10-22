@@ -1,0 +1,1 @@
+PASS: input paths/methods/operation IDs/status codes, schema properties, top-level enums and required Check fields preserved. Authorization and mismatched response definitions intentionally corrected; generated client review pending.

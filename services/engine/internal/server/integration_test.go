@@ -190,6 +190,45 @@ func TestPostgresAuthenticatedWorkflow(t *testing.T) {
 	if e == nil {
 		t.Fatal("approved policy mutable")
 	}
+	// Approved versions cannot be downgraded and then edited through direct SQL.
+	approvedID := "guard-" + identity.Random()
+	tx, e = storage.Tenant(ctx, app, "demo")
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = tx.Exec(ctx, `INSERT INTO resources(id,tenant_id,kind,data) VALUES($1,'demo','policy','{"status":"approved","author_id":"a","reviewer_id":"b"}')`, approvedID)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = tx.Commit(ctx); e != nil {
+		t.Fatal(e)
+	}
+	for _, mutation := range []string{
+		`data=jsonb_set(data,'{status}','"draft"')`,
+		`data=data-'status'`,
+		`kind='other'`,
+		`id=id||'-changed'`,
+		`data=jsonb_set(data,'{author_id}','"b"')`,
+	} {
+		tx, e = storage.Tenant(ctx, app, "demo")
+		if e != nil {
+			t.Fatal(e)
+		}
+		_, e = tx.Exec(ctx, "UPDATE resources SET "+mutation+" WHERE id=$1", approvedID)
+		tx.Rollback(ctx)
+		if e == nil {
+			t.Fatalf("approved policy accepted mutation: %s", mutation)
+		}
+	}
+	tx, e = storage.Tenant(ctx, app, "demo")
+	if e != nil {
+		t.Fatal(e)
+	}
+	_, e = tx.Exec(ctx, `INSERT INTO resources(id,tenant_id,kind,data) VALUES($1,'demo','policy','{"status":"active","author_id":"a","reviewer_id":"a"}')`, "invalid-"+identity.Random())
+	tx.Rollback(ctx)
+	if e == nil {
+		t.Fatal("self-approved policy insert accepted")
+	}
 	// A disconnected caller must not erase a started billable execution trace.
 	started := make(chan struct{})
 	var startedOnce sync.Once

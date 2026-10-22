@@ -1,4 +1,5 @@
 'use client';
+import { loginUrl } from '../lib/sdk';
 import { Layers3, ChevronRight, ShieldCheck, ArrowRight, KeyRound } from 'lucide-react';
 import { ErrorMessage } from './ui';
 
@@ -49,7 +50,7 @@ export function Login({ error }: { error?: string }) {
             administrator.
           </p>
           {error && <ErrorMessage error={new Error(error)} />}
-          <a className="button primary google-button" href="/api/v1/auth/login">
+          <a className="button primary google-button" href={loginUrl()}>
             <span className="google-g">G</span>Continue with Google
             <ArrowRight size={18} />
           </a>

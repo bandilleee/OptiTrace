@@ -61,7 +61,7 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - run: npm ci
       - run: npm run api:generate
-      - run: git diff --exit-code -- src/lib/api-schema.d.ts
+      - run: git diff --exit-code -- src/lib/api-schema.d.ts src/lib/sdk.ts
       - run: npm run typecheck
       - run: npm run format:check
       - run: npm test
