@@ -56,6 +56,9 @@ func NewWithHTTPClient(simulatorURL string, client *http.Client) (*Engine, error
 		}
 		e.queries[profile] = q
 		e.plans[profile] = choosePlan(profile)
+		if e.plans[profile].Name == "" {
+			return nil, fmt.Errorf("no admissible plan for profile %s", profile)
+		}
 	}
 	return e, nil
 }

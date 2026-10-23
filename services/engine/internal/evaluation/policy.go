@@ -237,39 +237,81 @@ func candidates() []candidate {
 var tuning = [][]int{{0, 0, 0}, {0, 0, 0}, {0, 1, 1}, {1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {0, 2, 0}, {2, 0, 0}}
 
 func choosePlan(profile string) candidate {
-	best := candidate{ExpectedCost: 1e30}
+	return choosePlanFromRows(profile, tuning)
+}
+
+// The latency obligation is a constraint, not a secondary cost tie-break.
+// These independent fixed tuning rows never inspect held-out or request data.
+func choosePlanFromRows(profile string, rows [][]int) candidate {
+	scored := []candidate{}
+	fastestP95 := float64(1e30)
 	for _, p := range candidates() {
-		total := float64(0)
-		maxLatency := float64(0)
-		for _, row := range tuning {
-			s := []int{3, 3, 3}
-			cost := float64(0)
-			elapsed := float64(0)
-			for _, batch := range p.Batches {
-				batchMS := float64(0)
-				for _, i := range batch {
-					s[i] = row[i]
-					cost += float64(price(i))
-					ms := float64(latency(i).Milliseconds())
-					if ms > batchMS {
-						batchMS = ms
-					}
-				}
-				elapsed += batchMS
-				if _, ok := stoppingOracle(profile, s); ok {
-					break
-				}
-			}
-			total += cost + elapsed*10
-			if elapsed > maxLatency {
-				maxLatency = elapsed
+		p, valid := estimatePlan(profile, p, rows)
+		if valid && p.EstimatedP95MS <= 500 {
+			scored = append(scored, p)
+			if p.EstimatedP95MS < fastestP95 {
+				fastestP95 = p.EstimatedP95MS
 			}
 		}
-		p.ExpectedCost = total / float64(len(tuning))
-		p.EstimatedP95MS = maxLatency
-		if maxLatency <= 500 && (p.ExpectedCost < best.ExpectedCost || (p.ExpectedCost == best.ExpectedCost && p.EstimatedP95MS < best.EstimatedP95MS)) {
+	}
+	best := candidate{ExpectedCost: 1e30}
+	for _, p := range scored {
+		if p.EstimatedP95MS > fastestP95*1.1 {
+			continue
+		}
+		if p.ExpectedCost < best.ExpectedCost || p.ExpectedCost == best.ExpectedCost &&
+			(p.EstimatedP95MS < best.EstimatedP95MS || p.EstimatedP95MS == best.EstimatedP95MS && p.Name < best.Name) {
 			best = p
 		}
 	}
 	return best
+}
+
+func estimatePlan(profile string, p candidate, rows [][]int) (candidate, bool) {
+	if (profile != "complete" && profile != "conditional") || len(rows) == 0 {
+		return p, false
+	}
+	total := float64(0)
+	latencies := []float64{}
+	for _, row := range rows {
+		if len(row) != 3 {
+			return p, false
+		}
+		for _, v := range row {
+			if v < 0 || v > 2 {
+				return p, false
+			}
+		}
+		s := []int{3, 3, 3}
+		cost := float64(0)
+		elapsed := float64(0)
+		for _, batch := range p.Batches {
+			batchMS := float64(0)
+			for _, i := range batch {
+				s[i] = row[i]
+				cost += float64(price(i))
+				ms := float64(latency(i).Milliseconds())
+				if ms > batchMS {
+					batchMS = ms
+				}
+			}
+			elapsed += batchMS
+			if _, ok := stoppingOracle(profile, s); ok {
+				break
+			}
+		}
+		total += cost + elapsed*10
+		latencies = append(latencies, elapsed)
+		if reference(profile, s) != reference(profile, row) {
+			return p, false
+		}
+		for i, v := range s {
+			if compulsory(profile, i) && v == 3 {
+				return p, false
+			}
+		}
+	}
+	p.ExpectedCost = total / float64(len(rows))
+	p.EstimatedP95MS = quantile(latencies, .95)
+	return p, true
 }

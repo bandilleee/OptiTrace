@@ -1,0 +1,114 @@
+=== RUN   TestExhaustivePolicyAndStopping
+--- PASS: TestExhaustivePolicyAndStopping (0.02s)
+=== RUN   TestPlans
+    evaluation_test.go:101: synthetic tuning plan profile=complete plan=number_verification+sim_swap+device_swap estimated_cost_microrand=6900.00 estimated_tail_ms=30.00
+    evaluation_test.go:101: synthetic tuning plan profile=conditional plan=number_verification+sim_swap+device_swap estimated_cost_microrand=6900.00 estimated_tail_ms=30.00
+--- PASS: TestPlans (0.00s)
+=== RUN   TestAllStrategiesScenarios
+--- PASS: TestAllStrategiesScenarios (0.01s)
+=== RUN   TestFreshnessScopeEvents
+=== RUN   TestFreshnessScopeEvents/inclusive
+=== RUN   TestFreshnessScopeEvents/stale
+=== RUN   TestFreshnessScopeEvents/old
+=== RUN   TestFreshnessScopeEvents/future_source
+=== RUN   TestFreshnessScopeEvents/future_event
+=== RUN   TestFreshnessScopeEvents/scope
+=== RUN   TestFreshnessScopeEvents/subject
+--- PASS: TestFreshnessScopeEvents (0.00s)
+    --- PASS: TestFreshnessScopeEvents/inclusive (0.00s)
+    --- PASS: TestFreshnessScopeEvents/stale (0.00s)
+    --- PASS: TestFreshnessScopeEvents/old (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_source (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_event (0.00s)
+    --- PASS: TestFreshnessScopeEvents/scope (0.00s)
+    --- PASS: TestFreshnessScopeEvents/subject (0.00s)
+=== RUN   TestExplicitFailureSemantics
+--- PASS: TestExplicitFailureSemantics (0.00s)
+=== RUN   TestCancellationChargesStarted
+--- PASS: TestCancellationChargesStarted (0.01s)
+=== RUN   TestDistinctHTTPFaults
+--- PASS: TestDistinctHTTPFaults (0.33s)
+=== RUN   TestNoCrossRequestReuse
+--- PASS: TestNoCrossRequestReuse (0.07s)
+=== RUN   TestInjectedIdentityTransport
+--- PASS: TestInjectedIdentityTransport (0.04s)
+=== RUN   TestInvalidEvidenceNeverBecomesClear
+--- PASS: TestInvalidEvidenceNeverBecomesClear (0.01s)
+=== RUN   TestAdversarialJointDistributionsAgainstAllStrategies
+--- PASS: TestAdversarialJointDistributionsAgainstAllStrategies (0.29s)
+=== RUN   TestBenchmarkReproducibilityBoundsAndLabels
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:complete Baseline:opa LatencyBaseline:full_parallel LatencyBaselineP95MS:30 LatencyP95LimitMS:33 PairedCostDifference:300 Lower95:300 Upper95:300 SavingsFraction:0.041666666666666664 CorrectnessPassed:true LatencyPassed:true ResearchTargetPassed:false Status:synthetic target not established}
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:conditional Baseline:opa LatencyBaseline:full_parallel LatencyBaselineP95MS:30 LatencyP95LimitMS:33 PairedCostDifference:300 Lower95:300 Upper95:300 SavingsFraction:0.041666666666666664 CorrectnessPassed:true LatencyPassed:true ResearchTargetPassed:false Status:synthetic target not established}
+--- PASS: TestBenchmarkReproducibilityBoundsAndLabels (0.51s)
+=== RUN   TestJournalFailurePreventsSourceCall
+--- PASS: TestJournalFailurePreventsSourceCall (0.00s)
+=== RUN   TestJournalPairsEveryStartedSource
+--- PASS: TestJournalPairsEveryStartedSource (0.04s)
+=== RUN   TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls
+--- PASS: TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls (0.02s)
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_clear/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_clear/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/conditional
+    planner_next_test.go:129: selected number_verification -> device_swap -> sim_swap cost=1300.00 p95=10.00 fastest=10.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/faults/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/faults/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_27/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_27/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+--- PASS: TestPlannerConstrainedOptimalityAgainstOracle (0.01s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_clear/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_clear/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/faults/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/faults/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_27/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_27/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/conditional (0.00s)
+=== RUN   TestPlannerRejectsCheapTailRegression
+--- PASS: TestPlannerRejectsCheapTailRegression (0.00s)
+=== RUN   TestPlannerInvalidTuningFailsClosed
+--- PASS: TestPlannerInvalidTuningFailsClosed (0.00s)
+=== RUN   TestBenchmarkSeparatesCostAndLatencyBaselines
+--- PASS: TestBenchmarkSeparatesCostAndLatencyBaselines (0.00s)
+=== RUN   TestBenchmarkAbsoluteLatencyAndMissingPairs
+--- PASS: TestBenchmarkAbsoluteLatencyAndMissingPairs (0.00s)
+=== RUN   TestBenchmarkDisagreementDiagnosticsPreserveFrozenOracle
+--- PASS: TestBenchmarkDisagreementDiagnosticsPreserveFrozenOracle (0.11s)
+=== RUN   TestBenchmarkDisagreementDistinguishesSameInputPolicyFailure
+--- PASS: TestBenchmarkDisagreementDistinguishesSameInputPolicyFailure (0.51s)
+=== RUN   TestPolicyFinalizationUnderCPUQuota
+--- PASS: TestPolicyFinalizationUnderCPUQuota (0.10s)
+=== RUN   TestPolicyInputAndBudgetBoundaries
+--- PASS: TestPolicyInputAndBudgetBoundaries (0.00s)
+=== RUN   TestExhaustivePolicyEventBudgetHeadroom
+    reliability_test.go:83: all 128 partial/terminal profile states: max_events=121 budget=4096 headroom=33.9x
+--- PASS: TestExhaustivePolicyEventBudgetHeadroom (0.01s)
+=== RUN   TestPolicyBudgetFailureRetainsChargedEvidence
+2026/10/23 02:31:06 ERROR policy evaluation failed profile=complete error="policy evaluation event budget exhausted" context_error=<nil>
+--- PASS: TestPolicyBudgetFailureRetainsChargedEvidence (0.01s)
+=== RUN   TestDisconnectedCallerRetainsCompletedOPADecision
+--- PASS: TestDisconnectedCallerRetainsCompletedOPADecision (0.07s)
+=== RUN   TestPreparedPolicyRecoversAfterCancellation
+--- PASS: TestPreparedPolicyRecoversAfterCancellation (0.01s)
+=== RUN   FuzzStoppingProof
+=== RUN   FuzzStoppingProof/seed#0
+=== RUN   FuzzStoppingProof/seed#1
+--- PASS: FuzzStoppingProof (0.00s)
+    --- PASS: FuzzStoppingProof/seed#0 (0.00s)
+    --- PASS: FuzzStoppingProof/seed#1 (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	2.405s

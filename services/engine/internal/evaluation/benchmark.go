@@ -9,6 +9,7 @@ import (
 	"math"
 	"math/rand"
 	"runtime"
+	"slices"
 	"sort"
 	"time"
 )
@@ -34,6 +35,9 @@ type Comparison struct {
 	Measurement          string  `json:"measurement"`
 	Profile              string  `json:"profile"`
 	Baseline             string  `json:"baseline"`
+	LatencyBaseline      string  `json:"latency_baseline,omitempty"`
+	LatencyBaselineP95MS float64 `json:"latency_baseline_p95_ms,omitempty"`
+	LatencyP95LimitMS    float64 `json:"latency_p95_limit_ms,omitempty"`
 	PairedCostDifference float64 `json:"paired_cost_difference_microrand"`
 	Lower95              float64 `json:"lower_95_microrand"`
 	Upper95              float64 `json:"upper_95_microrand"`
@@ -48,6 +52,7 @@ type BenchmarkManifest struct {
 	Seed              int64            `json:"seed"`
 	Count             int              `json:"count"`
 	Version           string           `json:"version"`
+	PlannerVersion    string           `json:"planner_version"`
 	Data              string           `json:"data"`
 	Dataset           string           `json:"dataset"`
 	Tuning            string           `json:"tuning"`
@@ -63,14 +68,89 @@ type BenchmarkManifest struct {
 	ScenarioCounts    map[string]int   `json:"scenario_counts"`
 	ObservationTime   time.Time        `json:"observation_time"`
 }
-type BenchmarkReport struct {
-	ArtifactObject  string            `json:"artifact_object,omitempty"`
-	ScenarioResults []BenchmarkMetric `json:"scenario_results"`
-	Manifest        BenchmarkManifest `json:"manifest"`
-	Results         []BenchmarkMetric `json:"results"`
-	Comparisons     []Comparison      `json:"comparisons"`
-	Notes           []string          `json:"notes"`
+
+// Cost research uses the strongest eligible staged controller. The latency
+// obligation independently uses the fastest eligible baseline of any kind.
+// Neither baseline may be OptiTrace itself or an incorrect/missing cohort.
+func benchmarkComparison(profile string, metrics map[string]BenchmarkMetric, results map[string][]Result) Comparison {
+	latencyBase, costBase := "", ""
+	eligible := func(m BenchmarkMetric) bool {
+		return m.RequestCount > 0 && m.AgreementRate == 1 && m.CompulsoryViolations == 0 && m.P95MS > 0 && m.P95MS <= 500
+	}
+	for _, strategy := range []string{"full_sequential", "full_parallel", "staged", "opa"} {
+		m := metrics[strategy]
+		if !eligible(m) {
+			continue
+		}
+		if latencyBase == "" || m.P95MS < metrics[latencyBase].P95MS ||
+			m.P95MS == metrics[latencyBase].P95MS &&
+				(m.MeanCostMicrorand < metrics[latencyBase].MeanCostMicrorand ||
+					m.MeanCostMicrorand == metrics[latencyBase].MeanCostMicrorand && strategy < latencyBase) {
+			latencyBase = strategy
+		}
+		if (strategy == "staged" || strategy == "opa") &&
+			(costBase == "" || m.MeanCostMicrorand < metrics[costBase].MeanCostMicrorand ||
+				m.MeanCostMicrorand == metrics[costBase].MeanCostMicrorand &&
+					(m.P95MS < metrics[costBase].P95MS || m.P95MS == metrics[costBase].P95MS && strategy < costBase)) {
+			costBase = strategy
+		}
+	}
+	comparison := Comparison{Profile: profile, Baseline: costBase, Measurement: "virtual_time_estimate", Status: "no eligible staged cost baseline"}
+	opt := metrics["optitrace"]
+	comparison.CorrectnessPassed = opt.RequestCount > 0 && opt.AgreementRate == 1 && opt.CompulsoryViolations == 0
+	if latencyBase != "" {
+		comparison.LatencyBaseline = latencyBase
+		comparison.LatencyBaselineP95MS = metrics[latencyBase].P95MS
+		comparison.LatencyP95LimitMS = math.Min(500, comparison.LatencyBaselineP95MS*1.1)
+		comparison.LatencyPassed = opt.RequestCount > 0 && opt.P95MS > 0 && opt.P95MS <= comparison.LatencyP95LimitMS
+	}
+	if costBase != "" {
+		if len(results[costBase]) == 0 || len(results[costBase]) != len(results["optitrace"]) {
+			comparison.Status = "cost observations missing or unpaired"
+			return comparison
+		}
+		base := metrics[costBase]
+		mean, lo, hi := paired(results[costBase], results["optitrace"])
+		comparison.PairedCostDifference, comparison.Lower95, comparison.Upper95 = mean, lo, hi
+		if base.MeanCostMicrorand > 0 {
+			comparison.SavingsFraction = mean / base.MeanCostMicrorand
+		}
+		comparison.ResearchTargetPassed = comparison.CorrectnessPassed && comparison.LatencyPassed && comparison.SavingsFraction >= .2
+		comparison.Status = "synthetic target not established"
+		if comparison.ResearchTargetPassed {
+			comparison.Status = "synthetic workload target met; production claim unproven"
+		}
+	}
+	return comparison
 }
+
+type BenchmarkReport struct {
+	ArtifactObject  string                  `json:"artifact_object,omitempty"`
+	ScenarioResults []BenchmarkMetric       `json:"scenario_results"`
+	Manifest        BenchmarkManifest       `json:"manifest"`
+	Results         []BenchmarkMetric       `json:"results"`
+	Comparisons     []Comparison            `json:"comparisons"`
+	Notes           []string                `json:"notes"`
+	Disagreements   []BenchmarkDisagreement `json:"disagreements,omitempty"`
+}
+
+// Bounded diagnostics preserve the frozen-row oracle even when a real adapter
+// introduces an extra timeout/fault. Agreement aggregates still include every
+// measured row; diagnostics never retry, replace or drop an unsuccessful row.
+type BenchmarkDisagreement struct {
+	Measurement        string `json:"measurement"`
+	Scenario           string `json:"scenario"`
+	Profile            string `json:"profile"`
+	Strategy           string `json:"strategy"`
+	ExpectedOutcome    string `json:"expected_outcome"`
+	ActualOutcome      string `json:"actual_outcome"`
+	ExpectedStates     []int  `json:"expected_states"`
+	SourceStatesDiffer bool   `json:"source_states_differ"`
+	Result             Result `json:"result"`
+}
+
+const maxBenchmarkDisagreements = 20
+
 type sample struct {
 	scenario string
 	profile  string
@@ -169,7 +249,7 @@ func (e *Engine) Benchmark(ctx context.Context, seed int64, count int) (Benchmar
 	if measured > 20 {
 		measured = 20
 	}
-	manifest := BenchmarkManifest{Seed: seed, Count: count, Version: "synthetic-v1", Data: "synthetic; configured demonstration prices; no observed MTN savings", Dataset: "seeded held-out rows, equal alternating profile allocation", Tuning: "fixed eight-row tuning table in policy.go; disjoint held-out generator", Prices: map[string]int64{}, RuntimeRate: 10, RecentHours: 24, FreshnessSeconds: 60, OS: runtime.GOOS, Arch: runtime.GOARCH, GoVersion: runtime.Version(), Hardware: fmt.Sprintf("logical CPUs=%d; host model not captured", runtime.NumCPU()), MeasuredCount: measured, ScenarioCounts: map[string]int{}, ObservationTime: at}
+	manifest := BenchmarkManifest{Seed: seed, Count: count, Version: "synthetic-v1", PlannerVersion: "latency-constrained-v2", Data: "synthetic; configured demonstration prices; no observed MTN savings", Dataset: "seeded held-out rows, equal alternating profile allocation", Tuning: "fixed eight-row tuning table in policy.go; disjoint held-out generator", Prices: map[string]int64{}, RuntimeRate: 10, RecentHours: 24, FreshnessSeconds: 60, OS: runtime.GOOS, Arch: runtime.GOARCH, GoVersion: runtime.Version(), Hardware: fmt.Sprintf("logical CPUs=%d; host model not captured", runtime.NumCPU()), MeasuredCount: measured, ScenarioCounts: map[string]int{}, ObservationTime: at}
 	for i, c := range Capabilities {
 		manifest.Prices[c] = price(i)
 	}
@@ -186,7 +266,7 @@ func (e *Engine) Benchmark(ctx context.Context, seed int64, count int) (Benchmar
 		}
 	}
 	manifest.ObservationSHA256 = hex.EncodeToString(hash.Sum(nil))
-	report := BenchmarkReport{Manifest: manifest, Notes: []string{"Virtual-time results estimate configured supplier charges and runtime, not cloud expenditure.", "Measured results use real HTTP and local elapsed time, excluding browser, authentication, DB persistence and cold starts; they do not certify the full API 500ms gate.", "At most 20 seeded held-out rows measured over HTTP per run; small-sample tails are descriptive, not production evidence.", "95% paired mean difference intervals use normal approximation and require larger samples for strong inference.", "staged is a competent number/SIM/device conditional workflow; OPA uses the same early-exit controller with embedded OPA final evaluation.", "No market telemetry, learned model, cross-request cache, or proven commercial benefit."}}
+	report := BenchmarkReport{Manifest: manifest, Notes: []string{"Virtual-time results estimate configured supplier charges and runtime, not cloud expenditure.", "Measured results use real HTTP and local elapsed time, excluding browser, authentication, DB persistence and cold starts; they do not certify the full API 500ms gate.", "At most 20 seeded held-out rows measured over HTTP per run; small-sample tails are descriptive, not production evidence.", "95% paired mean difference intervals use normal approximation and require larger samples for strong inference.", "staged is a competent number/SIM/device conditional workflow; OPA uses the same early-exit controller with embedded OPA final evaluation.", "Planner v2 minimizes tuning cost only within500ms and110% of fastest valid tuning p95; held-out rows never tune the plan.", "Comparison baseline is cheapest eligible staged/OPA cost controller; latency_baseline is fastest eligible full/sequential/staged/OPA controller. Targets remain independent.", "First20 measured disagreements retain frozen expected states/outcomes and actual charged attempts; source_states_differ distinguishes changed normalized observations from same-input output discrepancies. Aggregates include all rows without retry or exclusion.", "No market telemetry, learned model, cross-request cache, or proven commercial benefit."}}
 	virtual := map[string]map[string][]Result{}
 	expected := map[string][]string{"complete": {}, "conditional": {}}
 	for _, strategy := range Strategies {
@@ -214,33 +294,11 @@ func (e *Engine) Benchmark(ctx context.Context, seed int64, count int) (Benchmar
 			metrics[strategy] = m
 			report.Results = append(report.Results, m)
 		}
-		best := ""
-		for _, strategy := range []string{"full_sequential", "full_parallel", "staged", "opa"} {
-			m := metrics[strategy]
-			if m.AgreementRate == 1 && m.CompulsoryViolations == 0 && m.P95MS <= 500 && (best == "" || m.MeanCostMicrorand < metrics[best].MeanCostMicrorand) {
-				best = strategy
-			}
+		profileResults := map[string][]Result{}
+		for _, strategy := range Strategies {
+			profileResults[strategy] = virtual[strategy][profile]
 		}
-		comparison := Comparison{Profile: profile, Baseline: best, Measurement: "virtual_time_estimate", Status: "no eligible baseline"}
-		if best != "" {
-			opt := metrics["optitrace"]
-			base := metrics[best]
-			mean, lo, hi := paired(virtual[best][profile], virtual["optitrace"][profile])
-			comparison.PairedCostDifference = mean
-			comparison.Lower95 = lo
-			comparison.Upper95 = hi
-			if base.MeanCostMicrorand > 0 {
-				comparison.SavingsFraction = mean / base.MeanCostMicrorand
-			}
-			comparison.CorrectnessPassed = opt.AgreementRate == 1 && opt.CompulsoryViolations == 0
-			comparison.LatencyPassed = opt.P95MS <= 500 && opt.P95MS <= base.P95MS*1.1
-			comparison.ResearchTargetPassed = comparison.CorrectnessPassed && comparison.LatencyPassed && comparison.SavingsFraction >= .2
-			comparison.Status = "synthetic target not established"
-			if comparison.ResearchTargetPassed {
-				comparison.Status = "synthetic workload target met; production claim unproven"
-			}
-		}
-		report.Comparisons = append(report.Comparisons, comparison)
+		report.Comparisons = append(report.Comparisons, benchmarkComparison(profile, metrics, profileResults))
 	}
 	measuredRows := rows[:measured]
 	actual := map[string]map[string][]Result{}
@@ -250,6 +308,16 @@ func (e *Engine) Benchmark(ctx context.Context, seed int64, count int) (Benchmar
 	}
 	// Rotate execution order to avoid always assigning warmest connections to one strategy.
 	for rowIndex, row := range measuredRows {
+		// The expected result comes from the frozen source row, never from a
+		// possibly degraded real HTTP response or whichever strategy runs first.
+		source := []int{}
+		for i := 0; i < 3; i++ {
+			c := sourceCheck(i, row.scenario, at)
+			normalize(&c, i, at)
+			source = append(source, states([]Check{c})[0])
+		}
+		want := reference(row.profile, source)
+		actualExpected[row.profile] = append(actualExpected[row.profile], want)
 		for step := range Strategies {
 			strategy := Strategies[(step+rowIndex)%len(Strategies)]
 			r, err := e.evaluate(ctx, Request{Policy: Policy{ID: "benchmark-" + row.profile, Version: 1, Profile: row.profile}, Scenario: row.scenario, Strategy: strategy}, at, false)
@@ -257,14 +325,14 @@ func (e *Engine) Benchmark(ctx context.Context, seed int64, count int) (Benchmar
 				return BenchmarkReport{}, err
 			}
 			actual[strategy][row.profile] = append(actual[strategy][row.profile], r)
+			if r.Outcome != want && len(report.Disagreements) < maxBenchmarkDisagreements {
+				report.Disagreements = append(report.Disagreements, BenchmarkDisagreement{
+					Measurement: "measured_http_engine_only", Scenario: row.scenario, Profile: row.profile, Strategy: strategy,
+					ExpectedOutcome: want, ActualOutcome: r.Outcome, ExpectedStates: append([]int(nil), source...),
+					SourceStatesDiffer: !slices.Equal(source, states(r.Checks)), Result: r,
+				})
+			}
 		}
-		source := []int{}
-		for i := 0; i < 3; i++ {
-			c := sourceCheck(i, row.scenario, at)
-			normalize(&c, i, at)
-			source = append(source, states([]Check{c})[0])
-		}
-		actualExpected[row.profile] = append(actualExpected[row.profile], reference(row.profile, source))
 	}
 	for _, profile := range []string{"complete", "conditional"} {
 		for _, strategy := range Strategies {
