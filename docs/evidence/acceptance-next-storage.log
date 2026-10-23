@@ -1,0 +1,45 @@
+BEGIN
+INSERT 0 1
+SET
+DO
+RESET
+UPDATE 1
+SET
+DO
+RESET
+DO
+SET
+ finish_job 
+------------
+ 
+(1 row)
+
+ finish_job 
+------------
+ 
+(1 row)
+
+RESET
+DO
+INSERT 0 1
+SET
+ expire_jobs 
+-------------
+ 
+(1 row)
+
+RESET
+DO
+SET
+ set_config 
+------------
+ other
+(1 row)
+
+DO
+ROLLBACK
+                                                                acceptance                                                                
+------------------------------------------------------------------------------------------------------------------------------------------
+ PASS: lease exclusion/recovery/token fencing/duplicate completion/exhaustion; seven-table RLS; forged write and audit mutation rejection
+(1 row)
+

@@ -1,0 +1,48 @@
+{
+  "input_commit": "0936c8bd8e2e297993e9a104224a6d4777919a24",
+  "verdict": "PASS scoped local checks; HOLD release and unresolved evaluator reliability",
+  "owner": "independent acceptance",
+  "commands": [
+    {
+      "command": "go test -count=1 -v ./...",
+      "cwd": "services/engine",
+      "exit_code": 0,
+      "evidence": "acceptance-next-go-tests.log"
+    },
+    {
+      "command": "go test -overlay ../../.artifacts/acceptance-next/overlay.json -count=1 -timeout 90s -v ./internal/server -run TestIndependentAcceptanceWorkflow",
+      "cwd": "services/engine",
+      "exit_code": 0,
+      "evidence": "acceptance-next-workflow.log"
+    },
+    {
+      "command": "Get-Content .artifacts/acceptance-next/independent-storage.sql -Raw | docker exec -i optitrace-acceptance-next psql -U postgres -d postgres",
+      "exit_code": 0,
+      "evidence": "acceptance-next-storage.log"
+    },
+    {
+      "command": "go vet ./...",
+      "cwd": "services/engine",
+      "exit_code": 0,
+      "evidence": "empty successful output"
+    }
+  ],
+  "database": "Dedicated optitrace-acceptance-next:55433 only; synthetic data",
+  "changed_paths": [
+    "docs/evidence/acceptance-next-go-tests.log",
+    "docs/evidence/acceptance-next-probes.go.txt",
+    "docs/evidence/acceptance-next-storage.log",
+    "docs/evidence/acceptance-next-storage.sql",
+    "docs/evidence/acceptance-next-workflow.log",
+    "docs/evidence/acceptance-next.md",
+    "docs/evidence/acceptance-next-handback.json"
+  ],
+  "limitations": [
+    "No main-stack restarts or cloud writes",
+    "No browser rerun in this lane",
+    "No fresh Linux race/performance/soak acceptance",
+    "Hosted Google and cloud release not exercised",
+    "Evaluator repair re-audit pending"
+  ],
+  "finding": "P3 contracts/AUTHORIZATION.md:41 normalized-strategy hashing documentation drift"
+}
