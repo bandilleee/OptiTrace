@@ -25,7 +25,7 @@ Independent API probes use Go's overlay mechanism to replace the integration tes
 | Immutable evidence |Existing workflow rejects approved policy mutation/status downgrade/identity changes and self-approved inserts. Application role cannot UPDATE audit. |
 | Static checks |`go vet ./...`, exit0. |
 
-Commands and outcomes are in `acceptance-next-handback.json`. Raw outputs, the independent overlay source and SQL are archived beside this report. The API overlay's final run passed in2.782s. Earlier probe-development failures were harness setup errors (unknown synthetic account and missing log directory), corrected before the archived final run; they did not expose an application defect.
+Commands and outcomes are in `acceptance-next-handback.json`. Raw outputs, the independent overlay source and SQL are archived beside this report. With the dedicated container running and PostgreSQL migrated/seeded by the baseline Go suite, run `./docs/evidence/acceptance-next-rerun.ps1` to reproduce the independent probes. The API overlay's final run passed in2.782s. Earlier probe-development failures were harness setup errors (unknown synthetic account and missing log directory), corrected before the archived final run; they did not expose an application defect.
 
 ## Findings and exact remediation
 

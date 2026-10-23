@@ -35,7 +35,8 @@
     "docs/evidence/acceptance-next-storage.sql",
     "docs/evidence/acceptance-next-workflow.log",
     "docs/evidence/acceptance-next.md",
-    "docs/evidence/acceptance-next-handback.json"
+    "docs/evidence/acceptance-next-handback.json",
+    "docs/evidence/acceptance-next-rerun.ps1"
   ],
   "limitations": [
     "No main-stack restarts or cloud writes",
