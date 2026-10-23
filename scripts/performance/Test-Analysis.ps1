@@ -45,4 +45,8 @@ $rows = @(New-TestRows)
 $rows[0].checks[0].cost_microrand = 2
 $rows[0].supplier_cost_microrand = 7
 Assert-Workload (-not (Get-WorkloadAnalysis $rows 1).correctness_passed) 'Changing prices between strategies invalidates a comparison.'
+$rows = @(New-TestRows)
+foreach ($row in $rows) { if ($row.strategy -eq 'full_parallel') { $row.elapsed_ms = 80; $row.runtime_cost_microrand = 10 } }
+$trap = Get-WorkloadAnalysis $rows 1
+Assert-Workload ($trap.comparisons[0].relative_10pct_vs_cost_first_passed -and -not $trap.comparisons[0].relative_10pct_passed -and -not $trap.acceptance_passed) 'A cheaper slower baseline must not hide regression against the fastest baseline.'
 Write-Output 'Performance analysis positive and negative-gate checks passed.'

@@ -73,7 +73,9 @@ function Get-WorkloadAnalysis([object[]]$Rows, [int]$Repetitions) {
         # Correctness failures disqualify the entire comparison, not only an inconvenient baseline.
         $eligible = @($group | Where-Object { $correct -and $_.strategy -ne 'optitrace' -and $_.p95_ms -le 500 } | Sort-Object mean_variable_microrand, p95_ms)
         $staged = @($eligible | Where-Object strategy -in @('staged', 'opa'))
-        $baseline = if ($eligible.Count) { $eligible[0] } else { $null }
+        $costFirst = if ($eligible.Count) { $eligible[0] } else { $null }
+        $fastest = @($eligible | Sort-Object p95_ms, mean_variable_microrand)
+        $baseline = if ($fastest.Count) { $fastest[0] } else { $null }
         $costBaseline = if ($staged.Count) { $staged[0] } else { $null }
         $absolute = $opt.Count -eq 1 -and $opt[0].p95_ms -le 500
         $relative = $null -ne $baseline -and $opt.Count -eq 1 -and $opt[0].p95_ms -le (1.1 * $baseline.p95_ms)
@@ -81,7 +83,10 @@ function Get-WorkloadAnalysis([object[]]$Rows, [int]$Repetitions) {
         $comparisons += [pscustomobject]@{
             profile = $profile; correctness_passed = $correct
             latency_baseline = if ($baseline) { $baseline.strategy } else { $null }
+            latency_baseline_p95_ms = if ($baseline) { $baseline.p95_ms } else { $null }
             absolute_500ms_passed = $absolute; relative_10pct_passed = $relative
+            cost_first_baseline = if ($costFirst) { $costFirst.strategy } else { $null }
+            relative_10pct_vs_cost_first_passed = $null -ne $costFirst -and $opt.Count -eq 1 -and $opt[0].p95_ms -le (1.1 * $costFirst.p95_ms)
             cost_baseline = if ($costBaseline) { $costBaseline.strategy } else { $null }
             synthetic_variable_cost_savings_fraction = $savings
             research_20pct_target_passed = $correct -and $absolute -and $relative -and $null -ne $savings -and $savings -ge .2

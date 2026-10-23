@@ -28,13 +28,13 @@ for ($repeat = 0; $repeat -lt $Repetitions; $repeat++) {
     }
 }
 $manifest = [ordered]@{
-    schema_version = 1; measured_at = [datetime]::UtcNow.ToString('O'); seed = $Seed; repetitions = $Repetitions
+    schema_version = 2; measured_at = [datetime]::UtcNow.ToString('O'); seed = $Seed; repetitions = $Repetitions
     allocation = 'Equal profile/scenario allocation; deterministic shuffled cases and rotated strategy order; synthetic demonstration workload, not market telemetry.'
     measurement = 'Authenticated Go API HTTP round trip, including authorization, planner, adapters, trace persistence and response transfer. Browser/Next proxy excluded by default.'
     login_url = $LoginBaseUrl; api_url = $ApiBaseUrl; concurrency = 1; expected_samples = $schedule.Count
     observation_semantics = 'Simulator observations are anchored separately to each evaluation observation time, with identical normalized scenario states. No cross-request reuse.'
     cost = 'Configured synthetic supplier charges plus estimated engine runtime cost; not actual cloud expenditure or observed MTN savings.'
-    baseline_selection = 'Eligible baseline minimizes mean variable cost, tie-breaking on p95. Research cost comparison restricts candidates to staged and OPA staged controller.'
+    baseline_selection = 'Latency baseline is the fastest correct eligible baseline. Research cost baseline minimizes variable cost among staged and OPA. Cost-first latency interpretation is retained for diagnosis only.'
     limitations = @('Workstation run requires otherwise quiet host; no cloud SLA or live Google latency evidence.', 'Tail estimates are descriptive; each profile/strategy has 11 times repetitions samples.', 'First warm-up calls are recorded separately; they are not Cloud Run cold-start measurements.', '20% cost target is reported independently and may honestly fail acceptance.', 'No commercial cost claim; authentication provider status refresh uses local protocol double.')
     schedule = $schedule.ToArray()
 }
