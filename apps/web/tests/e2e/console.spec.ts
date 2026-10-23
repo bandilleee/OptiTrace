@@ -386,3 +386,42 @@ test('administrators validate invitations and retain failed role edits for retry
   await page.getByRole('button', { name: 'Create credential', exact: true }).click();
   await expect(page.getByText('Enter a name.', { exact: true })).toBeVisible();
 });
+
+test('a completed benchmark still warns when its measured outcomes disagree', async ({ page }) => {
+  await setup(page, ['auditor']);
+  const run = {
+    id: 'disagreement-run',
+    seed: 42,
+    count: 2,
+    status: 'completed',
+    created_at: '2026-10-23T00:00:00Z',
+  };
+  await page.route('**/api/v1/tenants/t/benchmarks', (route) =>
+    route.fulfill({ json: { items: [run] } }),
+  );
+  await page.route('**/api/v1/tenants/t/benchmarks/disagreement-run', (route) =>
+    route.fulfill({
+      json: {
+        ...run,
+        results: [
+          {
+            strategy: 'full_sequential',
+            profile: 'complete',
+            measurement: 'measured_http_engine_only',
+            agreement_rate: 0,
+            compulsory_violations: 0,
+            mean_cost_microrand: 6600,
+            p95_ms: 509,
+          },
+        ],
+      },
+    }),
+  );
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Benchmarks', exact: true }).click();
+  await page.locator('.run-row').click();
+  const dialog = page.getByRole('dialog', { name: 'Comparison report' });
+  await expect(dialog.getByRole('alert')).toContainText('outcome disagreements');
+  await expect(dialog.getByRole('link', { name: 'Export JSON' })).toBeVisible();
+  await expect(dialog.getByText('0.0%', { exact: true })).toBeVisible();
+});

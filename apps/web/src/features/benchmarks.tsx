@@ -205,6 +205,20 @@ export function Benchmarks({ tenant, identity }: Props) {
                 supplier charges are synthetic.
               </p>
               {current.error && <ErrorMessage error={new Error(current.error)} />}
+              <ErrorMessage
+                error={
+                  rows.some(
+                    (row) =>
+                      (typeof row.agreement_rate === 'number' && row.agreement_rate < 1) ||
+                      (typeof row.compulsory_violations === 'number' &&
+                        row.compulsory_violations > 0),
+                  )
+                    ? new Error(
+                        'This run contains outcome disagreements or compulsory-work violations. Review the comparison table and complete report before using these results.',
+                      )
+                    : null
+                }
+              />
               <BenchmarkChart rows={rows} />
               <div className="table-scroll">
                 <Table>

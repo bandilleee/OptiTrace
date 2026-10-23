@@ -492,6 +492,7 @@ export interface components {
             count: number;
             created_at: string;
             results?: components["schemas"]["BenchmarkMetric"][];
+            /** @description Versioned synthetic benchmark report. The manifest identifies the planner/comparison version. Comparison baseline names the eligible staged cost comparator; optional latency_baseline, latency_baseline_p95_ms and latency_p95_limit_ms identify the fastest valid latency comparator separately. Optional disagreements retain bounded effective source evidence when measured outcomes differ from frozen rows. Engine-only and virtual measurements do not certify authenticated full-API latency. */
             report?: {
                 [key: string]: unknown;
             };
