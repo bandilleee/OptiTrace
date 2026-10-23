@@ -1,0 +1,6 @@
+fuzz: elapsed: 0s, gathering baseline coverage: 0/26 completed
+fuzz: elapsed: 1s, gathering baseline coverage: 26/26 completed, now fuzzing with 16 workers
+fuzz: elapsed: 3s, execs: 48215 (16066/sec), new interesting: 6 (total: 32)
+fuzz: elapsed: 6s, execs: 83163 (13047/sec), new interesting: 6 (total: 32)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	6.238s

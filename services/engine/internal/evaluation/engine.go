@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -163,10 +164,12 @@ func (e *Engine) evaluate(ctx context.Context, req Request, at time.Time, virtua
 	if req.Strategy == "opa" || req.Strategy == "optitrace" {
 		// Once billable work starts, preserve its trace even if the caller
 		// cancels during the final prepared policy evaluation.
-		policyCtx, cancelPolicy := context.WithTimeout(context.WithoutCancel(ctx), 50*time.Millisecond)
-		defer cancelPolicy()
+		// Generated tables have bounded inputs and interpreter work. A wall
+		// timer here misclassified valid evidence when the host was descheduled.
+		policyCtx := context.WithoutCancel(ctx)
 		evaluated, err := opaDecision(policyCtx, e.queries[req.Policy.Profile], s)
 		if err != nil {
+			slog.ErrorContext(policyCtx, "policy evaluation failed", "profile", req.Policy.Profile, "error", err, "context_error", policyCtx.Err())
 			outcome = Indeterminate
 			policyFailed = true
 		} else {

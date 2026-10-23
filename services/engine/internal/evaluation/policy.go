@@ -2,10 +2,13 @@ package evaluation
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"github.com/open-policy-agent/opa/v1/rego"
 	"strings"
 	"sync"
+
+	"github.com/open-policy-agent/opa/v1/rego"
+	"github.com/open-policy-agent/opa/v1/topdown"
 )
 
 // GenerateRego only accepts the bounded decision-table contract. User supplied
@@ -63,8 +66,65 @@ func reference(profile string, s []int) string {
 	}
 	return Verified
 }
+
+// Only the generated, pure decision tables and three bounded state values reach
+// this interpreter. Bound computation rather than elapsed scheduler time: a VM
+// pause must not change the outcome of already collected valid observations.
+// This is not a wall-latency guarantee; actual elapsed time remains measured.
+const policyEventBudget = 4096
+
+var errPolicyBudget = errors.New("policy evaluation event budget exhausted")
+
+type policyBudget struct {
+	limit, events int
+	cancel        topdown.Cancel
+	exhausted     bool
+}
+
+func (*policyBudget) Enabled() bool               { return true }
+func (*policyBudget) Config() topdown.TraceConfig { return topdown.TraceConfig{} }
+func (b *policyBudget) TraceEvent(topdown.Event) {
+	b.events++
+	if b.events > b.limit {
+		b.exhausted = true
+		b.cancel.Cancel()
+	}
+}
+
 func opaDecision(ctx context.Context, q rego.PreparedEvalQuery, s []int) (string, error) {
-	r, err := q.Eval(ctx, rego.EvalInput(map[string]any{"states": s}))
+	return opaDecisionWithBudget(ctx, q, s, policyEventBudget)
+}
+
+func opaDecisionWithBudget(ctx context.Context, q rego.PreparedEvalQuery, s []int, limit int) (string, error) {
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
+	if len(s) != 3 {
+		return "", fmt.Errorf("policy input requires exactly three states")
+	}
+	for _, state := range s {
+		if state < 0 || state > 3 {
+			return "", fmt.Errorf("policy state outside bounded domain")
+		}
+	}
+	if limit <= 0 {
+		return "", errPolicyBudget
+	}
+	cancellation := topdown.NewCancel()
+	// External cancellation avoids OPA's per-call waiter goroutine. AfterFunc
+	// remains effective for direct callers with cancellable contexts and is
+	// stopped on every return; engine finalization intentionally detaches from
+	// the disconnected HTTP caller after billable work has started.
+	stopCancellation := context.AfterFunc(ctx, cancellation.Cancel)
+	defer stopCancellation()
+	budget := &policyBudget{limit: limit, cancel: cancellation}
+	r, err := q.Eval(ctx, rego.EvalInput(map[string]any{"states": s}), rego.EvalExternalCancel(cancellation), rego.EvalQueryTracer(budget))
+	if budget.exhausted {
+		return "", errPolicyBudget
+	}
+	if contextErr := ctx.Err(); contextErr != nil {
+		return "", contextErr
+	}
 	if err != nil {
 		return "", err
 	}
@@ -74,6 +134,9 @@ func opaDecision(ctx context.Context, q rego.PreparedEvalQuery, s []int) (string
 	v, ok := r[0].Expressions[0].Value.(string)
 	if !ok {
 		return "", fmt.Errorf("invalid policy output")
+	}
+	if v != Verified && v != Additional && v != Indeterminate {
+		return "", fmt.Errorf("policy outcome outside bounded domain")
 	}
 	return v, nil
 }

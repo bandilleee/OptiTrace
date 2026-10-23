@@ -1,0 +1,4 @@
+=== RUN   TestPolicyFinalizationUnderCPUQuota
+--- PASS: TestPolicyFinalizationUnderCPUQuota (0.16s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	0.393s

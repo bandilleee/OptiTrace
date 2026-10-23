@@ -1,0 +1,8 @@
+=== RUN   TestExhaustivePolicyAndStopping
+--- PASS: TestExhaustivePolicyAndStopping (0.02s)
+=== RUN   TestPolicyFinalizationUnderCPUQuota
+--- PASS: TestPolicyFinalizationUnderCPUQuota (0.14s)
+=== RUN   TestPreparedPolicyRecoversAfterCancellation
+--- PASS: TestPreparedPolicyRecoversAfterCancellation (0.02s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	0.298s
