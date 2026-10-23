@@ -2,7 +2,7 @@
   "task_id": "release-next",
   "status": "passed",
   "input_commit": "0936c8bd8e2e297993e9a104224a6d4777919a24",
-  "summary": "Offline Google/GCP readiness prepared and validated; hosted release HOLD pending concrete project/billing approval and real acceptance. No cloud writes.",
+  "summary": "Offline Google/GCP readiness prepared and validated; workflow hardcoded to staging-only/no promotion with explicit OptiTrace project binding. Hosted release HOLD; no cloud writes.",
   "changed_paths": [
     ".github/workflows/ci.yml",
     ".github/workflows/release.yml",
@@ -62,6 +62,11 @@
     },
     {
       "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "Verify staging-only workflow/project binding and reparse changed PowerShell; rerun actionlint after integrator guard requirement",
       "exit_code": 0,
       "evidence": "docs/evidence/release-next-checks.log"
     }

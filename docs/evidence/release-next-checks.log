@@ -82,3 +82,6 @@ EXIT_CODE: 0
 
 COMMAND: Test-Json handback against agents/handback.schema.json
 EXIT_CODE: 0
+
+FINAL INTEGRATOR GUARD: workflow environment hardcoded staging, no production selector/traffic promotion/default project mutation, explicit GCP_OPTITRACE_STAGING_PROJECT_ID binding; actionlint rerun and changed PowerShell AST parse both pass.
+EXIT_CODE: 0

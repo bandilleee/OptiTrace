@@ -1,12 +1,7 @@
-name: Stage reviewed Cloud Run candidate
+name: Stage reviewed OptiTrace staging candidate
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: Protected GitHub environment with explicit release approval
-        type: choice
-        options: [staging, production]
-        required: true
       engine_image:
         description: Reviewed engine image with sha256 digest
         type: string
@@ -20,22 +15,22 @@ permissions:
   actions: read
   id-token: write
 concurrency:
-  group: release-${{ inputs.environment }}
+  group: release-staging
   cancel-in-progress: false
 jobs:
   release:
     if: github.ref == 'refs/heads/main'
-    environment: ${{ inputs.environment }}
+    environment: staging
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: pwsh
     env:
-      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      PROJECT_ID: ${{ vars.GCP_OPTITRACE_STAGING_PROJECT_ID }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       RELEASE_SERVICE_ACCOUNT: ${{ vars.GCP_RELEASE_SERVICE_ACCOUNT }}
       REGION: africa-south1
-      RELEASE_ENVIRONMENT: ${{ inputs.environment }}
+      RELEASE_ENVIRONMENT: staging
       ENGINE_IMAGE: ${{ inputs.engine_image }}
       WEB_IMAGE: ${{ inputs.web_image }}
     steps:
@@ -50,7 +45,7 @@ jobs:
           if($passed.Count -eq 0){throw 'This exact commit needs a successful Verify OptiTrace workflow before release.'}
       - name: Check explicit release inputs
         run: |
-          if (-not $env:PROJECT_ID) { throw 'Configure the approved project in the protected environment.' }
+          if ($env:PROJECT_ID -notmatch '^optitrace-(dev|staging)-[a-z0-9-]+$') { throw 'Configure the explicitly approved isolated OptiTrace dev/staging project in GCP_OPTITRACE_STAGING_PROJECT_ID.' }
           if (-not $env:WORKLOAD_IDENTITY_PROVIDER -or -not $env:RELEASE_SERVICE_ACCOUNT) { throw 'Configure Workload Identity Federation in the protected environment.' }
           $prefix = "africa-south1-docker.pkg.dev/$($env:PROJECT_ID)/optitrace-$($env:RELEASE_ENVIRONMENT)/"
           foreach ($image in @($env:ENGINE_IMAGE,$env:WEB_IMAGE)) {
