@@ -1,0 +1,65 @@
+{
+  "status": "implementation and scoped validation complete",
+  "input_commit": "0936c8bd8e2e297993e9a104224a6d4777919a24",
+  "implementation_commit": "13ad5fbc50f87f196b326483bd87f524fcd5aa92",
+  "worktree": "C:/Users/bandi/.codex/worktrees/evaluator-reliability/OptiTrace",
+  "source_paths": [
+    "services/engine/internal/evaluation/engine.go",
+    "services/engine/internal/evaluation/policy.go",
+    "services/engine/internal/evaluation/reliability_test.go"
+  ],
+  "evidence_prefix": "docs/evidence/reliability-next",
+  "checks": [
+    {
+      "command": "go test ./internal/evaluation -count=1 -v",
+      "evidence": "docs/evidence/reliability-next-go-evaluation.log",
+      "exit_code": 0
+    },
+    {
+      "command": "go vet ./internal/evaluation",
+      "evidence": "docs/evidence/reliability-next-vet.log",
+      "exit_code": 0
+    },
+    {
+      "command": "go test ./internal/evaluation -run ^$ -fuzz ^FuzzStoppingProof$ -fuzztime=5s",
+      "evidence": "docs/evidence/reliability-next-fuzz.log",
+      "exit_code": 0,
+      "executions": 83163
+    },
+    {
+      "command": "docker run CPU0.1 static Linux TestPolicyFinalizationUnderCPUQuota before",
+      "evidence": "docs/evidence/reliability-next-linux-before.log",
+      "exit_code": 1,
+      "expected_diagnostic_failure": true
+    },
+    {
+      "command": "docker run CPU0.1 static Linux TestPolicyFinalizationUnderCPUQuota after",
+      "samples": 1000,
+      "exit_code": 0,
+      "evidence": "docs/evidence/reliability-next-linux-after.log"
+    },
+    {
+      "command": "docker run isolated builder gcc musl go test -race ./internal/evaluation -count=1 -v",
+      "evidence": "docs/evidence/reliability-next-linux-race.log",
+      "exit_code": 0
+    },
+    {
+      "exit_code": 0,
+      "command": "git diff --check"
+    }
+  ],
+  "invariants": [
+    "OPA executes final policy for both opa and optitrace",
+    "No observation cache or runtime LLM",
+    "Every started billable call retains its charge",
+    "Required work and distinct source states preserved",
+    "No shared contract, authorization, storage or cloud changes",
+    "Main API/worker never restarted by this lane"
+  ],
+  "known_limitations": [
+    "Historical generic errors cannot be forensically attributed without the swallowed original OPA error",
+    "Computation event budget is valid for current bounded pure generated tables, not arbitrary executable Rego or external builtins",
+    "CPU-quota correctness does not establish500ms API latency; integrated controlled performance remains separate",
+    "Hosted Google, cloud deployment and whole-application acceptance are outside this lane"
+  ]
+}

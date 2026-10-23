@@ -28,6 +28,8 @@ All 128 supported partial/terminal states across both profiles require at most *
 - `go vet ./internal/evaluation`: exit 0. [Log](reliability-next-vet.log).
 - Same Linux 0.1 CPU regression, same simulator-free virtual observations and 1,000 alternating complete/conditional and OPA/OptiTrace samples: before exit 1 on sample zero; after exit 0, 1,000 correct decisions, 2.16 s test wall time. [After log](reliability-next-linux-after.log).
 - Unrestricted Windows 1,000-sample and concurrent cancellation/recovery checks: exit 0. [Log](reliability-next-windows-after.log).
+- Full Linux `go test -race ./internal/evaluation -count=1 -v`, including all existing and new evaluation tests: exit 0, 4.830 s test execution, no race report. Used the existing local Go 1.26.10 builder image, installed GCC/musl in the throwaway container and mounted engine source read-only. [Log](reliability-next-linux-race.log).
+- Bounded five-second stopping-proof fuzz run: exit 0, 83,163 executions. [Log](reliability-next-fuzz.log).
 
 The quota test validates correct decisions under scheduler pressure, **not** a 500 ms API latency SLA. Virtual supplier latency/cost fields are simulation outputs; test wall time is separately reported. Controlled authenticated API performance, whole-application acceptance, real Google-provider validation and cloud release remain separate integration gates. No cloud resource or main running service was mutated by this lane.
 
@@ -53,3 +55,14 @@ docker run --rm --cpus=0.1 `
 ```
 
 The ignored `.test` executable is not part of the commit. The before diagnostic used the input implementation plus structured error logging and the same regression test; no increased timeout or restart was used to pass it.
+
+Linux race command, from this worktree root:
+
+```powershell
+docker run --rm --name optitrace-opa-race --entrypoint sh `
+  --mount 'type=bind,source=C:/Users/bandi/.codex/worktrees/evaluator-reliability/OptiTrace/services/engine,target=/src,readonly' `
+  --workdir /src optitrace-engine-builder:local `
+  -c 'apk add --no-cache gcc musl-dev >/dev/null && go test -race ./internal/evaluation -count=1 -v'
+```
+
+No main-service image was replaced by this diagnostic container. It was removed automatically after exit; controlled integration performance can proceed without this lane's compiler/test load.

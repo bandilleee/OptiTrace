@@ -1,0 +1,70 @@
+=== RUN   TestExhaustivePolicyAndStopping
+--- PASS: TestExhaustivePolicyAndStopping (0.15s)
+=== RUN   TestPlans
+    evaluation_test.go:101: synthetic tuning plan profile=complete plan=number_verification+sim_swap+device_swap estimated_cost_microrand=6900.00 estimated_tail_ms=30.00
+    evaluation_test.go:101: synthetic tuning plan profile=conditional plan=number_verification -> sim_swap -> device_swap estimated_cost_microrand=4850.00 estimated_tail_ms=60.00
+--- PASS: TestPlans (0.01s)
+=== RUN   TestAllStrategiesScenarios
+--- PASS: TestAllStrategiesScenarios (0.05s)
+=== RUN   TestFreshnessScopeEvents
+=== RUN   TestFreshnessScopeEvents/inclusive
+=== RUN   TestFreshnessScopeEvents/stale
+=== RUN   TestFreshnessScopeEvents/old
+=== RUN   TestFreshnessScopeEvents/future_source
+=== RUN   TestFreshnessScopeEvents/future_event
+=== RUN   TestFreshnessScopeEvents/scope
+=== RUN   TestFreshnessScopeEvents/subject
+--- PASS: TestFreshnessScopeEvents (0.00s)
+    --- PASS: TestFreshnessScopeEvents/inclusive (0.00s)
+    --- PASS: TestFreshnessScopeEvents/stale (0.00s)
+    --- PASS: TestFreshnessScopeEvents/old (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_source (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_event (0.00s)
+    --- PASS: TestFreshnessScopeEvents/scope (0.00s)
+    --- PASS: TestFreshnessScopeEvents/subject (0.00s)
+=== RUN   TestExplicitFailureSemantics
+--- PASS: TestExplicitFailureSemantics (0.00s)
+=== RUN   TestCancellationChargesStarted
+--- PASS: TestCancellationChargesStarted (0.03s)
+=== RUN   TestDistinctHTTPFaults
+--- PASS: TestDistinctHTTPFaults (0.35s)
+=== RUN   TestNoCrossRequestReuse
+--- PASS: TestNoCrossRequestReuse (0.08s)
+=== RUN   TestInjectedIdentityTransport
+--- PASS: TestInjectedIdentityTransport (0.05s)
+=== RUN   TestInvalidEvidenceNeverBecomesClear
+--- PASS: TestInvalidEvidenceNeverBecomesClear (0.02s)
+=== RUN   TestAdversarialJointDistributionsAgainstAllStrategies
+--- PASS: TestAdversarialJointDistributionsAgainstAllStrategies (1.00s)
+=== RUN   TestBenchmarkReproducibilityBoundsAndLabels
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:complete Baseline:full_parallel PairedCostDifference:0 Lower95:0 Upper95:0 SavingsFraction:0 CorrectnessPassed:true LatencyPassed:true ResearchTargetPassed:false Status:synthetic target not established}
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:conditional Baseline:full_parallel PairedCostDifference:-300 Lower95:-300 Upper95:-300 SavingsFraction:-0.043478260869565216 CorrectnessPassed:true LatencyPassed:false ResearchTargetPassed:false Status:synthetic target not established}
+--- PASS: TestBenchmarkReproducibilityBoundsAndLabels (0.59s)
+=== RUN   TestJournalFailurePreventsSourceCall
+--- PASS: TestJournalFailurePreventsSourceCall (0.02s)
+=== RUN   TestJournalPairsEveryStartedSource
+--- PASS: TestJournalPairsEveryStartedSource (0.06s)
+=== RUN   TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls
+--- PASS: TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls (0.04s)
+=== RUN   TestPolicyFinalizationUnderCPUQuota
+--- PASS: TestPolicyFinalizationUnderCPUQuota (1.06s)
+=== RUN   TestPolicyInputAndBudgetBoundaries
+--- PASS: TestPolicyInputAndBudgetBoundaries (0.01s)
+=== RUN   TestExhaustivePolicyEventBudgetHeadroom
+    reliability_test.go:83: all 128 partial/terminal profile states: max_events=121 budget=4096 headroom=33.9x
+--- PASS: TestExhaustivePolicyEventBudgetHeadroom (0.05s)
+=== RUN   TestPolicyBudgetFailureRetainsChargedEvidence
+2026/10/23 00:11:35 ERROR policy evaluation failed profile=complete error="policy evaluation event budget exhausted" context_error=<nil>
+--- PASS: TestPolicyBudgetFailureRetainsChargedEvidence (0.06s)
+=== RUN   TestDisconnectedCallerRetainsCompletedOPADecision
+--- PASS: TestDisconnectedCallerRetainsCompletedOPADecision (0.08s)
+=== RUN   TestPreparedPolicyRecoversAfterCancellation
+--- PASS: TestPreparedPolicyRecoversAfterCancellation (0.05s)
+=== RUN   FuzzStoppingProof
+=== RUN   FuzzStoppingProof/seed#0
+=== RUN   FuzzStoppingProof/seed#1
+--- PASS: FuzzStoppingProof (0.00s)
+    --- PASS: FuzzStoppingProof/seed#0 (0.00s)
+    --- PASS: FuzzStoppingProof/seed#1 (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	4.830s
