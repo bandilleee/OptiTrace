@@ -25,6 +25,17 @@
       "cwd": "services/engine",
       "exit_code": 0,
       "evidence": "empty successful output"
+    },
+    {
+      "command": "./docs/evidence/acceptance-next-rerun.ps1",
+      "exit_code": 0,
+      "evidence": "acceptance-next-rerun-controller.log"
+    },
+    {
+      "command": "go test -overlay ../../.artifacts/acceptance-next/overlay.json -count=2 -timeout 90s -v ./internal/server -run TestIndependentAcceptanceWorkflow",
+      "cwd": "services/engine",
+      "exit_code": 0,
+      "evidence": "acceptance-next-repeated-workflow.log"
     }
   ],
   "database": "Dedicated optitrace-acceptance-next:55433 only; synthetic data",
@@ -36,7 +47,9 @@
     "docs/evidence/acceptance-next-workflow.log",
     "docs/evidence/acceptance-next.md",
     "docs/evidence/acceptance-next-handback.json",
-    "docs/evidence/acceptance-next-rerun.ps1"
+    "docs/evidence/acceptance-next-rerun.ps1",
+    "docs/evidence/acceptance-next-repeated-workflow.log",
+    "docs/evidence/acceptance-next-rerun-controller.log"
   ],
   "limitations": [
     "No main-stack restarts or cloud writes",
