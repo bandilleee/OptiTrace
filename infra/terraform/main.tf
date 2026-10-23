@@ -1,6 +1,8 @@
 locals {
   name = "optitrace-${var.environment}"
   apis = toset(["run.googleapis.com", "sqladmin.googleapis.com", "identitytoolkit.googleapis.com", "secretmanager.googleapis.com", "artifactregistry.googleapis.com", "cloudscheduler.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com", "sts.googleapis.com", "monitoring.googleapis.com", "logging.googleapis.com", "billingbudgets.googleapis.com"])
+  # Direct submissions launch immediately; the scheduler only recovers missed/expired work.
+  recovery_schedule = var.environment == "production" ? "* * * * *" : "*/15 * * * *"
   common_env = {
     APP_ENV              = "production"
     AUTH_MODE            = "google"
@@ -394,6 +396,10 @@ resource "google_cloud_run_v2_job" "migration" {
         image   = var.engine_image
         command = ["/app/migrate"]
         env {
+          name  = "APP_ENV"
+          value = "production"
+        }
+        env {
           name = "DATABASE_URL"
           value_source {
             secret_key_ref {
@@ -436,7 +442,7 @@ resource "google_cloud_run_v2_job_iam_member" "benchmark_scheduler" {
 resource "google_cloud_scheduler_job" "recover" {
   name      = "${local.name}-recover-benchmarks"
   region    = var.region
-  schedule  = "* * * * *"
+  schedule  = local.recovery_schedule
   time_zone = "Africa/Johannesburg"
   http_target {
     uri         = "https://run.googleapis.com/v2/${google_cloud_run_v2_job.benchmark.id}:run"
@@ -487,9 +493,9 @@ resource "google_iam_workload_identity_pool_provider" "github" {
   workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
   workload_identity_pool_provider_id = "github"
   attribute_mapping = {
-    "google.subject" = "assertion.sub", "attribute.repository" = "assertion.repository"
+    "google.subject" = "assertion.sub", "attribute.repository_id" = "assertion.repository_id", "attribute.repository_owner_id" = "assertion.repository_owner_id"
   }
-  attribute_condition = "assertion.repository == '${var.github_repository}' && assertion.ref == 'refs/heads/main' && assertion.sub == 'repo:${var.github_repository}:environment:${var.environment}'"
+  attribute_condition = "assertion.repository_id == '${var.github_repository_id}' && assertion.repository_owner_id == '${var.github_repository_owner_id}' && assertion.repository == '${var.github_repository}' && assertion.ref == 'refs/heads/main' && assertion.sub == 'repo:${var.github_repository}:environment:${var.environment}'"
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
@@ -497,7 +503,7 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 resource "google_service_account_iam_member" "release_federation" {
   service_account_id = google_service_account.release.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/${var.github_repository}"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository_id/${var.github_repository_id}"
 }
 resource "google_project_iam_member" "release_roles" {
   for_each = toset(["roles/run.developer", "roles/artifactregistry.writer"])

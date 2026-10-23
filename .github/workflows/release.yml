@@ -1,4 +1,4 @@
-name: Reviewed Cloud Run release
+name: Stage reviewed Cloud Run candidate
 on:
   workflow_dispatch:
     inputs:
@@ -15,10 +15,6 @@ on:
         description: Reviewed web image with sha256 digest
         type: string
         required: true
-      promote:
-        description: Promote to 100 percent after migration and smoke checks
-        type: boolean
-        default: false
 permissions:
   contents: read
   actions: read
@@ -36,11 +32,12 @@ jobs:
         shell: pwsh
     env:
       PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      RELEASE_SERVICE_ACCOUNT: ${{ vars.GCP_RELEASE_SERVICE_ACCOUNT }}
       REGION: africa-south1
       RELEASE_ENVIRONMENT: ${{ inputs.environment }}
       ENGINE_IMAGE: ${{ inputs.engine_image }}
       WEB_IMAGE: ${{ inputs.web_image }}
-      PROMOTE: ${{ inputs.promote }}
     steps:
       - uses: actions/checkout@v4
       - name: Require successful CI for this exact commit
@@ -54,6 +51,7 @@ jobs:
       - name: Check explicit release inputs
         run: |
           if (-not $env:PROJECT_ID) { throw 'Configure the approved project in the protected environment.' }
+          if (-not $env:WORKLOAD_IDENTITY_PROVIDER -or -not $env:RELEASE_SERVICE_ACCOUNT) { throw 'Configure Workload Identity Federation in the protected environment.' }
           $prefix = "africa-south1-docker.pkg.dev/$($env:PROJECT_ID)/optitrace-$($env:RELEASE_ENVIRONMENT)/"
           foreach ($image in @($env:ENGINE_IMAGE,$env:WEB_IMAGE)) {
             if (-not $image.StartsWith($prefix) -or $image -notmatch '@sha256:[0-9a-f]{64}$') { throw 'Images must be reviewed digests in the approved environment registry.' }
@@ -63,6 +61,7 @@ jobs:
           workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ vars.GCP_RELEASE_SERVICE_ACCOUNT }}
       - uses: google-github-actions/setup-gcloud@v3
+      # Process-health checks below do not grant authenticated acceptance or traffic promotion.
       - name: Stage revisions and run compatible migrations
         run: |
           $ErrorActionPreference='Stop'
@@ -88,16 +87,18 @@ jobs:
             $response=Invoke-WebRequest "$candidate$path" -TimeoutSec 30
             if($response.StatusCode -ne 200){throw 'Candidate smoke check failed.'}
           }
-          Run-Gcloud @('run','jobs','update',"$name-benchmark",'--image',$env:ENGINE_IMAGE,'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
-          Run-Gcloud @('run','services','update',"$name-simulator",'--image',$env:ENGINE_IMAGE,'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
-          if ($env:PROMOTE -eq 'true') {
-            foreach($service in @('api','web')) {
-              $revision=(Get-Content "$service-candidate.json" -Raw|ConvertFrom-Json).status.latestReadyRevisionName
-              Run-Gcloud @('run','services','update-traffic',"$name-$service",'--to-revisions',"$revision=100",'--project',$env:PROJECT_ID,'--region',$env:REGION,'--quiet')
-            }
-          }
+          # Preserve the serving worker/simulator until authenticated acceptance and a
+          # coordinated promotion are separately reviewed. A job has no no-traffic revision.
+          [pscustomobject]@{
+            commit=$env:GITHUB_SHA; environment=$env:RELEASE_ENVIRONMENT; project=$env:PROJECT_ID;
+            engine_image=$env:ENGINE_IMAGE; web_image=$env:WEB_IMAGE;
+            process_health='passed'; authenticated_acceptance='not_run'; promoted=$false;
+            worker_updated=$false; simulator_updated=$false
+          } | ConvertTo-Json | Set-Content 'release-stage-evidence.json'
+          'Candidate staged only. Follow docs/runbooks/RELEASE.md for authenticated acceptance and separately approved promotion.' | Add-Content $env:GITHUB_STEP_SUMMARY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: release-revision-evidence
           path: '*-*.json'
+          retention-days: 14

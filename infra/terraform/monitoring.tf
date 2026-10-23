@@ -1,8 +1,8 @@
 resource "google_monitoring_alert_policy" "api_latency" {
-  display_name = "${local.name} API warm latency investigation"
+  display_name = "${local.name} API request latency investigation"
   combiner     = "OR"
   documentation {
-    content = "Cloud request p95 exceeded 500ms for five minutes. Inspect cold starts, auth, database and adapter latency. This alert is operational evidence, not a synthetic benchmark certificate."
+    content = "Cloud request p95, including cold requests, exceeded 500ms for five minutes. Inspect cold starts, auth, database and adapter latency. This alert is operational evidence, not a synthetic benchmark certificate."
   }
   conditions {
     display_name = "API p95 above 500ms"
@@ -17,7 +17,7 @@ resource "google_monitoring_alert_policy" "api_latency" {
       }
     }
   }
-  notification_channels = var.budget_notification_channels
+  notification_channels = var.operational_notification_channels
   depends_on            = [google_project_service.api]
 }
 resource "google_monitoring_alert_policy" "api_errors" {
@@ -45,7 +45,7 @@ resource "google_monitoring_alert_policy" "api_errors" {
       }
     }
   }
-  notification_channels = var.budget_notification_channels
+  notification_channels = var.operational_notification_channels
   depends_on            = [google_project_service.api]
 }
 resource "google_logging_metric" "benchmark_failures" {
@@ -74,7 +74,7 @@ resource "google_monitoring_alert_policy" "benchmark_failures" {
       }
     }
   }
-  notification_channels = var.budget_notification_channels
+  notification_channels = var.operational_notification_channels
 }
 resource "google_monitoring_alert_policy" "database_cpu" {
   display_name = "${local.name} database saturation"
@@ -92,6 +92,6 @@ resource "google_monitoring_alert_policy" "database_cpu" {
       }
     }
   }
-  notification_channels = var.budget_notification_channels
+  notification_channels = var.operational_notification_channels
   depends_on            = [google_project_service.api]
 }

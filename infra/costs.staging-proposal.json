@@ -1,0 +1,70 @@
+{
+  "prepared_on": "2026-10-23",
+  "region": "africa-south1",
+  "currency": "USD",
+  "classification": "partial planning estimate, not observed billing or complete quote",
+  "monthly_hours": 730,
+  "free_tier_or_discount_assumed": false,
+  "sources": [
+    {
+      "url": "https://cloud.google.com/sql/pricing",
+      "verified_on": "2026-10-23",
+      "retrieved_page_sha256": "61114977550f76a32c567b006c6e83c371fce9d8a8930ca915da982d9cda275a"
+    },
+    {
+      "url": "https://cloud.google.com/run/pricing",
+      "verified_on": "2026-10-23"
+    },
+    {
+      "url": "https://cloud.google.com/identity-platform/pricing",
+      "verified_on": "2026-10-23"
+    }
+  ],
+  "rates": {
+    "sql_vcpu_hour": 0.0413,
+    "sql_gib_memory_hour": 0.007,
+    "sql_ha_vcpu_hour": 0.0826,
+    "sql_ha_gib_memory_hour": 0.014,
+    "sql_ssd_gib_month": 0.17,
+    "sql_ha_ssd_gib_month": 0.34,
+    "sql_backup_gib_month": 0.08,
+    "run_job_vcpu_second": 1.8e-05,
+    "run_job_gib_second": 2e-06,
+    "google_social_mau_first_50000": 0
+  },
+  "staging": {
+    "sql_vcpu": 1,
+    "sql_memory_gib": 3.75,
+    "sql_ssd_gib": 10,
+    "backup_used_gib_assumption": 10,
+    "recovery_interval_minutes": 15,
+    "recovery_launches_month": 2920,
+    "recovery_minimum_seconds_per_launch": 60,
+    "recovery_worker_vcpu": 1,
+    "recovery_worker_memory_gib": 0.5,
+    "google_social_mau_assumption": 100,
+    "sql_compute_monthly_usd": 49.31,
+    "sql_storage_backup_monthly_usd": 2.5,
+    "scheduled_recovery_monthly_usd": 3.33,
+    "listed_subtotal_monthly_usd": 55.14,
+    "proposed_planning_envelope_usd": 80
+  },
+  "excluded_from_subtotal": [
+    "actual API/web/simulator service workload and requests",
+    "user-triggered benchmark work above scheduled recovery",
+    "scheduler control-plane charges",
+    "Secret Manager operations and active versions",
+    "Artifact Registry and report storage/operations",
+    "telemetry ingestion and retention",
+    "network egress",
+    "restore rehearsal and temporary resources",
+    "taxes and currency conversion"
+  ],
+  "limitations": [
+    "No cloud resources provisioned or billing observed.",
+    "The proposed envelope is not a spend cap or complete cost quote.",
+    "Refresh regional rates and a full calculator export before hosted resource approval.",
+    "Recovery executions over one minute cost more.",
+    "Existing billing-account free tiers are shared and deliberately not assumed."
+  ]
+}

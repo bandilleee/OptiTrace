@@ -18,8 +18,8 @@ variable "app_origin" {
   type        = string
   description = "Exact HTTPS frontend origin registered with Google OAuth; no trailing slash."
   validation {
-    condition     = can(regex("^https://[^/]+$", var.app_origin))
-    error_message = "An exact HTTPS origin is required."
+    condition     = can(regex("^https://([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9]([a-z0-9-]*[a-z0-9])?$", var.app_origin))
+    error_message = "Supply an exact HTTPS DNS origin without path, credentials, port, query, fragment or trailing slash."
   }
 }
 variable "engine_image" {
@@ -68,4 +68,30 @@ variable "monthly_budget_usd" {
 variable "budget_notification_channels" {
   type    = list(string)
   default = []
+}
+
+variable "github_repository_id" {
+  type        = string
+  description = "Immutable numeric GitHub repository ID; never infer it from a reusable name."
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.github_repository_id))
+    error_message = "Supply the positive numeric GitHub repository ID."
+  }
+}
+variable "github_repository_owner_id" {
+  type        = string
+  description = "Immutable numeric GitHub owner ID used to prevent namespace reuse."
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.github_repository_owner_id))
+    error_message = "Supply the positive numeric GitHub owner ID."
+  }
+}
+variable "operational_notification_channels" {
+  type        = list(string)
+  default     = []
+  description = "Verified Monitoring channels for API, SQL and worker incidents; separate from billing contacts."
+  validation {
+    condition     = (var.environment != "production" || length(var.operational_notification_channels) > 0) && alltrue([for channel in var.operational_notification_channels : can(regex("^projects/[^/]+/notificationChannels/[^/]+$", channel))])
+    error_message = "Supply valid Monitoring channel resource names; production requires at least one verified operational recipient."
+  }
 }

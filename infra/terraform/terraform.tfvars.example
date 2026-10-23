@@ -8,3 +8,9 @@ google_client_id           = "your-google-oauth-client-id"
 github_repository          = "your-owner/your-repository"
 # Supply secret variables through TF_VAR_* or an approved secrets workflow.
 # Remote encrypted state and saved plans contain sensitive values; restrict their access.
+
+# Read numeric IDs from the approved repository, e.g. gh api repos/OWNER/REPO --jq '{repository_id: .id, owner_id: .owner.id}'.
+github_repository_id       = "123456789"
+github_repository_owner_id = "12345678"
+# Production requires a verified channel; billing recipients are configured separately.
+operational_notification_channels = []

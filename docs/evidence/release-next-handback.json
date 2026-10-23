@@ -1,0 +1,77 @@
+{
+  "task_id": "release-next",
+  "status": "passed",
+  "input_commit": "0936c8bd8e2e297993e9a104224a6d4777919a24",
+  "summary": "Offline Google/GCP readiness prepared and validated; hosted release HOLD pending concrete project/billing approval and real acceptance. No cloud writes.",
+  "changed_paths": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/release.yml",
+    "docs/evidence/release-next-checks.log",
+    "docs/evidence/release-next-handback.json",
+    "docs/evidence/release-next.md",
+    "docs/runbooks/CLOUD-BOOTSTRAP.md",
+    "docs/runbooks/GOOGLE-ACCEPTANCE.md",
+    "docs/runbooks/RELEASE.md",
+    "infra/costs.staging-proposal.json",
+    "infra/terraform/main.tf",
+    "infra/terraform/monitoring.tf",
+    "infra/terraform/terraform.tfvars.example",
+    "infra/terraform/tests/config.tftest.hcl",
+    "infra/terraform/variables.tf"
+  ],
+  "checks": [
+    {
+      "command": "terraform -chdir=infra/terraform init -backend=false -input=false -lockfile=readonly",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "terraform -chdir=infra/terraform fmt -check -recursive",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "terraform -chdir=infra/terraform validate",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "terraform -chdir=infra/terraform test -no-color",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 -shellcheck= -pyflakes= .github/workflows/ci.yml .github/workflows/release.yml",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "docker compose -f infra/compose.yaml config --quiet",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "go -C services/engine test ./internal/identity -count=1",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "PowerShell AST syntax validation of six release/bootstrap snippets (no execution)",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "docs/evidence/release-next-checks.log"
+    }
+  ],
+  "limitations": [
+    "No approved OptiTrace project or Google client. Only visible billing account is closed.",
+    "No hosted CI/real Google/GCP/WIF/Cloud SQL/restore/notification acceptance.",
+    "Cost proposal is a partial workload estimate, not observed spend or a spending cap.",
+    "Production promotion automation is intentionally unavailable until authenticated evidence gate implementation.",
+    "No dedicated stuck-queue-age alert; production requires resolved monitoring or approved operational control.",
+    "Engine reliability/performance acceptance is outside this task."
+  ]
+}
