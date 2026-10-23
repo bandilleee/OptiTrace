@@ -1,0 +1,140 @@
+?   	github.com/optitrace/optitrace/services/engine/cmd/admin	[no test files]
+?   	github.com/optitrace/optitrace/services/engine/cmd/api	[no test files]
+?   	github.com/optitrace/optitrace/services/engine/cmd/healthcheck	[no test files]
+?   	github.com/optitrace/optitrace/services/engine/cmd/migrate	[no test files]
+?   	github.com/optitrace/optitrace/services/engine/cmd/simulator	[no test files]
+?   	github.com/optitrace/optitrace/services/engine/cmd/worker	[no test files]
+=== RUN   TestExhaustivePolicyAndStopping
+--- PASS: TestExhaustivePolicyAndStopping (0.06s)
+=== RUN   TestPlans
+    evaluation_test.go:101: synthetic tuning plan profile=complete plan=number_verification+sim_swap+device_swap estimated_cost_microrand=6900.00 estimated_tail_ms=30.00
+    evaluation_test.go:101: synthetic tuning plan profile=conditional plan=number_verification -> sim_swap -> device_swap estimated_cost_microrand=4850.00 estimated_tail_ms=60.00
+--- PASS: TestPlans (0.00s)
+=== RUN   TestAllStrategiesScenarios
+--- PASS: TestAllStrategiesScenarios (0.01s)
+=== RUN   TestFreshnessScopeEvents
+=== RUN   TestFreshnessScopeEvents/inclusive
+=== RUN   TestFreshnessScopeEvents/stale
+=== RUN   TestFreshnessScopeEvents/old
+=== RUN   TestFreshnessScopeEvents/future_source
+=== RUN   TestFreshnessScopeEvents/future_event
+=== RUN   TestFreshnessScopeEvents/scope
+=== RUN   TestFreshnessScopeEvents/subject
+--- PASS: TestFreshnessScopeEvents (0.00s)
+    --- PASS: TestFreshnessScopeEvents/inclusive (0.00s)
+    --- PASS: TestFreshnessScopeEvents/stale (0.00s)
+    --- PASS: TestFreshnessScopeEvents/old (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_source (0.00s)
+    --- PASS: TestFreshnessScopeEvents/future_event (0.00s)
+    --- PASS: TestFreshnessScopeEvents/scope (0.00s)
+    --- PASS: TestFreshnessScopeEvents/subject (0.00s)
+=== RUN   TestExplicitFailureSemantics
+--- PASS: TestExplicitFailureSemantics (0.00s)
+=== RUN   TestCancellationChargesStarted
+--- PASS: TestCancellationChargesStarted (0.02s)
+=== RUN   TestDistinctHTTPFaults
+--- PASS: TestDistinctHTTPFaults (0.33s)
+=== RUN   TestNoCrossRequestReuse
+--- PASS: TestNoCrossRequestReuse (0.07s)
+=== RUN   TestInjectedIdentityTransport
+--- PASS: TestInjectedIdentityTransport (0.04s)
+=== RUN   TestInvalidEvidenceNeverBecomesClear
+--- PASS: TestInvalidEvidenceNeverBecomesClear (0.02s)
+=== RUN   TestAdversarialJointDistributionsAgainstAllStrategies
+--- PASS: TestAdversarialJointDistributionsAgainstAllStrategies (0.33s)
+=== RUN   TestBenchmarkReproducibilityBoundsAndLabels
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:complete Baseline:full_parallel PairedCostDifference:0 Lower95:0 Upper95:0 SavingsFraction:0 CorrectnessPassed:true LatencyPassed:true ResearchTargetPassed:false Status:synthetic target not established}
+    evaluation_test.go:336: synthetic held-out comparison: {Measurement:virtual_time_estimate Profile:conditional Baseline:full_parallel PairedCostDifference:-300 Lower95:-300 Upper95:-300 SavingsFraction:-0.043478260869565216 CorrectnessPassed:true LatencyPassed:false ResearchTargetPassed:false Status:synthetic target not established}
+--- PASS: TestBenchmarkReproducibilityBoundsAndLabels (0.55s)
+=== RUN   TestJournalFailurePreventsSourceCall
+--- PASS: TestJournalFailurePreventsSourceCall (0.01s)
+=== RUN   TestJournalPairsEveryStartedSource
+--- PASS: TestJournalPairsEveryStartedSource (0.04s)
+=== RUN   TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls
+--- PASS: TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls (0.02s)
+=== RUN   TestPolicyFinalizationUnderCPUQuota
+--- PASS: TestPolicyFinalizationUnderCPUQuota (0.20s)
+=== RUN   TestPolicyInputAndBudgetBoundaries
+--- PASS: TestPolicyInputAndBudgetBoundaries (0.00s)
+=== RUN   TestExhaustivePolicyEventBudgetHeadroom
+    reliability_test.go:83: all 128 partial/terminal profile states: max_events=121 budget=4096 headroom=33.9x
+--- PASS: TestExhaustivePolicyEventBudgetHeadroom (0.01s)
+=== RUN   TestPolicyBudgetFailureRetainsChargedEvidence
+2026/10/23 02:13:29 ERROR policy evaluation failed profile=complete error="policy evaluation event budget exhausted" context_error=<nil>
+--- PASS: TestPolicyBudgetFailureRetainsChargedEvidence (0.01s)
+=== RUN   TestDisconnectedCallerRetainsCompletedOPADecision
+--- PASS: TestDisconnectedCallerRetainsCompletedOPADecision (0.07s)
+=== RUN   TestPreparedPolicyRecoversAfterCancellation
+--- PASS: TestPreparedPolicyRecoversAfterCancellation (0.02s)
+=== RUN   FuzzStoppingProof
+=== RUN   FuzzStoppingProof/seed#0
+=== RUN   FuzzStoppingProof/seed#1
+--- PASS: FuzzStoppingProof (0.00s)
+    --- PASS: FuzzStoppingProof/seed#0 (0.00s)
+    --- PASS: FuzzStoppingProof/seed#1 (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	2.097s
+=== RUN   TestOIDCExchangeSecurity
+=== RUN   TestOIDCExchangeSecurity/expiration
+=== RUN   TestOIDCExchangeSecurity/issuer
+=== RUN   TestOIDCExchangeSecurity/audience
+--- PASS: TestOIDCExchangeSecurity (0.38s)
+    --- PASS: TestOIDCExchangeSecurity/expiration (0.01s)
+    --- PASS: TestOIDCExchangeSecurity/issuer (0.01s)
+    --- PASS: TestOIDCExchangeSecurity/audience (0.01s)
+=== RUN   TestHostedRejectsMock
+--- PASS: TestHostedRejectsMock (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/identity	1.258s
+=== RUN   TestPostgresAuthenticatedWorkflow
+{"timestamp":"2026-10-23T02:13:37.3967352+02:00","severity":"INFO","msg":"http request","request_id":"IurDyPRsdHnT8gXzsAJ4TnTNZ7i-6c1d3x8z66U4Ib0","method":"GET","path":"/v1/auth/login","elapsed_ms":6690}
+{"timestamp":"2026-10-23T02:13:43.5602495+02:00","severity":"INFO","msg":"http request","request_id":"jz-0aUK1ucGUSI4qtoOJctfGwbJsfvPdcwlvc3g8gBM","method":"GET","path":"/v1/auth/callback","elapsed_ms":6145}
+{"timestamp":"2026-10-23T02:13:43.5870384+02:00","severity":"INFO","msg":"http request","request_id":"fcl_jDyFAXXKbTiYz4XG2UJyFzl1k1vNGh4OSvOjtZ0","method":"GET","path":"/v1/auth/me","elapsed_ms":26}
+{"timestamp":"2026-10-23T02:13:43.6092537+02:00","severity":"INFO","msg":"http request","request_id":"25rpkuWbETCErxjzsz-Z-W4wT6xE66YGOcwhFmTH-Wk","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":20}
+{"timestamp":"2026-10-23T02:13:43.6199722+02:00","severity":"INFO","msg":"http request","request_id":"4-_o0rF7Y1jncHH2xGU5VsTkEkb3h1GH5VZHve7eAn8","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":7}
+{"timestamp":"2026-10-23T02:13:43.6299072+02:00","severity":"INFO","msg":"http request","request_id":"_eVfUMg2tIVI1FlEp0Mj6MDSk02cgCyWd9DeoFoNfYQ","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":9}
+{"timestamp":"2026-10-23T02:13:43.6396407+02:00","severity":"INFO","msg":"http request","request_id":"hk_T-XWG49QQRiH3SqE5AULcPZ2DFfeZLak8TmwIgoI","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":8}
+{"timestamp":"2026-10-23T02:13:43.6490618+02:00","severity":"INFO","msg":"http request","request_id":"MbmTtaM1rckZnI5aFWxa4cGnElk_4wZwU0G51XC5RCI","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":8}
+{"timestamp":"2026-10-23T02:13:43.6573512+02:00","severity":"INFO","msg":"http request","request_id":"1xjnGt84RAe6ES49LvPKTbCyGxCK71-z_xJ_wW_EkmI","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":7}
+{"timestamp":"2026-10-23T02:13:43.6613962+02:00","severity":"INFO","msg":"http request","request_id":"2O05Yb0bNokHwgtghsup50orp3Z1r1JFVmRAEdpvQOs","method":"GET","path":"/v1/tenants/other/policies","elapsed_ms":3}
+{"timestamp":"2026-10-23T02:13:43.6630201+02:00","severity":"INFO","msg":"http request","request_id":"Gg2awUtMnbcrh2rEPYf5CSbr9Xeo7EW6-I4LAVIFhSA","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-23T02:13:46.3687111+02:00","severity":"INFO","msg":"http request","request_id":"J8JlZqxfLdTgGM6z-NNMrhbAHjREOCxTk4TUiTLnIwU","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":2705}
+{"timestamp":"2026-10-23T02:13:46.3765514+02:00","severity":"INFO","msg":"http request","request_id":"hMXjtF2O6_EcedOPw3c6uiY4PFJPs6QVFskElHJkBVU","method":"GET","path":"/v1/auth/login","elapsed_ms":6}
+{"timestamp":"2026-10-23T02:13:46.3996756+02:00","severity":"INFO","msg":"http request","request_id":"PwgaymPAUL5rmrJyPuZ-ycYuxClY_CkkJcqgnFEjlHM","method":"GET","path":"/v1/auth/callback","elapsed_ms":19}
+{"timestamp":"2026-10-23T02:13:46.4070952+02:00","severity":"INFO","msg":"http request","request_id":"d9M61cLRL1Hu2u1-4PoNvhWRych6m6X_IQelERAUyyg","method":"GET","path":"/v1/auth/me","elapsed_ms":6}
+{"timestamp":"2026-10-23T02:13:46.4185126+02:00","severity":"INFO","msg":"http request","request_id":"tu4_GYH792QTEYtC4x4qNUNzq4DHpvGVu1ifpa3xsYA","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":10}
+{"timestamp":"2026-10-23T02:13:46.4585491+02:00","severity":"INFO","msg":"http request","request_id":"TwIcj6t30ISjOyrF_ZLeAaHJ-0LhH_mwqsnpA7yDDIM","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":39}
+{"timestamp":"2026-10-23T02:13:46.4842787+02:00","severity":"INFO","msg":"http request","request_id":"ZYB6nqB0GK7xTaQlt5JggRm1-DgmzFlaiB47ij3U9pg","method":"POST","path":"/v1/tenants/demo/policies/Ts3KsN515W8RMbQW0WBkPzyJpWC1SGWt_SROchxzEZ8/submit","elapsed_ms":25}
+{"timestamp":"2026-10-23T02:13:46.4885741+02:00","severity":"INFO","msg":"http request","request_id":"rxCGTFS6awtUDhdM1ks58ha28C0mtf0VxMDvZHX1WxQ","method":"POST","path":"/v1/tenants/demo/policies/Ts3KsN515W8RMbQW0WBkPzyJpWC1SGWt_SROchxzEZ8/approve","elapsed_ms":3}
+{"timestamp":"2026-10-23T02:13:46.494827+02:00","severity":"INFO","msg":"http request","request_id":"ZbKRRHjzcvuAz_2IykcHyBVPLM37ByEISZPaEMJrEQI","method":"GET","path":"/v1/auth/login","elapsed_ms":5}
+{"timestamp":"2026-10-23T02:13:46.5147325+02:00","severity":"INFO","msg":"http request","request_id":"-OnC69LCki73aaErvMs7Apx7KqGD2gXiSAWrcEdoKPk","method":"GET","path":"/v1/auth/callback","elapsed_ms":17}
+{"timestamp":"2026-10-23T02:13:46.5209293+02:00","severity":"INFO","msg":"http request","request_id":"zllT2HJ0sOy-wHhm3233tV7CKbtAYYdhYMHDnw6F8y4","method":"GET","path":"/v1/auth/me","elapsed_ms":5}
+{"timestamp":"2026-10-23T02:13:46.5496323+02:00","severity":"INFO","msg":"http request","request_id":"VhQPYYzJGGi7iAB_74Lfdsct0G1NeQhEttmdafZMaeY","method":"POST","path":"/v1/tenants/demo/policies/Ts3KsN515W8RMbQW0WBkPzyJpWC1SGWt_SROchxzEZ8/approve","elapsed_ms":28}
+{"timestamp":"2026-10-23T02:13:46.5866844+02:00","severity":"INFO","msg":"http request","request_id":"UeqlERPCoqjbxzE1QyScsvcPhjnxD-c1O4YdcsWpIWw","method":"POST","path":"/v1/tenants/demo/policies/Ts3KsN515W8RMbQW0WBkPzyJpWC1SGWt_SROchxzEZ8/activate","elapsed_ms":36}
+{"timestamp":"2026-10-23T02:13:46.5926932+02:00","severity":"INFO","msg":"http request","request_id":"fcKTO7jtcYOY3DrRsXLjzSrlwHQbPkfuVbnsoJH2DvM","method":"GET","path":"/v1/auth/login","elapsed_ms":5}
+{"timestamp":"2026-10-23T02:13:46.6129567+02:00","severity":"INFO","msg":"http request","request_id":"okUTaOBwztm0lR9gyWM-37xZvjdhRtfoHXPVVsrnjxk","method":"GET","path":"/v1/auth/callback","elapsed_ms":18}
+{"timestamp":"2026-10-23T02:13:46.6179519+02:00","severity":"INFO","msg":"http request","request_id":"res7p6jEuqokXwmcZoqvOOL032Y4Eow4wKu9_hM-nhQ","method":"GET","path":"/v1/auth/me","elapsed_ms":4}
+{"timestamp":"2026-10-23T02:13:46.6235848+02:00","severity":"INFO","msg":"http request","request_id":"9gCGgKtIxl2jsVz_Z9LKNAt60Qs3TQidoAnv487nMQw","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":3}
+{"timestamp":"2026-10-23T02:13:46.6476395+02:00","severity":"INFO","msg":"http request","request_id":"yVk8ljW94HhP1Zkgh4H_DGKTCoQQeDC0a4pOEwialUo","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":22}
+{"timestamp":"2026-10-23T02:13:46.6710284+02:00","severity":"INFO","msg":"http request","request_id":"acYRtblyVTGrx3buO5JlNTdGxxFnO3TTz20EFxqepZg","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":22}
+{"timestamp":"2026-10-23T02:13:46.7637363+02:00","severity":"INFO","msg":"http request","request_id":"DWVI-4M39UqzUZMHFMPae7LCdHoTzkrlQ0I-L-_a9dg","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":91}
+{"timestamp":"2026-10-23T02:13:47.3647674+02:00","severity":"INFO","msg":"http request","request_id":"jzRd0f-xH__YhsSQjWKZjgwFBtllyoDaZvh80zdzdKs","method":"GET","path":"/v1/tenants/demo/benchmarks/mSkijmtvDf3sJM99P2fcmg8HPibFZrWzeifGuAxZlgE/export","elapsed_ms":14}
+{"timestamp":"2026-10-23T02:13:47.6317592+02:00","severity":"INFO","msg":"http request","request_id":"aKQK-BDoljIhIMqzzasyIN3YLs1Q9--sjp-s5P0o3A8","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":186}
+{"timestamp":"2026-10-23T02:13:47.6734098+02:00","severity":"INFO","msg":"http request","request_id":"gozghgECgcxzAm6RfWQSLRgzBPH2sRO-LEEZg9zMoMc","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":19}
+{"timestamp":"2026-10-23T02:13:47.6851693+02:00","severity":"INFO","msg":"http request","request_id":"8RpG3gONRRjnzZufGxAn67NxmjNzktx8DW9fvrDgi9Y","method":"GET","path":"/v1/tenants/demo/evaluations/attempt-FX-wEausBnkvK2D2umFFarJ163sYFssO09vdGZ_xgY8","elapsed_ms":11}
+{"timestamp":"2026-10-23T02:13:47.6993743+02:00","severity":"INFO","msg":"http request","request_id":"SLymr8VU3qcI66U2ba1m2ChAH27-wD-7CvCE8hZbCP8","method":"GET","path":"/v1/auth/me","elapsed_ms":7}
+{"timestamp":"2026-10-23T02:13:47.7065316+02:00","severity":"INFO","msg":"http request","request_id":"PeFNyBPxvGXbC4ud1KWfYBhYNsALjyUv18L0SGdLG94","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-23T02:13:47.7103486+02:00","severity":"INFO","msg":"http request","request_id":"FJBfkUoFErDoEuYGRMsXQjHm6YsGxwZsQokRWSyUMD8","method":"POST","path":"/v1/auth/logout","elapsed_ms":3}
+{"timestamp":"2026-10-23T02:13:47.7103486+02:00","severity":"INFO","msg":"http request","request_id":"HrP1QopN2mZMMLkmEjVw7MsTXWTvDJnEFba163ZQgE4","method":"GET","path":"/v1/auth/me","elapsed_ms":0}
+--- PASS: TestPostgresAuthenticatedWorkflow (17.83s)
+=== RUN   TestResourceNameValidation
+--- PASS: TestResourceNameValidation (0.00s)
+=== RUN   TestInvitationEmailValidation
+--- PASS: TestInvitationEmailValidation (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/server	18.030s
+=== RUN   TestApplicationRoleHardening
+--- PASS: TestApplicationRoleHardening (16.42s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/storage	16.683s
+?   	github.com/optitrace/optitrace/services/engine/internal/storage/dbgen	[no test files]

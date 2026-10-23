@@ -1,6 +1,6 @@
 {
   "input_commit": "0936c8bd8e2e297993e9a104224a6d4777919a24",
-  "verdict": "PASS scoped local checks; HOLD release and unresolved evaluator reliability",
+  "verdict": "PASS local security/recovery and exact evaluator repair; HOLD release for separate performance/hosted Google/cloud gates",
   "owner": "independent acceptance",
   "commands": [
     {
@@ -36,6 +36,23 @@
       "cwd": "services/engine",
       "exit_code": 0,
       "evidence": "acceptance-next-repeated-workflow.log"
+    },
+    {
+      "command": "go test -count=1 -v ./...",
+      "cwd": "services/engine",
+      "evaluator_revision": "13ad5fb",
+      "exit_code": 0,
+      "evidence": "acceptance-next-recheck-go-tests.log"
+    },
+    {
+      "command": "./docs/evidence/acceptance-next-rerun.ps1",
+      "evaluator_revision": "13ad5fb",
+      "exit_code": 0,
+      "evidence": "acceptance-next-recheck-controller.log"
+    },
+    {
+      "command": "git diff --exit-code 13ad5fb -- services/engine/internal/evaluation",
+      "exit_code": 0
     }
   ],
   "database": "Dedicated optitrace-acceptance-next:55433 only; synthetic data",
@@ -49,14 +66,25 @@
     "docs/evidence/acceptance-next-handback.json",
     "docs/evidence/acceptance-next-rerun.ps1",
     "docs/evidence/acceptance-next-repeated-workflow.log",
-    "docs/evidence/acceptance-next-rerun-controller.log"
+    "docs/evidence/acceptance-next-rerun-controller.log",
+    "docs/evidence/acceptance-next-recheck.md",
+    "docs/evidence/acceptance-next-recheck-go-tests.log",
+    "docs/evidence/acceptance-next-recheck-controller.log"
   ],
   "limitations": [
     "No main-stack restarts or cloud writes",
     "No browser rerun in this lane",
     "No fresh Linux race/performance/soak acceptance",
     "Hosted Google and cloud release not exercised",
-    "Evaluator repair re-audit pending"
+    "Recheck did not independently rerun Linux CPU-quota/race tests or long-duration hosted soak"
   ],
-  "finding": "P3 contracts/AUTHORIZATION.md:41 normalized-strategy hashing documentation drift"
+  "finding": "P3 contracts/AUTHORIZATION.md:41 normalized-strategy hashing documentation drift",
+  "recheck": {
+    "evaluator_candidate": "13ad5fbc50f87f196b326483bd87f524fcd5aa92",
+    "parent_integrated_revision": "9f57e57",
+    "isolated_source_cherry_pick": "d374e1c",
+    "source_diff_exit_code": 0,
+    "verdict": "PASS exact evaluator repair and local authorization/recovery recheck",
+    "report": "docs/evidence/acceptance-next-recheck.md"
+  }
 }
