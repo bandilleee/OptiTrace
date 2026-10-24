@@ -1,0 +1,39 @@
+=== RUN   TestIndependentAcceptanceWorkflow
+{"timestamp":"2026-10-23T02:38:04.6356112+02:00","severity":"INFO","msg":"http request","request_id":"OP_w4Cvhz05pc7kQlMTrtLeqXPvoEPls_O3sqjVRWgA","method":"GET","path":"/v1/auth/login","elapsed_ms":269}
+{"timestamp":"2026-10-23T02:38:05.2649902+02:00","severity":"INFO","msg":"http request","request_id":"MWp_3RR6FO_QFXiNGLgqyyoVvd3vDUSdhYwCthUkN0Q","method":"GET","path":"/v1/auth/callback","elapsed_ms":619}
+{"timestamp":"2026-10-23T02:38:05.3901632+02:00","severity":"INFO","msg":"http request","request_id":"rJ6nvn5Ek1s43pYaRomw5jW-H9xqB4_Vk42oP3K_5qI","method":"GET","path":"/v1/auth/me","elapsed_ms":124}
+{"timestamp":"2026-10-23T02:38:05.4954982+02:00","severity":"INFO","msg":"http request","request_id":"UtqQRa8vVX5_lO9mG-MSSRxtXyITTuPN89iCTw4fh8w","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":104}
+{"timestamp":"2026-10-23T02:38:05.5520059+02:00","severity":"INFO","msg":"http request","request_id":"48Flr_I4toML9_ulu22ldNVHXozcJs7J1bR03e-9cyA","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":53}
+{"timestamp":"2026-10-23T02:38:05.5817845+02:00","severity":"INFO","msg":"http request","request_id":"C1BAEd_rFn1oIumB7-6HPvfgFDUxp8EGyg9BoiM3WFQ","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":27}
+{"timestamp":"2026-10-23T02:38:05.6118149+02:00","severity":"INFO","msg":"http request","request_id":"J4XVpBDjlm5kHJG8cioIrsP97f7f_VNFnWLHUToE4zY","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":29}
+{"timestamp":"2026-10-23T02:38:05.638914+02:00","severity":"INFO","msg":"http request","request_id":"ufhtqz3lIRqxLtNTSsmsmwC9cHcTF941x6coIf8yJUs","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":26}
+{"timestamp":"2026-10-23T02:38:05.7022026+02:00","severity":"INFO","msg":"http request","request_id":"Qd8mRELWHawxtqdCJKPUAMtSq_zESENNJtI89KiSpp0","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":62}
+{"timestamp":"2026-10-23T02:38:05.7403538+02:00","severity":"INFO","msg":"http request","request_id":"UK13RJXVewnac5hx7T7NPF5bHPwqp1g300sr1MBtdf4","method":"GET","path":"/v1/tenants/other/policies","elapsed_ms":37}
+{"timestamp":"2026-10-23T02:38:05.7493498+02:00","severity":"INFO","msg":"http request","request_id":"tkD12vVUKDe0GYisOapNNOkoOP3ehGSzA2TUbv5JobM","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":8}
+{"timestamp":"2026-10-23T02:38:08.4690937+02:00","severity":"INFO","msg":"http request","request_id":"-4-YTWwnWCneiKzl8DqmF5Ylh16e0GzpMIul_VdBNu4","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":2711}
+{"timestamp":"2026-10-23T02:38:09.0995993+02:00","severity":"INFO","msg":"http request","request_id":"ekt01ScafbIkQSLJ3cw4eHr2wxj81CRPdkrWtOQXF8g","method":"GET","path":"/v1/auth/login","elapsed_ms":628}
+{"timestamp":"2026-10-23T02:38:10.092573+02:00","severity":"INFO","msg":"http request","request_id":"9pdtkX2k10iTzUyGVCnjv1HtFxTTJ6-5PHj3q8y3HLo","method":"GET","path":"/v1/auth/callback","elapsed_ms":988}
+{"timestamp":"2026-10-23T02:38:10.1251346+02:00","severity":"INFO","msg":"http request","request_id":"p4pHvlYY-uZpePjilS24CGm1biwz0fZ86R02mb3rd8M","method":"GET","path":"/v1/auth/me","elapsed_ms":31}
+{"timestamp":"2026-10-23T02:38:10.1583433+02:00","severity":"INFO","msg":"http request","request_id":"gVezuT2DJSuErvuYeujggWmjOB6r0xmGss-lA6K0SB4","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":32}
+{"timestamp":"2026-10-23T02:38:10.9725914+02:00","severity":"INFO","msg":"http request","request_id":"0N3w7sE_2shMN5E51nNEwIce_RkBQq9EgZgFa-JyoDg","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":795}
+{"timestamp":"2026-10-23T02:38:11.5835284+02:00","severity":"INFO","msg":"http request","request_id":"_dhV8kQXLQnLJQlUOdHkJuX4Z_hu3XTptNpZn5NvUns","method":"POST","path":"/v1/tenants/demo/policies/_ZJ24vIbngbs_61rchODs89AuhIyKuazsdCsOYpLGq8/submit","elapsed_ms":610}
+{"timestamp":"2026-10-23T02:38:11.6242852+02:00","severity":"INFO","msg":"http request","request_id":"h1jmDs3uPiMUH-_5AMwIrK7rLIY65QfzyWCx8raPLBg","method":"POST","path":"/v1/tenants/demo/policies/_ZJ24vIbngbs_61rchODs89AuhIyKuazsdCsOYpLGq8/approve","elapsed_ms":39}
+{"timestamp":"2026-10-23T02:38:12.4771958+02:00","severity":"INFO","msg":"http request","request_id":"-5doZLquTx8p7kHn29INVkJwsN6UFkHT13rsrVbHmVE","method":"GET","path":"/v1/auth/login","elapsed_ms":851}
+{"timestamp":"2026-10-23T02:38:15.2628002+02:00","severity":"INFO","msg":"http request","request_id":"dWvkQ5Wib-Toysx0PkTAtZvllBAUxoTpxswer5cjVpI","method":"GET","path":"/v1/auth/callback","elapsed_ms":2779}
+{"timestamp":"2026-10-23T02:38:15.2750183+02:00","severity":"INFO","msg":"http request","request_id":"41ry9YIc_DEB1oT5WsqNXTtx71G_DOcH4qJ5CNfPQX4","method":"GET","path":"/v1/auth/me","elapsed_ms":11}
+{"timestamp":"2026-10-23T02:38:53.6630239+02:00","severity":"INFO","msg":"http request","request_id":"Q1JZxr6BDWf3jOsWfsGDp-HeqD-GCitjNWGoxHpOVCU","method":"POST","path":"/v1/tenants/demo/policies/_ZJ24vIbngbs_61rchODs89AuhIyKuazsdCsOYpLGq8/approve","elapsed_ms":38387}
+{"timestamp":"2026-10-23T02:38:55.0273897+02:00","severity":"INFO","msg":"http request","request_id":"4FqxUOhqbqirMv8vbHBIX2R6u0NXIR-cAvOLbSgrGV4","method":"POST","path":"/v1/tenants/demo/policies/_ZJ24vIbngbs_61rchODs89AuhIyKuazsdCsOYpLGq8/activate","elapsed_ms":1362}
+{"timestamp":"2026-10-23T02:38:56.1847135+02:00","severity":"INFO","msg":"http request","request_id":"N4cmzoxL1txtyyuO7vJRV96Qlj_1k1GY45rcRg-R4rQ","method":"GET","path":"/v1/auth/login","elapsed_ms":1156}
+{"timestamp":"2026-10-23T02:38:57.7593672+02:00","severity":"INFO","msg":"http request","request_id":"okE5SugGflFS5NyDfRbepFRZ9D_3m-6vOLioRUB7NIw","method":"GET","path":"/v1/auth/callback","elapsed_ms":1402}
+{"timestamp":"2026-10-23T02:38:57.8583249+02:00","severity":"INFO","msg":"http request","request_id":"behZ5uW9jWZqA3J7RRZITNGAnCrD95jsxXjW3GDrGZs","method":"GET","path":"/v1/auth/me","elapsed_ms":29}
+{"timestamp":"2026-10-23T02:38:57.8680061+02:00","severity":"INFO","msg":"http request","request_id":"IuvlwU2BBpxcAfKQbd9sK2rl0Ty5QaQm6Pyapn4cZlQ","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":4}
+{"timestamp":"2026-10-23T02:38:58.1879457+02:00","severity":"INFO","msg":"http request","request_id":"9fxp1sbynu__lybxlLG1xzxg3ZABRDZs4ThxZc5GW3s","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":319}
+{"timestamp":"2026-10-23T02:38:58.4223758+02:00","severity":"INFO","msg":"http request","request_id":"ADC9nRBaL4TsAVwJXAm9PwM2gvydDpsQFrkLxcMoL8A","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":234}
+{"timestamp":"2026-10-23T02:38:58.8337798+02:00","severity":"INFO","msg":"http request","request_id":"vzDmpl5V7lRXEryGFn5Ar2NJu171dd13WvwO49V-Od4","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":418}
+{"timestamp":"2026-10-23T02:39:01.1365586+02:00","severity":"INFO","msg":"http request","request_id":"vCUXkq1Y9xj1QFJhbcaIjNTSQsaqI1ZUGtLqj3HRcmQ","method":"GET","path":"/v1/tenants/demo/benchmarks/RDL_4vPkah3AQu04SmphiPGLkzuNI1i9Q1m8xSfR7YY/export","elapsed_ms":50}
+    integration_test.go:302: disconnected evaluation trace was lost
+{"timestamp":"2026-10-23T02:39:11.078628+02:00","severity":"INFO","msg":"http request","request_id":"g9rBNvvKiMz3OAJcM2xTepIAHe8Zni4T--yhzuOyT4s","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":8903}
+--- FAIL: TestIndependentAcceptanceWorkflow (69.52s)
+FAIL
+FAIL	github.com/optitrace/optitrace/services/engine/internal/server	70.461s
+FAIL

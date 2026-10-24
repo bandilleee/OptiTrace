@@ -1,0 +1,23 @@
+
+> optitrace-web@0.1.0 typecheck
+> tsc --noEmit
+
+
+> optitrace-web@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Projects/OptiTrace/apps/web
+
+
+ Test Files  3 passed (3)
+      Tests  13 passed (13)
+   Start at  01:20:40
+   Duration  1.92s (transform 439ms, setup 0ms, import 675ms, tests 260ms, environment 1ms)
+
+
+> optitrace-web@0.1.0 format:check
+> prettier --check src tests *.ts package.json
+
+Checking formatting...
+All matched files use Prettier code style!

@@ -1,0 +1,119 @@
+=== RUN   TestIndependentAcceptanceWorkflow
+{"timestamp":"2026-10-24T23:11:15.54116648Z","severity":"INFO","msg":"http request","request_id":"rkosKH6AoF_PSuJM8JDdyQm5dHjsis7GkYP073SKIPg","method":"GET","path":"/v1/auth/login","elapsed_ms":15}
+{"timestamp":"2026-10-24T23:11:15.592697028Z","severity":"INFO","msg":"http request","request_id":"_yfQ-yXANbPKn1xucoCQCGYI9ioz4gkxGkK4kqXpthA","method":"GET","path":"/v1/auth/callback","elapsed_ms":44}
+{"timestamp":"2026-10-24T23:11:15.601574254Z","severity":"INFO","msg":"http request","request_id":"x2jg2om_m5sdrDieCJLsxm2eKOJ-rITr93hPMB2K6v4","method":"GET","path":"/v1/auth/me","elapsed_ms":8}
+{"timestamp":"2026-10-24T23:11:15.605740982Z","severity":"INFO","msg":"http request","request_id":"-rU4mv6xiR-w8TFJPfNZWmgMrLy6n0vOV9f8QGpmBrE","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:15.608750581Z","severity":"INFO","msg":"http request","request_id":"3cnfkhiDNBRb9k4OI-Bytd4zXyCfDaUKjMj3scd-qec","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:15.611272952Z","severity":"INFO","msg":"http request","request_id":"QRWqwHNxMYAYo4_PllPfcHJErO11Y690PEftBNebtRc","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.613750116Z","severity":"INFO","msg":"http request","request_id":"myr5Dll38z0wQ5oet9PrthiF4zhij1h8FKhXF2_mfNA","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.617527323Z","severity":"INFO","msg":"http request","request_id":"i01qv513u36PFef3O1A2QUbRf4vExYl1mM_O0dIgsFo","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:15.619897539Z","severity":"INFO","msg":"http request","request_id":"CM9k2J8XcOoVgffpOKgYp5MBuveHNgiUTXE4xjI8WV4","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.621165944Z","severity":"INFO","msg":"http request","request_id":"7XDuYlT5VlntPA8j4FZitV-Tvk_k11vH0mNRoCb9ki0","method":"GET","path":"/v1/tenants/other/policies","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:15.622044107Z","severity":"INFO","msg":"http request","request_id":"glDTSLxU4dJXmsu4TSXiD351YW_eZoPO6kUvdnWf1Jk","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:15.734553639Z","severity":"INFO","msg":"http request","request_id":"WdKzGf4bxJlJ0umKLrQS5MMuPIHMbvRED-d8pClvjtU","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":112}
+{"timestamp":"2026-10-24T23:11:15.75928843Z","severity":"INFO","msg":"http request","request_id":"zALiEk6NQHqflNXm3d0KipIHFzpnjbRRDdXVp-JGu7w","method":"GET","path":"/v1/auth/login","elapsed_ms":23}
+{"timestamp":"2026-10-24T23:11:15.774375682Z","severity":"INFO","msg":"http request","request_id":"MOjOqul4TQJwUOSJfTzXz6Mr8Mu5CzoZFrNbjusVKCs","method":"GET","path":"/v1/auth/callback","elapsed_ms":13}
+{"timestamp":"2026-10-24T23:11:15.778797604Z","severity":"INFO","msg":"http request","request_id":"zaFrrSRKw9-eAZw-94ZDLUNYbYh6oEsR-Gr-LNIRhtw","method":"GET","path":"/v1/auth/me","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:15.782303313Z","severity":"INFO","msg":"http request","request_id":"1RNyyV6o8Xd0UJjhw5tiYZjuEqQ2nahy52rMpYNzEZI","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:15.802557646Z","severity":"INFO","msg":"http request","request_id":"pk-mlqB70v50uJr0aQRXIrodZYCpeh_6PfkP-l2wizw","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":19}
+{"timestamp":"2026-10-24T23:11:15.829221119Z","severity":"INFO","msg":"http request","request_id":"RjmSWUfXc74U-33kNWJZ6QSgMd1RMx7clhVEMTHPRCk","method":"POST","path":"/v1/tenants/demo/policies/Q2uIErbCaR3c-Xz4hPQRZRrHwGfbd2d9XaM5azqB6hg/submit","elapsed_ms":25}
+{"timestamp":"2026-10-24T23:11:15.831478518Z","severity":"INFO","msg":"http request","request_id":"Sjl0ShzbGi03aFJ3qAUI1i67Mb38FxuDfd55Ad7UnnY","method":"POST","path":"/v1/tenants/demo/policies/Q2uIErbCaR3c-Xz4hPQRZRrHwGfbd2d9XaM5azqB6hg/approve","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.835384986Z","severity":"INFO","msg":"http request","request_id":"pCxRWiVcwyGB1Lm3jOHY74tulC_b6SjGZJSFAWCHeSA","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:15.845009419Z","severity":"INFO","msg":"http request","request_id":"CXNlYInmYCjdwzWUg0Ue19lVD0lMBk7SFG4ZIqKxuck","method":"GET","path":"/v1/auth/callback","elapsed_ms":8}
+{"timestamp":"2026-10-24T23:11:15.847566368Z","severity":"INFO","msg":"http request","request_id":"43Srsn2lDfVpbZoqEUST74zWjgGpGjXXHQBTVf-cjeE","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.873000057Z","severity":"INFO","msg":"http request","request_id":"xZ5m-ih6ZqRaJ8u1LsMaBlaJ_KdTGotaWzwzUN8QJrs","method":"POST","path":"/v1/tenants/demo/policies/Q2uIErbCaR3c-Xz4hPQRZRrHwGfbd2d9XaM5azqB6hg/approve","elapsed_ms":24}
+{"timestamp":"2026-10-24T23:11:15.885439119Z","severity":"INFO","msg":"http request","request_id":"wFTZzl0qAmpIoSNfFm76U851RCCif0gzWPrJ5767HYs","method":"POST","path":"/v1/tenants/demo/policies/Q2uIErbCaR3c-Xz4hPQRZRrHwGfbd2d9XaM5azqB6hg/activate","elapsed_ms":11}
+{"timestamp":"2026-10-24T23:11:15.887830018Z","severity":"INFO","msg":"http request","request_id":"mn45SQloghsHrBQdaYkwYxOZxgqiFdDvrrkWjkGCHcw","method":"GET","path":"/v1/auth/login","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.917010351Z","severity":"INFO","msg":"http request","request_id":"JX0xCE1B7aP8aXQIWNlM_5oXTHY-YXj_2Mgq7c8-Ss4","method":"GET","path":"/v1/auth/callback","elapsed_ms":27}
+{"timestamp":"2026-10-24T23:11:15.91937703Z","severity":"INFO","msg":"http request","request_id":"3un-RPAT4-qhCZKLyNmwNT6JitQcrMuBM9yBYbTeHZI","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:15.920674137Z","severity":"INFO","msg":"http request","request_id":"o7aEiDGqnHZz4228xvt9hkKrKvbbqAlhTvXyahaR30M","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:15.929893593Z","severity":"INFO","msg":"http request","request_id":"FH-QxxVaOAIDSqLiA5Tva1l1d0fxb-vvNzJS1Czoc6k","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":8}
+{"timestamp":"2026-10-24T23:11:15.937545724Z","severity":"INFO","msg":"http request","request_id":"J5m692-pW-179B3wyRPp6VeQMOPeQSeYjp5f7PjcAL0","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":7}
+{"timestamp":"2026-10-24T23:11:15.98749957Z","severity":"INFO","msg":"http request","request_id":"kJASW58KdHT8d4wOmhrx8eAmEZVamBJlXlC0vfMwj-0","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":49}
+{"timestamp":"2026-10-24T23:11:16.860148198Z","severity":"INFO","msg":"http request","request_id":"oP_I2RQxPEMPjxpkKZHod8js5NOCTLjG1hKgi446uiU","method":"GET","path":"/v1/tenants/demo/benchmarks/SdDW6COBvaOubzu5nCo3kDFKncD-h50aud675QIiQLU/export","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.001696741Z","severity":"INFO","msg":"http request","request_id":"zrxFNxpUUrWwzcYvCHINeZzrhuQlIE20uqyKDgruVLM","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":108}
+{"timestamp":"2026-10-24T23:11:17.039463107Z","severity":"INFO","msg":"http request","request_id":"UGP_ZPBpRyi4TkH5crFePn7nmJ4J0b--uJZt9Cjkyu8","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.044237223Z","severity":"INFO","msg":"http request","request_id":"blNo5U1ksQNNzSfXQoMCEmXab_Lx2hMzEnLfmm59ME4","method":"GET","path":"/v1/tenants/demo/evaluations/attempt-3uF9WkrzPzSSETVYD3WlCaXTKIKmBJKVpvm0IHQFqN4","elapsed_ms":3}
+=== RUN   TestIndependentAcceptanceWorkflow/PureRoleMatrixAndImmediateRevocation
+{"timestamp":"2026-10-24T23:11:17.051378066Z","severity":"INFO","msg":"http request","request_id":"YPPlPpeKQp4cTdF1j_WJmTFq71X-2l8HR3mXnu8kvAU","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.05532312Z","severity":"INFO","msg":"http request","request_id":"hiISw3sBsW48i0iabEo0IAhnrstUnlDQR_BkdREAaZ4","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.057294274Z","severity":"INFO","msg":"http request","request_id":"LIucgvYl7gy4QJJ7uujuTZM57puQdVONwsh-g9q7n1M","method":"GET","path":"/v1/tenants/demo/benchmarks","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.058995013Z","severity":"INFO","msg":"http request","request_id":"LiAwwtEq7lri2MRW34q-Pg4X6tlMj4yXuLCQjSe6jS0","method":"GET","path":"/v1/tenants/demo/audit","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.060410923Z","severity":"INFO","msg":"http request","request_id":"A9jhFEj3ra8UZOxAm5xK36sM1LyB0_kDG-7gooxiWCU","method":"GET","path":"/v1/tenants/demo/memberships","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.061866328Z","severity":"INFO","msg":"http request","request_id":"qiULOqJ33YQXK_5gTZTQ3Tsw2g9UCnNkVROMMqNSRWc","method":"GET","path":"/v1/tenants/demo/invitations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.063385038Z","severity":"INFO","msg":"http request","request_id":"6vqCpeJN2rMZnu4Mv06Jo49M0cAVlsMUSNwAAThZlOk","method":"GET","path":"/v1/tenants/demo/credentials","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.06787748Z","severity":"INFO","msg":"http request","request_id":"efTtXQpIUnYS4055GbV_tXn3igiWn7Si2VvF3A1jkpU","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:17.073694148Z","severity":"INFO","msg":"http request","request_id":"v4chDT5cFSba6RR5igaKcdPJ0WngE1XYFb0Ly4FHG8w","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.094832918Z","severity":"INFO","msg":"http request","request_id":"v7bfpuYpyu4KJSeycz4q-4H5p7bZP8zHyk0NWWwyiNc","method":"GET","path":"/v1/tenants/demo/benchmarks","elapsed_ms":18}
+{"timestamp":"2026-10-24T23:11:17.102518422Z","severity":"INFO","msg":"http request","request_id":"Y8Mc-fQXJbmaj3yHc0oRV9lmghaEtMY_Ut2Zt4XyKYk","method":"GET","path":"/v1/tenants/demo/audit","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.1037737Z","severity":"INFO","msg":"http request","request_id":"z4gC7SedK-YjZcDdHvO4Y6Ulk-RdO_xZqoYoIP-WdPg","method":"GET","path":"/v1/tenants/demo/memberships","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.10478162Z","severity":"INFO","msg":"http request","request_id":"tgIOW0jooIxsCXM4r-gPFYeaM9ZUb0jxGzUE3K-lQ04","method":"GET","path":"/v1/tenants/demo/invitations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.10577116Z","severity":"INFO","msg":"http request","request_id":"I67ExJY-t3olEw7vcuoWEpL3jDwYeiKKAhjAXodQVZc","method":"GET","path":"/v1/tenants/demo/credentials","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.109681791Z","severity":"INFO","msg":"http request","request_id":"D-r-Amcg8T0ES_cbSgw3DS8PoPDg--yUtRL6a8ipei4","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.112815587Z","severity":"INFO","msg":"http request","request_id":"WBD86ty0Av03sQ4-Coo31UbtrWI1HCVSgVYaS_uu4rA","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:17.127033755Z","severity":"INFO","msg":"http request","request_id":"z1NDWGeaPjkBL6lZDgCq_mW0wkJLZUb4URgmFsrO5fk","method":"GET","path":"/v1/tenants/demo/benchmarks","elapsed_ms":12}
+{"timestamp":"2026-10-24T23:11:17.141918977Z","severity":"INFO","msg":"http request","request_id":"2qT_KJ91lv_4VWmxSgHW7XNoRq9LvQels50cn0tgm_o","method":"GET","path":"/v1/tenants/demo/audit","elapsed_ms":9}
+{"timestamp":"2026-10-24T23:11:17.143892777Z","severity":"INFO","msg":"http request","request_id":"YwmC5ZvR805Uc5foeVuJXVze8X87FPx6lxX-bpk_GpI","method":"GET","path":"/v1/tenants/demo/memberships","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.145699129Z","severity":"INFO","msg":"http request","request_id":"h2Flc1zCxd1TvDMivNdqV3nlCQGok2zli7jh4dMxOX8","method":"GET","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.147189087Z","severity":"INFO","msg":"http request","request_id":"oXh5Q5ibYQXuWPG3wIxLGgxf-llM5_9R43olXTdo3JQ","method":"GET","path":"/v1/tenants/demo/credentials","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.150678891Z","severity":"INFO","msg":"http request","request_id":"3PJ70AeEAAiRu8UXgEx98piHnlg4xrn9tq_UShjPpjE","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.152177294Z","severity":"INFO","msg":"http request","request_id":"1Ac9FClcuFVqGXbZ69RULBsXGKRXD6brDgIgiVhqZV4","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.153604652Z","severity":"INFO","msg":"http request","request_id":"Lc2I1XZjSLU1omGzb_1x_b1clBwydXWDh2hq_eFYZl0","method":"GET","path":"/v1/tenants/demo/benchmarks","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.155121565Z","severity":"INFO","msg":"http request","request_id":"JCg3Q_02ipV_LwMHDg1GjsQAGeQtoNrOX7GBFkUHZCU","method":"GET","path":"/v1/tenants/demo/audit","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.159133282Z","severity":"INFO","msg":"http request","request_id":"ONXEFChKQ5nz-ItHNnBOVuVaist-r59SR3LtF5myvwI","method":"GET","path":"/v1/tenants/demo/memberships","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.162753136Z","severity":"INFO","msg":"http request","request_id":"8Y5pr6kFFueY_heUwVA68R02t_hWJJKAps6wvkEEkdU","method":"GET","path":"/v1/tenants/demo/invitations","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.166793847Z","severity":"INFO","msg":"http request","request_id":"JBePJvHH8ZGbUBnPKLLYGVo8103f5XaH4Tb5eY8zsYI","method":"GET","path":"/v1/tenants/demo/credentials","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.204957883Z","severity":"INFO","msg":"http request","request_id":"0VdtM8khEbykLPDnrUM7vgxpf5Wb7hSTQaOsqthq_6g","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:17.207123622Z","severity":"INFO","msg":"http request","request_id":"K0JEKdsujaEKIa_ATu-m7B7JMGoUtC3R81_W73QwcwE","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.20870721Z","severity":"INFO","msg":"http request","request_id":"ZQu_4S8zhBQgO1TY2tKwDjFpq04bBP7SdhHpOpMqr04","method":"GET","path":"/v1/tenants/demo/benchmarks","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.210473418Z","severity":"INFO","msg":"http request","request_id":"3RLAPZYgFgqphJAsCVYTMTighk8oqY1kIhtoXUdZCpg","method":"GET","path":"/v1/tenants/demo/audit","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.212462991Z","severity":"INFO","msg":"http request","request_id":"L18e84otAZvquOccrZ7_N7cPU3_T7sWt38rUKNQ0imc","method":"GET","path":"/v1/tenants/demo/memberships","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.214404723Z","severity":"INFO","msg":"http request","request_id":"7vH23iJvJtCSqx1TXwZoC7XOMkay6irqcHfgmDacTTU","method":"GET","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.216266354Z","severity":"INFO","msg":"http request","request_id":"wu81OxsVcr24OdQiVFLu8lkIi9l0_DAvgyZ5r7689I4","method":"GET","path":"/v1/tenants/demo/credentials","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.220212953Z","severity":"INFO","msg":"http request","request_id":"vMQIYBsqmqLcOK8ZYhHRc4WILnnpQ5-WnKDIGDjhjs0","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.227045001Z","severity":"INFO","msg":"http request","request_id":"yrVB_6xbVuw1AEfCXoXqg8K_WsOmtUJ4hhSOClg77uw","method":"PATCH","path":"/v1/tenants/demo/memberships/m-admin","elapsed_ms":6}
+{"timestamp":"2026-10-24T23:11:17.237148628Z","severity":"INFO","msg":"http request","request_id":"sHdPh-u8PuzGriO-cqbKrh7r_a2o4icPFdLlj0Ru2w8","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":7}
+{"timestamp":"2026-10-24T23:11:17.243549348Z","severity":"INFO","msg":"http request","request_id":"ZEGo4CPv04RlSTrVlNl1hqIc3rClOYn-n3mkoGXBs84","method":"POST","path":"/v1/tenants/demo/policies/pldMLCCQbQfZxgfJvMQUjoyAi6U64CbBfCBjwQWxUUk/submit","elapsed_ms":5}
+{"timestamp":"2026-10-24T23:11:17.248146868Z","severity":"INFO","msg":"http request","request_id":"H0rcTX-inumJ_zbPESXvkXQUDAiV4yghtdatfZwThQY","method":"POST","path":"/v1/tenants/demo/policies/pldMLCCQbQfZxgfJvMQUjoyAi6U64CbBfCBjwQWxUUk/approve","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.253550103Z","severity":"INFO","msg":"http request","request_id":"CwghoHRB6UOHKclWXsIsFtH92ZTc4pXP5Vra0Dtjk4Q","method":"GET","path":"/v1/auth/login","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.267277475Z","severity":"INFO","msg":"http request","request_id":"Yh1EViU-RE2Z0OydKPrT81UB4CMOEDe7BBzH4iDwUho","method":"GET","path":"/v1/auth/callback","elapsed_ms":11}
+{"timestamp":"2026-10-24T23:11:17.271482495Z","severity":"INFO","msg":"http request","request_id":"-UvZ_EoFqGc8v6BrICPx3VZxyfZFStqFBNixMx3M8js","method":"GET","path":"/v1/auth/me","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.27349109Z","severity":"INFO","msg":"http request","request_id":"moe0f8iQqCCluVsBgEX5Cn17q08EdPZXOEQqc0xXYuw","method":"GET","path":"/v1/tenants/demo/evaluations/QAmvXWfcKYq_R8zYUR-5jdCCZyTQ1ypvKoynSyCghwo","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.27782977Z","severity":"INFO","msg":"http request","request_id":"n5aZlcXWiBmexP12yzCpmjq4Nrvp8KUUv9Ua9J0uevs","method":"GET","path":"/v1/tenants/other/evaluations/QAmvXWfcKYq_R8zYUR-5jdCCZyTQ1ypvKoynSyCghwo","elapsed_ms":3}
+=== RUN   TestIndependentAcceptanceWorkflow/IdempotencyReplayConflictAndScopedRevocation
+{"timestamp":"2026-10-24T23:11:17.334216508Z","severity":"INFO","msg":"http request","request_id":"x1E-Xp4v9LbmyLswZ0bT5x_HQu_85GwQVStgfTDgmLs","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":55}
+{"timestamp":"2026-10-24T23:11:17.338287184Z","severity":"INFO","msg":"http request","request_id":"lc1GM-vzdSvMyPokCWWFxbhJ_Zd-NH9zpqP6lbF-nT4","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.342456658Z","severity":"INFO","msg":"http request","request_id":"Kf5ugDTrbe9yGb0kJaRJVnzqL3zyE0C91uIML4JLWOo","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.34658833Z","severity":"INFO","msg":"http request","request_id":"ivNenHI8qZ_9rQRNCK4IRu4dBofgIlJAC2B3-MS5nJA","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.34775556Z","severity":"INFO","msg":"http request","request_id":"aMtRUasgERn5--EWCOsvZWmXBNgojMRmzp20m8KdimA","method":"GET","path":"/v1/tenants/other/evaluations","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.349273749Z","severity":"INFO","msg":"http request","request_id":"X-Dz-frovgdc30UvU6ybSluxWLBBaTWNAr2KLDU5WkM","method":"GET","path":"/v1/tenants/demo/policies","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.355520975Z","severity":"INFO","msg":"http request","request_id":"yE1GWQqAOp0hh9w2tfhs4jOWQ6RuZDUQXqXUPN6Jatg","method":"DELETE","path":"/v1/tenants/demo/credentials/NupGnz9kFS-PmleQGfbQAqDO0meRmQ5wsyy3jwhQmag","elapsed_ms":5}
+{"timestamp":"2026-10-24T23:11:17.358043214Z","severity":"INFO","msg":"http request","request_id":"HBpmpsSnuOM2dhlucaJviAX5RFf0NqJczihLZoyETWI","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":1}
+=== RUN   TestIndependentAcceptanceWorkflow/ConcurrentIdempotencyNeverDuplicatesBillableCalls
+{"timestamp":"2026-10-24T23:11:17.379913035Z","severity":"INFO","msg":"http request","request_id":"yCr5yF8ziCx8eTZwRfOJISU4uCQ8GJ-8tExLALNPbkc","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":2}
+{"timestamp":"2026-10-24T23:11:17.501736412Z","severity":"INFO","msg":"http request","request_id":"e1R853IlaitRmHwUxZwDAAoVFCuOwc7fgmJtoK4jNyI","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":137}
+{"timestamp":"2026-10-24T23:11:17.505409698Z","severity":"INFO","msg":"http request","request_id":"3vPrR7jdE7t0QoTfk95pHh7W1HPBQnmHm9HuWs1tnxw","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":3}
+=== RUN   TestIndependentAcceptanceWorkflow/LoginStateReplayAndUninvited
+{"timestamp":"2026-10-24T23:11:17.511273403Z","severity":"INFO","msg":"http request","request_id":"LSC7eS-odqnrLeL5SxEZGsT-6bS9bOuEzLo-sub7BlQ","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.513504074Z","severity":"INFO","msg":"http request","request_id":"mFs-g7QfDHzJ-vI7gWdQxzFv_yuXZpKaoHE33ehKbA4","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.5233234Z","severity":"INFO","msg":"http request","request_id":"_Vl-30Nj-Loj3HG5eZyBMWhigQjfq1nSAHq1sE-0bxo","method":"GET","path":"/v1/auth/callback","elapsed_ms":8}
+{"timestamp":"2026-10-24T23:11:17.52427513Z","severity":"INFO","msg":"http request","request_id":"QzWSm1no8cyMc72kAKdKqsPJaT4spLhgOGud2W-lhzM","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.52972262Z","severity":"INFO","msg":"http request","request_id":"eBtQsfdHQq99ScgSNSpVKrbDKB-tVt9z7hGk0udQmR8","method":"GET","path":"/v1/auth/login","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.531763343Z","severity":"INFO","msg":"http request","request_id":"o3ZGSp1KZI332nIXZvUm9AZEjQbXDMz-ZIRLUmi4Ovk","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.543844103Z","severity":"INFO","msg":"http request","request_id":"2ZmDqyO4RSZ3l5uHz-y2h26UwFTPYFRIoEqMT39DYJc","method":"GET","path":"/v1/auth/callback","elapsed_ms":11}
+{"timestamp":"2026-10-24T23:11:17.544852634Z","severity":"INFO","msg":"http request","request_id":"btAn99Jdmw-0QS-tMoD8o52HEefgSu4u_A280Pl6_UQ","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.554929206Z","severity":"INFO","msg":"http request","request_id":"F7L7leZZglc1S4Gj6vq8AOXukgBTM91wfMdfYYFRyzk","method":"GET","path":"/v1/auth/me","elapsed_ms":4}
+{"timestamp":"2026-10-24T23:11:17.558857457Z","severity":"INFO","msg":"http request","request_id":"JdXcsUgOfhrjhWMuYMtACRtl21EDPYmQq-XP7zLjL2o","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.573220882Z","severity":"INFO","msg":"http request","request_id":"0u3LRouUpElr5U1QUYxSoA_oCFH0DsSyRK_V2x7mUns","method":"GET","path":"/v1/auth/callback","elapsed_ms":12}
+{"timestamp":"2026-10-24T23:11:17.575266779Z","severity":"INFO","msg":"http request","request_id":"mRZ2TngCQinvtG06-zpcIg1eEhgh3azSvvPAV3o8Mho","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-24T23:11:17.582427774Z","severity":"INFO","msg":"http request","request_id":"SLwS1e_4D3zFfw1kKHJz8u5vmlsV2yDwLLRNIYXfbhs","method":"GET","path":"/v1/auth/me","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.5893972Z","severity":"INFO","msg":"http request","request_id":"emHkZnAG33kWN4T8v6XH3FVCj0_rJ3_6YFPUv6h603A","method":"GET","path":"/v1/auth/me","elapsed_ms":0}
+{"timestamp":"2026-10-24T23:11:17.593031443Z","severity":"INFO","msg":"http request","request_id":"mzIXVAv6bdOY72udZConaLB4ZoJ9aPXLZzrCjdnhl0E","method":"POST","path":"/v1/auth/logout","elapsed_ms":3}
+{"timestamp":"2026-10-24T23:11:17.593584613Z","severity":"INFO","msg":"http request","request_id":"MKd8KF3KA4312bL6y6Vb5ggiRsm-OglywLZPyPlIVEs","method":"GET","path":"/v1/auth/me","elapsed_ms":0}
+--- PASS: TestIndependentAcceptanceWorkflow (3.97s)
+    --- PASS: TestIndependentAcceptanceWorkflow/PureRoleMatrixAndImmediateRevocation (0.23s)
+    --- PASS: TestIndependentAcceptanceWorkflow/IdempotencyReplayConflictAndScopedRevocation (0.08s)
+    --- PASS: TestIndependentAcceptanceWorkflow/ConcurrentIdempotencyNeverDuplicatesBillableCalls (0.15s)
+    --- PASS: TestIndependentAcceptanceWorkflow/LoginStateReplayAndUninvited (0.04s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/server	4.106s

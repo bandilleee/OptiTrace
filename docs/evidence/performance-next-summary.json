@@ -1,0 +1,532 @@
+{
+  "recorded_on": "2026-10-25",
+  "status": "HOLD: final conditional latency acceptance failed",
+  "runs": [
+    {
+      "file": ".artifacts\\next-phase\\workload-fixed.json",
+      "sha256": "06107a41aa67c21dcce93241c0d4d10c32744fcec19a89c606432b50ef7e4bc4",
+      "commit": "9d0d0848c0829800b78521daa8487db27d783a3b",
+      "measured_at": "2026-10-23T00:17:29.2639681Z",
+      "measurement": "Authenticated Go API HTTP round trip, including authorization, planner, adapters, trace persistence and response transfer. Browser/Next proxy excluded by default.",
+      "seed": 20261023,
+      "repetitions": 10,
+      "sample_count": 1100,
+      "unique_traces": 1100,
+      "warmup_count": 10,
+      "execution_error": null,
+      "host": {
+        "os": "Microsoft Windows 10.0.26200",
+        "architecture": "X64",
+        "logical_processors": 16,
+        "processor_model": [
+          "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics"
+        ],
+        "physical_memory_bytes": 16356962304
+      },
+      "containers": [
+        {
+          "name": "/optitrace-api-1",
+          "image_config_digest": "sha256:7b6831ba2fd84dae4bee8207db22538523e09006d084b2d9a5aa399afcf90d1d",
+          "image_reference": "optitrace-engine:local",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        },
+        {
+          "name": "/optitrace-simulator-1",
+          "image_config_digest": "sha256:7b6831ba2fd84dae4bee8207db22538523e09006d084b2d9a5aa399afcf90d1d",
+          "image_reference": "optitrace-engine:local",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        },
+        {
+          "name": "/optitrace-postgres-1",
+          "image_config_digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+          "image_reference": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        }
+      ],
+      "analysis": {
+        "correctness_passed": true,
+        "violations": [],
+        "observed_synthetic_prices_microrand": {
+          "sim_swap": 2200,
+          "number_verification": 1200,
+          "device_swap": 3200
+        },
+        "metrics": [
+          {
+            "profile": "combined",
+            "strategy": "full_sequential",
+            "count": 220,
+            "p50_ms": 102.7259,
+            "p95_ms": 276.4428,
+            "p99_ms": 304.3051,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1059.5727272727272,
+            "mean_variable_microrand": 7659.572727272727
+          },
+          {
+            "profile": "combined",
+            "strategy": "full_parallel",
+            "count": 220,
+            "p50_ms": 53.9326,
+            "p95_ms": 221.9174,
+            "p99_ms": 238.7028,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 622.3272727272728,
+            "mean_variable_microrand": 7222.327272727272
+          },
+          {
+            "profile": "combined",
+            "strategy": "staged",
+            "count": 220,
+            "p50_ms": 98.49,
+            "p95_ms": 277.8037,
+            "p99_ms": 403.3543,
+            "mean_supplier_microrand": 5818.181818181818,
+            "mean_runtime_microrand": 1146.8636363636363,
+            "mean_variable_microrand": 6965.045454545455
+          },
+          {
+            "profile": "combined",
+            "strategy": "opa",
+            "count": 220,
+            "p50_ms": 99.6427,
+            "p95_ms": 282.0143,
+            "p99_ms": 728.3002,
+            "mean_supplier_microrand": 5818.181818181818,
+            "mean_runtime_microrand": 1023.1409090909091,
+            "mean_variable_microrand": 6841.322727272727
+          },
+          {
+            "profile": "combined",
+            "strategy": "optitrace",
+            "count": 220,
+            "p50_ms": 63.2341,
+            "p95_ms": 252.8918,
+            "p99_ms": 284.8586,
+            "mean_supplier_microrand": 5818.181818181818,
+            "mean_runtime_microrand": 730.5045454545455,
+            "mean_variable_microrand": 6548.686363636363
+          },
+          {
+            "profile": "complete",
+            "strategy": "full_sequential",
+            "count": 110,
+            "p50_ms": 101.075,
+            "p95_ms": 275.5022,
+            "p99_ms": 304.3051,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1060.9636363636364,
+            "mean_variable_microrand": 7660.963636363636
+          },
+          {
+            "profile": "complete",
+            "strategy": "full_parallel",
+            "count": 110,
+            "p50_ms": 53.9326,
+            "p95_ms": 223.9502,
+            "p99_ms": 238.7028,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 667.2818181818182,
+            "mean_variable_microrand": 7267.281818181818
+          },
+          {
+            "profile": "complete",
+            "strategy": "staged",
+            "count": 110,
+            "p50_ms": 101.8342,
+            "p95_ms": 277.8037,
+            "p99_ms": 403.3543,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1421.3363636363636,
+            "mean_variable_microrand": 8021.336363636364
+          },
+          {
+            "profile": "complete",
+            "strategy": "opa",
+            "count": 110,
+            "p50_ms": 104.6744,
+            "p95_ms": 289.0471,
+            "p99_ms": 728.3002,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1150.3727272727272,
+            "mean_variable_microrand": 7750.372727272727
+          },
+          {
+            "profile": "complete",
+            "strategy": "optitrace",
+            "count": 110,
+            "p50_ms": 53.5918,
+            "p95_ms": 223.9492,
+            "p99_ms": 247.1422,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 580.4363636363636,
+            "mean_variable_microrand": 7180.436363636363
+          },
+          {
+            "profile": "conditional",
+            "strategy": "full_sequential",
+            "count": 110,
+            "p50_ms": 102.8259,
+            "p95_ms": 279.1667,
+            "p99_ms": 301.4913,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1058.1818181818182,
+            "mean_variable_microrand": 7658.181818181818
+          },
+          {
+            "profile": "conditional",
+            "strategy": "full_parallel",
+            "count": 110,
+            "p50_ms": 53.9039,
+            "p95_ms": 219.7277,
+            "p99_ms": 232.5465,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 577.3727272727273,
+            "mean_variable_microrand": 7177.372727272727
+          },
+          {
+            "profile": "conditional",
+            "strategy": "staged",
+            "count": 110,
+            "p50_ms": 96.0891,
+            "p95_ms": 277.8262,
+            "p99_ms": 304.9219,
+            "mean_supplier_microrand": 5036.363636363636,
+            "mean_runtime_microrand": 872.3909090909091,
+            "mean_variable_microrand": 5908.754545454545
+          },
+          {
+            "profile": "conditional",
+            "strategy": "opa",
+            "count": 110,
+            "p50_ms": 97.196,
+            "p95_ms": 277.8891,
+            "p99_ms": 304.1781,
+            "mean_supplier_microrand": 5036.363636363636,
+            "mean_runtime_microrand": 895.9090909090909,
+            "mean_variable_microrand": 5932.272727272727
+          },
+          {
+            "profile": "conditional",
+            "strategy": "optitrace",
+            "count": 110,
+            "p50_ms": 97.4221,
+            "p95_ms": 280.0327,
+            "p99_ms": 287.0859,
+            "mean_supplier_microrand": 5036.363636363636,
+            "mean_runtime_microrand": 880.5727272727273,
+            "mean_variable_microrand": 5916.936363636363
+          }
+        ],
+        "comparisons": [
+          {
+            "profile": "combined",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 221.9174,
+            "absolute_500ms_passed": true,
+            "relative_10pct_passed": false,
+            "cost_first_baseline": "opa",
+            "relative_10pct_vs_cost_first_passed": true,
+            "cost_baseline": "opa",
+            "synthetic_variable_cost_savings_fraction": 0.04277482225327245,
+            "research_20pct_target_passed": false
+          },
+          {
+            "profile": "complete",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 223.9502,
+            "absolute_500ms_passed": true,
+            "relative_10pct_passed": true,
+            "cost_first_baseline": "full_parallel",
+            "relative_10pct_vs_cost_first_passed": true,
+            "cost_baseline": "opa",
+            "synthetic_variable_cost_savings_fraction": 0.07353663929359411,
+            "research_20pct_target_passed": false
+          },
+          {
+            "profile": "conditional",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 219.7277,
+            "absolute_500ms_passed": true,
+            "relative_10pct_passed": false,
+            "cost_first_baseline": "staged",
+            "relative_10pct_vs_cost_first_passed": true,
+            "cost_baseline": "staged",
+            "synthetic_variable_cost_savings_fraction": -0.0013846942056701117,
+            "research_20pct_target_passed": false
+          }
+        ],
+        "acceptance_passed": false
+      }
+    },
+    {
+      "file": ".artifacts\\next-phase\\workload-final.json",
+      "sha256": "542e8cc07bcb4e33a01111f87422e2f6349ef55f31bf7e3e22572c16be293097",
+      "commit": "925bea5568b428d984536f25c5cc79db19767533",
+      "measured_at": "2026-10-24T23:06:28.7251574Z",
+      "measurement": "Authenticated Go API HTTP round trip, including authorization, planner, adapters, trace persistence and response transfer. Browser/Next proxy excluded by default.",
+      "seed": 20261023,
+      "repetitions": 10,
+      "sample_count": 1100,
+      "unique_traces": 1100,
+      "warmup_count": 10,
+      "execution_error": null,
+      "host": {
+        "os": "Microsoft Windows 10.0.26200",
+        "architecture": "X64",
+        "logical_processors": 16,
+        "processor_model": [
+          "AMD Ryzen 7 8845HS w/ Radeon 780M Graphics"
+        ],
+        "physical_memory_bytes": 16356962304
+      },
+      "containers": [
+        {
+          "name": "/optitrace-api-1",
+          "image_config_digest": "sha256:cc159336889dd52757b26a42929e843895f6d3f550221356f6acfdd09201943e",
+          "image_reference": "optitrace-engine:local",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        },
+        {
+          "name": "/optitrace-simulator-1",
+          "image_config_digest": "sha256:cc159336889dd52757b26a42929e843895f6d3f550221356f6acfdd09201943e",
+          "image_reference": "optitrace-engine:local",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        },
+        {
+          "name": "/optitrace-postgres-1",
+          "image_config_digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+          "image_reference": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+          "cpu_quota": 0,
+          "memory_limit": 0
+        }
+      ],
+      "analysis": {
+        "correctness_passed": true,
+        "violations": [],
+        "observed_synthetic_prices_microrand": {
+          "device_swap": 3200,
+          "sim_swap": 2200,
+          "number_verification": 1200
+        },
+        "metrics": [
+          {
+            "profile": "combined",
+            "strategy": "full_sequential",
+            "count": 220,
+            "p50_ms": 113.1087,
+            "p95_ms": 311.3587,
+            "p99_ms": 1138.1502,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1426.3909090909092,
+            "mean_variable_microrand": 8026.390909090909
+          },
+          {
+            "profile": "combined",
+            "strategy": "full_parallel",
+            "count": 220,
+            "p50_ms": 66.4926,
+            "p95_ms": 242.6328,
+            "p99_ms": 1848.3859,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 914.8136363636364,
+            "mean_variable_microrand": 7514.813636363637
+          },
+          {
+            "profile": "combined",
+            "strategy": "staged",
+            "count": 220,
+            "p50_ms": 112.8097,
+            "p95_ms": 307.9325,
+            "p99_ms": 2194.3216,
+            "mean_supplier_microrand": 5818.181818181818,
+            "mean_runtime_microrand": 1481.95,
+            "mean_variable_microrand": 7300.131818181818
+          },
+          {
+            "profile": "combined",
+            "strategy": "opa",
+            "count": 220,
+            "p50_ms": 112.7668,
+            "p95_ms": 703.7121,
+            "p99_ms": 2210.4641,
+            "mean_supplier_microrand": 5818.181818181818,
+            "mean_runtime_microrand": 1714.2,
+            "mean_variable_microrand": 7532.381818181818
+          },
+          {
+            "profile": "combined",
+            "strategy": "optitrace",
+            "count": 220,
+            "p50_ms": 65.1704,
+            "p95_ms": 249.7963,
+            "p99_ms": 1703.6764,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 941.4545454545455,
+            "mean_variable_microrand": 7541.454545454545
+          },
+          {
+            "profile": "complete",
+            "strategy": "full_sequential",
+            "count": 110,
+            "p50_ms": 113.322,
+            "p95_ms": 305.6024,
+            "p99_ms": 417.0893,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1311.0636363636363,
+            "mean_variable_microrand": 7911.063636363637
+          },
+          {
+            "profile": "complete",
+            "strategy": "full_parallel",
+            "count": 110,
+            "p50_ms": 66.4314,
+            "p95_ms": 235.4411,
+            "p99_ms": 306.8056,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 780.8,
+            "mean_variable_microrand": 7380.8
+          },
+          {
+            "profile": "complete",
+            "strategy": "staged",
+            "count": 110,
+            "p50_ms": 113.3755,
+            "p95_ms": 290.7917,
+            "p99_ms": 1526.0388,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1394.8272727272727,
+            "mean_variable_microrand": 7994.827272727272
+          },
+          {
+            "profile": "complete",
+            "strategy": "opa",
+            "count": 110,
+            "p50_ms": 115.7226,
+            "p95_ms": 307.9893,
+            "p99_ms": 2309.3811,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1616.6909090909091,
+            "mean_variable_microrand": 8216.690909090908
+          },
+          {
+            "profile": "complete",
+            "strategy": "optitrace",
+            "count": 110,
+            "p50_ms": 63.6272,
+            "p95_ms": 240.0439,
+            "p99_ms": 369.9543,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 788.8818181818182,
+            "mean_variable_microrand": 7388.881818181818
+          },
+          {
+            "profile": "conditional",
+            "strategy": "full_sequential",
+            "count": 110,
+            "p50_ms": 111.1174,
+            "p95_ms": 501.4218,
+            "p99_ms": 1138.1502,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1541.7181818181818,
+            "mean_variable_microrand": 8141.718181818182
+          },
+          {
+            "profile": "conditional",
+            "strategy": "full_parallel",
+            "count": 110,
+            "p50_ms": 67.0208,
+            "p95_ms": 326.4016,
+            "p99_ms": 2057.9025,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1048.8272727272727,
+            "mean_variable_microrand": 7648.827272727272
+          },
+          {
+            "profile": "conditional",
+            "strategy": "staged",
+            "count": 110,
+            "p50_ms": 109.6527,
+            "p95_ms": 749.5763,
+            "p99_ms": 2194.3216,
+            "mean_supplier_microrand": 5036.363636363636,
+            "mean_runtime_microrand": 1569.0727272727272,
+            "mean_variable_microrand": 6605.436363636363
+          },
+          {
+            "profile": "conditional",
+            "strategy": "opa",
+            "count": 110,
+            "p50_ms": 107.9989,
+            "p95_ms": 1396.8343,
+            "p99_ms": 1836.9748,
+            "mean_supplier_microrand": 5036.363636363636,
+            "mean_runtime_microrand": 1811.709090909091,
+            "mean_variable_microrand": 6848.072727272727
+          },
+          {
+            "profile": "conditional",
+            "strategy": "optitrace",
+            "count": 110,
+            "p50_ms": 65.9817,
+            "p95_ms": 608.1222,
+            "p99_ms": 1703.6764,
+            "mean_supplier_microrand": 6600.0,
+            "mean_runtime_microrand": 1094.0272727272727,
+            "mean_variable_microrand": 7694.027272727273
+          }
+        ],
+        "comparisons": [
+          {
+            "profile": "combined",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 242.6328,
+            "absolute_500ms_passed": true,
+            "relative_10pct_passed": true,
+            "cost_first_baseline": "staged",
+            "relative_10pct_vs_cost_first_passed": true,
+            "cost_baseline": "staged",
+            "synthetic_variable_cost_savings_fraction": -0.03305731092028852,
+            "research_20pct_target_passed": false
+          },
+          {
+            "profile": "complete",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 235.4411,
+            "absolute_500ms_passed": true,
+            "relative_10pct_passed": true,
+            "cost_first_baseline": "full_parallel",
+            "relative_10pct_vs_cost_first_passed": true,
+            "cost_baseline": "staged",
+            "synthetic_variable_cost_savings_fraction": 0.07579218835815427,
+            "research_20pct_target_passed": false
+          },
+          {
+            "profile": "conditional",
+            "correctness_passed": true,
+            "latency_baseline": "full_parallel",
+            "latency_baseline_p95_ms": 326.4016,
+            "absolute_500ms_passed": false,
+            "relative_10pct_passed": false,
+            "cost_first_baseline": "full_parallel",
+            "relative_10pct_vs_cost_first_passed": false,
+            "cost_baseline": null,
+            "synthetic_variable_cost_savings_fraction": null,
+            "research_20pct_target_passed": false
+          }
+        ],
+        "acceptance_passed": false
+      }
+    }
+  ]
+}

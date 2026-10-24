@@ -1,0 +1,18 @@
+=== RUN   TestIndependentAcceptanceWorkflow
+{"timestamp":"2026-10-23T02:43:37.4425514+02:00","severity":"INFO","msg":"http request","request_id":"tKklo2NzkXcWoD9JGjizpOEH3VcmgXoR4lEllLRKf-E","method":"GET","path":"/v1/auth/login","elapsed_ms":283}
+{"timestamp":"2026-10-23T02:43:38.7837877+02:00","severity":"INFO","msg":"http request","request_id":"tekS_PbqhiRNrZY_c3S4qY912jPkXKWx_dj7l7GPu9M","method":"GET","path":"/v1/auth/callback","elapsed_ms":1338}
+{"timestamp":"2026-10-23T02:43:38.8118313+02:00","severity":"INFO","msg":"http request","request_id":"jIruO-ynHqgmB0tQTmIv_jy2XpNMczOCKxrlDFkZplI","method":"GET","path":"/v1/auth/me","elapsed_ms":27}
+{"timestamp":"2026-10-23T02:43:38.8294782+02:00","severity":"INFO","msg":"http request","request_id":"j_8RWbGQyHb4qgSkstLk9OAKMsB7Du-PZIIs7dbjneo","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":17}
+{"timestamp":"2026-10-23T02:43:38.8391382+02:00","severity":"INFO","msg":"http request","request_id":"lPbtfm0umSGFHA-Dy4QUDoURmM9iZfmpSzKKX9fpPuc","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":9}
+{"timestamp":"2026-10-23T02:43:38.849274+02:00","severity":"INFO","msg":"http request","request_id":"6c4MnY418zTJ7lqd3e-mZxOGO2Y_5oG5Ab__0jnTwZM","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":9}
+{"timestamp":"2026-10-23T02:43:38.8590384+02:00","severity":"INFO","msg":"http request","request_id":"UjHEKUrRdjgQOw0OYyL8XsPYIrmY3CNMDXwCCC1GVNs","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":8}
+{"timestamp":"2026-10-23T02:43:38.8680807+02:00","severity":"INFO","msg":"http request","request_id":"GRFo1hOJnk2Wd6gcw0vWBk9jLDKMW7uUJmI2va75svk","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":8}
+{"timestamp":"2026-10-23T02:43:38.8758018+02:00","severity":"INFO","msg":"http request","request_id":"gC5dXRdpxZnxyw7q7Mx1fHromQVCBMlmsXdYTC90LA0","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":7}
+{"timestamp":"2026-10-23T02:43:38.8795797+02:00","severity":"INFO","msg":"http request","request_id":"yl0aH2_nH7s3mzkUpElM3eN4vqWKnh6LH3TENx3Go4g","method":"GET","path":"/v1/tenants/other/policies","elapsed_ms":3}
+{"timestamp":"2026-10-23T02:43:38.881978+02:00","severity":"INFO","msg":"http request","request_id":"3lbQ3NG9VB6hQextJ008DwcRcu-aDOQcDLsFaoqhsoo","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":1}
+{"timestamp":"2026-10-23T02:43:46.9771216+02:00","severity":"INFO","msg":"http request","request_id":"1I6SnXR26WLROqE9Lk8DIzuZFKDUFQa-i3U94bLho8s","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":8094}
+    integration_test.go:160: POST /v1/tenants/demo/evaluations => 502 want 201: {"error":{"code":"evaluation_failed","message":"Adapter execution failed"}}
+--- FAIL: TestIndependentAcceptanceWorkflow (12.59s)
+FAIL
+FAIL	github.com/optitrace/optitrace/services/engine/internal/server	12.908s
+FAIL

@@ -1,0 +1,7 @@
+=== RUN   TestIndependentSkippedStateDiagnostic
+    planner_next_test.go:324: diagnostic_only seed=0 frozen=[1 0 0] actual=[1 3 3] same_fetched_observations=true source_states_differ=true
+    planner_next_test.go:324: diagnostic_only seed=0 frozen=[1 0 0] actual=[1 3 3] same_fetched_observations=true source_states_differ=true
+    planner_next_test.go:324: diagnostic_only seed=0 frozen=[1 0 0] actual=[1 3 3] same_fetched_observations=true source_states_differ=true
+--- PASS: TestIndependentSkippedStateDiagnostic (8.42s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	9.622s

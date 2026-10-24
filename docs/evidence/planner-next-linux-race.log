@@ -1,0 +1,56 @@
+=== RUN   TestAllStrategiesScenarios
+--- PASS: TestAllStrategiesScenarios (0.47s)
+=== RUN   TestDistinctHTTPFaults
+--- PASS: TestDistinctHTTPFaults (0.36s)
+=== RUN   TestJournalFailurePreventsSourceCall
+--- PASS: TestJournalFailurePreventsSourceCall (0.02s)
+=== RUN   TestJournalPairsEveryStartedSource
+--- PASS: TestJournalPairsEveryStartedSource (0.06s)
+=== RUN   TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls
+--- PASS: TestCompletionJournalFailureRetainsChargesAndStopsFurtherCalls (0.03s)
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_clear/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_clear/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/conditional
+    planner_next_test.go:129: selected number_verification -> device_swap -> sim_swap cost=1300.00 p95=10.00 fastest=10.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/faults/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/faults/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_27/complete
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+=== RUN   TestPlannerConstrainedOptimalityAgainstOracle/all_27/conditional
+    planner_next_test.go:129: selected number_verification+sim_swap+device_swap cost=6900.00 p95=30.00 fastest=30.00
+--- PASS: TestPlannerConstrainedOptimalityAgainstOracle (0.07s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/complete (0.01s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/frozen_tuning/conditional (0.01s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_clear/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_clear/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/early_adverse/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/faults/complete (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/faults/conditional (0.00s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_27/complete (0.03s)
+    --- PASS: TestPlannerConstrainedOptimalityAgainstOracle/all_27/conditional (0.02s)
+=== RUN   TestPlannerRejectsCheapTailRegression
+--- PASS: TestPlannerRejectsCheapTailRegression (0.00s)
+=== RUN   TestPlannerInvalidTuningFailsClosed
+--- PASS: TestPlannerInvalidTuningFailsClosed (0.00s)
+=== RUN   TestBenchmarkSeparatesCostAndLatencyBaselines
+--- PASS: TestBenchmarkSeparatesCostAndLatencyBaselines (0.00s)
+=== RUN   TestBenchmarkAbsoluteLatencyAndMissingPairs
+--- PASS: TestBenchmarkAbsoluteLatencyAndMissingPairs (0.00s)
+=== RUN   TestBenchmarkDisagreementDiagnosticsPreserveFrozenOracle
+--- PASS: TestBenchmarkDisagreementDiagnosticsPreserveFrozenOracle (0.27s)
+=== RUN   TestBenchmarkDisagreementDistinguishesSameInputPolicyFailure
+--- PASS: TestBenchmarkDisagreementDistinguishesSameInputPolicyFailure (0.54s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/evaluation	16.076s

@@ -2,6 +2,8 @@
 
 Prepared 2026-10-23; **proposal only, no cloud writes executed**. CLI access is available, but there is no OptiTrace project. Read-only discovery showed one visible organization and one billing account with `open=False`. Keep their IDs in the private approval packet. Reopen/select an open billing account first; no paid setup can proceed against a closed account.
 
+Status refresh 2026-10-25: read-only CLI discovery now lists two visible billing accounts; both are closed. The user selected reopening the existing account. The console was opened for handoff, but reopening has not been verified. The public Cloud Billing API only updates a billing account's display name; reopening a self-serve account uses the console's **Billing → Account management → Reopen billing account** flow. The user must complete that financial-account action and any payment verification themselves. [Official reopening instructions](https://docs.cloud.google.com/billing/docs/how-to/close-or-reopen-billing-account), [API restriction](https://docs.cloud.google.com/billing/docs/reference/rest/v1/billingAccounts/patch). CLI sign-in remains available; do not request or record credentials. Project/IAM/resource deployment approval remains a separate concrete decision.
+
 ## Reviewable scope
 
 Approve two stages independently:

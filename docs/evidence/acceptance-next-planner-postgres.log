@@ -1,0 +1,20 @@
+2026-10-23 00:39:01.698 UTC [245] STATEMENT:  UPDATE resources SET kind='other' WHERE id=$1
+2026-10-23 00:39:01.718 UTC [245] ERROR:  policy identity immutable
+2026-10-23 00:39:01.718 UTC [245] CONTEXT:  PL/pgSQL function immutable_policy() line 4 at RAISE
+2026-10-23 00:39:01.718 UTC [245] STATEMENT:  UPDATE resources SET id=id||'-changed' WHERE id=$1
+2026-10-23 00:39:01.728 UTC [245] ERROR:  approved policy immutable
+2026-10-23 00:39:01.728 UTC [245] CONTEXT:  PL/pgSQL function immutable_policy() line 10 at RAISE
+2026-10-23 00:39:01.728 UTC [245] STATEMENT:  UPDATE resources SET data=jsonb_set(data,'{author_id}','"b"') WHERE id=$1
+2026-10-23 00:39:01.748 UTC [245] ERROR:  independent reviewer required
+2026-10-23 00:39:01.748 UTC [245] CONTEXT:  PL/pgSQL function immutable_policy() line 20 at RAISE
+2026-10-23 00:39:01.748 UTC [245] STATEMENT:  INSERT INTO resources(id,tenant_id,kind,data) VALUES($1,'demo','policy','{"status":"active","author_id":"a","reviewer_id":"a"}')
+2026-10-23 00:39:08.810 UTC [245] ERROR:  canceling statement due to user request
+2026-10-23 00:39:08.810 UTC [245] CONTEXT:  while locking tuple (18,8) in relation "resources"
+2026-10-23 00:39:08.810 UTC [245] STATEMENT:  UPDATE resources SET data=jsonb_set(data,'{journal}',coalesce(data->'journal','[]'::jsonb)||jsonb_build_array($2::jsonb)) WHERE id=$1 AND kind='evaluation_attempt'
+2026-10-23 00:39:55.599 UTC [71] LOG:  checkpoint starting: time
+2026-10-23 00:40:21.107 UTC [71] LOG:  checkpoint complete: wrote 60 buffers (0.4%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=6.676 s, sync=4.792 s, total=25.572 s; sync files=40, longest=3.768 s, average=0.124 s; distance=349 kB, estimate=1297 kB; lsn=0/1A0D760, redo lsn=0/1A0D6D0
+2026-10-23 00:43:43.698 UTC [282] ERROR:  canceling statement due to user request
+2026-10-23 00:43:43.698 UTC [282] CONTEXT:  while locking tuple (1,9) in relation "resources"
+2026-10-23 00:43:43.698 UTC [282] STATEMENT:  UPDATE resources SET data=jsonb_set(data,'{journal}',coalesce(data->'journal','[]'::jsonb)||jsonb_build_array($2::jsonb)) WHERE id=$1 AND kind='evaluation_attempt'
+2026-10-23 00:44:55.916 UTC [71] LOG:  checkpoint starting: time
+2026-10-23 00:44:59.203 UTC [71] LOG:  checkpoint complete: wrote 18 buffers (0.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=1.903 s, sync=0.814 s, total=3.292 s; sync files=16, longest=0.313 s, average=0.051 s; distance=80 kB, estimate=1175 kB; lsn=0/1A219E0, redo lsn=0/1A21950

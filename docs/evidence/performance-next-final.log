@@ -1,0 +1,18 @@
+
+profile     correctness_passed latency_baseline latency_baseline_p95_ms absolute_500ms_passed relative_10pct_passed cos
+                                                                                                                    t_f
+                                                                                                                    irs
+                                                                                                                    t_b
+                                                                                                                    ase
+                                                                                                                    lin
+                                                                                                                    e
+-------     ------------------ ---------------- ----------------------- --------------------- --------------------- ---
+combined                  True full_parallel                     242,63                  True                  True st…
+complete                  True full_parallel                     235,44                  True                  True fu…
+conditional               True full_parallel                     326,40                 False                 False fu…
+
+Exception: C:\Projects\OptiTrace\scripts\Measure-Workload.ps1:111
+Line |
+ 111 |  … e_passed) { throw "Workload acceptance not met. Inspect $OutputFile.  …
+     |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Workload acceptance not met. Inspect .artifacts/next-phase/workload-final.json.

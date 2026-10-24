@@ -1,0 +1,88 @@
+
+> optitrace-web@0.1.0 test:e2e
+> playwright test --output=../../.artifacts/next-phase/browser-live-final-results
+
+
+Running 4 tests using 1 worker
+
+(node:45980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 [chromium] › tests\e2e\acceptance.live.ts:18:1 › real login, both policy profiles, evidence and persisted trace (21.2s)
+(node:63980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:63980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 [chromium] › tests\e2e\acceptance.live.ts:63:1 › durable worker completes a real benchmark and exports its labelled report (17.8s)
+(node:52440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:52440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 [chromium] › tests\e2e\acceptance.live.ts:87:1 › independent author and reviewer complete the policy approval workflow (7.1s)
+  ok 4 [chromium] › tests\e2e\acceptance.live.ts:105:1 › admin creates one-time credentials and invitations, auditor remains read-only (4.9s)
+
+
+  1) [chromium] › tests\e2e\acceptance.live.ts:18:1 › real login, both policy profiles, evidence and persisted trace
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('.outcome-row').getByRole('heading', { name: 'Verified', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('.outcome-row').getByRole('heading', { name: 'Verified', exact: true })[22m
+
+
+      29 |     await expect(
+      30 |       page.locator('.outcome-row').getByRole('heading', { name: 'Verified', exact: true }),
+    > 31 |     ).toBeVisible();
+         |       ^
+      32 |     await choose(page, 'Observation scenario', 'sim_change');
+      33 |     await page.getByRole('button', { name: 'Run verification', exact: true }).click();
+      34 |     await expect(
+        at C:\Projects\OptiTrace\apps\web\tests\e2e\acceptance.live.ts:31:7
+
+    Error Context: ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-real-lo-1490f-vidence-and-persisted-trace-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-real-lo-1490f-vidence-and-persisted-trace-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-real-lo-1490f-vidence-and-persisted-trace-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\e2e\acceptance.live.ts:63:1 › durable worker completes a real benchmark and exports its labelled report
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      82 |         r.agreement_rate === 1 && r.compulsory_violations === 0,
+      83 |     ),
+    > 84 |   ).toBe(true);
+         |     ^
+      85 |   await page.screenshot({ path: testInfo.outputPath('live-benchmark.png'), fullPage: true });
+      86 | });
+      87 | test('independent author and reviewer complete the policy approval workflow', async ({ page }) => {
+        at C:\Projects\OptiTrace\apps\web\tests\e2e\acceptance.live.ts:84:5
+
+    Error Context: ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-durable-b6c6b-exports-its-labelled-report-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-durable-b6c6b-exports-its-labelled-report-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.artifacts\next-phase\browser-live-final-results\acceptance.live.ts-durable-b6c6b-exports-its-labelled-report-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests\e2e\acceptance.live.ts:18:1 › real login, both policy profiles, evidence and persisted trace
+    [chromium] › tests\e2e\acceptance.live.ts:63:1 › durable worker completes a real benchmark and exports its labelled report
+  2 passed (1.3m)

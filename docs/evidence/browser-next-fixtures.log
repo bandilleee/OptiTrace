@@ -1,0 +1,66 @@
+
+> optitrace-web@0.1.0 test:e2e
+> playwright test --output=../../.artifacts/next-phase/browser-fixture-results
+
+
+Running 13 tests using 1 worker
+
+(node:32060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\e2e\console.spec.ts:71:1 › runs a verification and inspects skipped evidence (24.0s)
+  ok  2 [chromium] › tests\e2e\console.spec.ts:89:1 › auditor cannot submit evaluations or administer membership (2.9s)
+  ok  3 [chromium] › tests\e2e\console.spec.ts:102:1 › unauthenticated visitors see the invited Google sign-in flow (1.3s)
+  x   4 [chromium] › tests\e2e\console.spec.ts:118:1 › a queued benchmark polls until its measured report is available (30.9s)
+(node:60896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  5 [chromium] › tests\e2e\console.spec.ts:187:1 › the execution workspace remains usable on a narrow screen (3.2s)
+  ok  6 [chromium] › tests\e2e\console.spec.ts:207:1 › theme and motion choices persist, and the assumptions match the engine (3.1s)
+  ok  7 [chromium] › tests\e2e\console.spec.ts:233:1 › mobile navigation closes after selection and tabs support the keyboard (4.6s)
+  ok  8 [chromium] › tests\e2e\console.spec.ts:261:1 › failed submissions show the server error without inventing a result (1.5s)
+  ok  9 [chromium] › tests\e2e\console.spec.ts:283:1 › workspace has no automated accessibility violations in either theme (4.6s)
+  ok 10 [chromium] › tests\e2e\console.spec.ts:303:1 › policy authors see their own dashboard without evaluation or administration access (1.8s)
+  ok 11 [chromium] › tests\e2e\console.spec.ts:321:1 › dropdowns support keyboard selection and invalid benchmark values stay in the form (2.6s)
+  ok 12 [chromium] › tests\e2e\console.spec.ts:344:1 › administrators validate invitations and retain failed role edits for retry (2.4s)
+  ok 13 [chromium] › tests\e2e\console.spec.ts:390:1 › a completed benchmark still warns when its measured outcomes disagree (1.9s)
+
+
+  1) [chromium] › tests\e2e\console.spec.ts:118:1 › a queued benchmark polls until its measured report is available
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: /Workspace overview|Your verification workspace/ })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: /Workspace overview|Your verification workspace/ })[22m
+
+
+      155 |   await expect(
+      156 |     page.getByRole('heading', { name: /Workspace overview|Your verification workspace/ }),
+    > 157 |   ).toBeVisible();
+          |     ^
+      158 |   if (await page.getByRole('button', { name: 'Open verification playground', exact: true }).count())
+      159 |     await page.getByRole('button', { name: 'Open verification playground', exact: true }).click();
+      160 |   await page.getByRole('button', { name: 'Benchmarks', exact: true }).click();
+        at C:\Projects\OptiTrace\apps\web\tests\e2e\console.spec.ts:157:5
+
+    Error Context: ..\..\.artifacts\next-phase\browser-fixture-results\console-a-queued-benchmark-aff96-easured-report-is-available-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\.artifacts\next-phase\browser-fixture-results\console-a-queued-benchmark-aff96-easured-report-is-available-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\.artifacts\next-phase\browser-fixture-results\console-a-queued-benchmark-aff96-easured-report-is-available-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\e2e\console.spec.ts:118:1 › a queued benchmark polls until its measured report is available
+  12 passed (1.8m)

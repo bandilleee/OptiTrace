@@ -80,4 +80,6 @@ Read `docs/ARCHITECTURE.md`, `docs/runbooks/RELEASE.md`, `docs/runbooks/AGENT-HA
 
 Observed local results and remaining release prerequisites are recorded in [integration verification](docs/evidence/verification.md).
 
+The latest [parallel delivery and acceptance handback](docs/evidence/NEXT-PHASE.md) records the evaluator/planner repairs and the current **release HOLD**: profile-specific latency, failed live-browser acceptance, real Google setup and hosted release prerequisites remain open. Historical passing checks do not override these failures.
+
 The approved frontend uses shadcn/ui, Tailwind4, local Montserrat fonts, and the supplied animated logo kit. See the [design implementation notes](docs/design/FRONTEND.md) for the palette, component mappings, prototype adaptations, and browser checks.

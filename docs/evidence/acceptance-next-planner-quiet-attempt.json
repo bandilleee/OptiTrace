@@ -1,0 +1,91 @@
+{
+    "id": "FlJD-NBBilz7X8Q-P9aV1TpBUunm9oksNT4JTn7aMjU",
+    "checks": [
+    ],
+    "status": "execution_unconfirmed",
+    "journal": [
+        {
+            "check": {
+                "status": "unavailable",
+                "capability": "device_swap",
+                "compulsory": false,
+                "elapsed_ms": 0,
+                "started_at": "2026-10-23T00:43:40.5850719Z",
+                "source_time": "0001-01-01T00:00:00Z",
+                "cost_microrand": 3200
+            },
+            "event": "starting",
+            "recorded_at": "2026-10-23T00:43:40.5891056Z"
+        },
+        {
+            "check": {
+                "status": "unavailable",
+                "capability": "sim_swap",
+                "compulsory": false,
+                "elapsed_ms": 0,
+                "started_at": "2026-10-23T00:43:40.5850719Z",
+                "source_time": "0001-01-01T00:00:00Z",
+                "cost_microrand": 2200
+            },
+            "event": "starting",
+            "recorded_at": "2026-10-23T00:43:40.6143588Z"
+        },
+        {
+            "check": {
+                "status": "unavailable",
+                "capability": "number_verification",
+                "compulsory": true,
+                "elapsed_ms": 0,
+                "started_at": "2026-10-23T00:43:40.5850719Z",
+                "source_time": "0001-01-01T00:00:00Z",
+                "cost_microrand": 1200
+            },
+            "event": "starting",
+            "recorded_at": "2026-10-23T00:43:40.6237545Z"
+        },
+        {
+            "check": {
+                "scope": "ZA:account-verification",
+                "value": false,
+                "status": "available",
+                "subject": "synthetic-subject",
+                "capability": "sim_swap",
+                "compulsory": false,
+                "elapsed_ms": 20.745,
+                "started_at": "2026-10-23T00:43:43.4783703Z",
+                "source_time": "2026-10-23T00:43:39.5850719Z",
+                "cost_microrand": 2200
+            },
+            "event": "completed",
+            "recorded_at": "2026-10-23T00:43:43.5024251Z"
+        },
+        {
+            "check": {
+                "scope": "ZA:account-verification",
+                "value": true,
+                "status": "available",
+                "subject": "synthetic-subject",
+                "capability": "number_verification",
+                "compulsory": true,
+                "elapsed_ms": 10.7912,
+                "started_at": "2026-10-23T00:43:44.964375Z",
+                "source_time": "2026-10-23T00:43:39.5850719Z",
+                "cost_microrand": 1200
+            },
+            "event": "completed",
+            "recorded_at": "2026-10-23T00:43:44.9796562Z"
+        }
+    ],
+    "outcome": "indeterminate",
+    "profile": "conditional",
+    "scenario": "number_mismatch",
+    "strategy": "optitrace",
+    "policy_id": "policy-conditional",
+    "tenant_id": "demo",
+    "created_at": "2026-10-23T00:43:38.9513125Z",
+    "elapsed_ms": null,
+    "policy_version": 1,
+    "stopping_reason": "Execution reserved. Until finalized, call completion and charges are uncertain; this key is never automatically repeated.",
+    "runtime_cost_microrand": null,
+    "supplier_cost_microrand": null
+}
