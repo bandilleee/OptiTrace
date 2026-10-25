@@ -81,6 +81,8 @@ Import the approved repository as a Next.js project with **Root Directory `apps/
 
 Vercel's proxy forwards `/api/v1/...` to Go `/v1/...`, including the browser session cookie, CSRF header and original Origin, and returns Set-Cookie to the first-party Vercel origin. Direct browser-to-Render auth is not the application flow. Keep preview deployments on UI fixtures or a separately approved isolated backend; do not route preview authentication to production or add wildcard redirect hosts. Configure a function region near Render/Supabase when available and an appropriate proxy time budget; a sleeping free backend may outlast an individual browser/API request and must produce a clear retry state rather than an empty successful result.
 
+For manual CLI deployment from the repository root, pass `--local-config apps/web/vercel.json` explicitly. Without that option the CLI-root deployment used its default `iad1` despite the app configuration file. The explicit configuration deployed the proxy to Frankfurt (`fra1`), confirmed by the API's `x-vercel-id` header. Use the existing project link and `vercel deploy --prod --scope echoverses-projects --local-config apps/web/vercel.json`; do not create another project or silently change plans.
+
 ## Free-tier behavior and bounds
 
 This is a personal, non-commercial portfolio profile under the applicable provider terms, not a production availability commitment. Current primary sources were checked 2026-10-25:
