@@ -12,7 +12,6 @@ import (
 	"github.com/optitrace/optitrace/services/engine/internal/storage/dbgen"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/trace"
-	"golang.org/x/oauth2"
 	"io"
 	"log/slog"
 	"net/http"
@@ -108,6 +107,9 @@ func (s *Server) Handler() http.Handler {
 func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	state := identity.Random()
 	l := login{identity.Random(), identity.Random(), time.Now().Add(5 * time.Minute)}
+	// Direct OIDC validates this nonce against the ID token. Supabase manages
+	// its upstream OIDC nonce/state; our local transaction uses state + PKCE,
+	// retaining the nonce column only for compatibility with the direct flow.
 	s.DB.Exec(r.Context(), `DELETE FROM login_transactions WHERE expires_at<now()`)
 	tag, err := s.DB.Exec(r.Context(), `INSERT INTO login_transactions(hash,nonce,verifier,expires_at) SELECT $1,$2,$3,$4 WHERE (SELECT count(*) FROM login_transactions)<10000`, identity.Hash(state), l.nonce, l.verifier, l.expires)
 	if err != nil {
@@ -119,7 +121,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.SetCookie(w, &http.Cookie{Name: "optitrace_login", Value: state, Path: "/", HttpOnly: true, Secure: s.secure, SameSite: http.SameSiteLaxMode, MaxAge: 300})
-	http.Redirect(w, r, s.Identity.OAuth.AuthCodeURL(state, oauth2.SetAuthURLParam("nonce", l.nonce), oauth2.S256ChallengeOption(l.verifier)), 302)
+	http.Redirect(w, r, s.Identity.AuthorizationURL(state, l.nonce, l.verifier), 302)
 }
 func (s *Server) callback(w http.ResponseWriter, r *http.Request) {
 	cookie, e := r.Cookie("optitrace_login")

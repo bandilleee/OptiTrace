@@ -37,10 +37,12 @@ type Account struct {
 	Token string
 }
 type Provider struct {
+	Mode                string
 	OAuth               oauth2.Config
 	Verifier            *oidc.IDTokenVerifier
 	Client              *http.Client
 	IdentityURL, APIKey string
+	supabase            *supabaseConfig
 }
 type rewrite struct {
 	base               http.RoundTripper
@@ -64,11 +66,14 @@ func New(ctx context.Context) (*Provider, error) {
 	mode := os.Getenv("AUTH_MODE")
 	prod := os.Getenv("APP_ENV") == "production"
 	origin := os.Getenv("APP_ORIGIN")
-	if mode != "google" && mode != "mock" {
-		return nil, errors.New("AUTH_MODE must be google or mock")
+	if mode != "google" && mode != "mock" && mode != "supabase" {
+		return nil, errors.New("AUTH_MODE must be supabase, google, or mock")
 	}
-	if prod && (mode != "google" || !strings.HasPrefix(origin, "https://")) {
-		return nil, errors.New("hosted configuration requires Google auth and HTTPS")
+	if prod && (mode == "mock" || !strings.HasPrefix(origin, "https://")) {
+		return nil, errors.New("hosted configuration requires a configured auth provider and HTTPS")
+	}
+	if mode == "supabase" {
+		return newSupabaseProvider(origin, prod)
 	}
 	issuer := "https://accounts.google.com"
 	identityURL := "https://identitytoolkit.googleapis.com/v1"
@@ -107,9 +112,21 @@ func New(ctx context.Context) (*Provider, error) {
 	if os.Getenv("API_PUBLIC_URL") == "" {
 		callback = strings.TrimRight(origin, "/") + "/api/v1/auth/callback"
 	}
-	return &Provider{OAuth: oauth2.Config{ClientID: clientID, ClientSecret: secret, Endpoint: p.Endpoint(), RedirectURL: callback, Scopes: []string{oidc.ScopeOpenID, "email", "profile"}}, Verifier: p.Verifier(&oidc.Config{ClientID: clientID}), Client: client, IdentityURL: identityURL, APIKey: os.Getenv("IDENTITY_PLATFORM_API_KEY")}, nil
+	return &Provider{Mode: mode, OAuth: oauth2.Config{ClientID: clientID, ClientSecret: secret, Endpoint: p.Endpoint(), RedirectURL: callback, Scopes: []string{oidc.ScopeOpenID, "email", "profile"}}, Verifier: p.Verifier(&oidc.Config{ClientID: clientID}), Client: client, IdentityURL: identityURL, APIKey: os.Getenv("IDENTITY_PLATFORM_API_KEY")}, nil
+}
+
+// AuthorizationURL keeps Supabase's own upstream OAuth state separate from the
+// browser-bound OptiTrace transaction carried in the callback's query string.
+func (p *Provider) AuthorizationURL(state, nonce, verifier string) string {
+	if p.supabase != nil {
+		return p.supabaseAuthorizationURL(state, verifier)
+	}
+	return p.OAuth.AuthCodeURL(state, oauth2.SetAuthURLParam("nonce", nonce), oauth2.S256ChallengeOption(verifier))
 }
 func (p *Provider) Exchange(ctx context.Context, code, verifier, nonce string) (Account, error) {
+	if p.supabase != nil {
+		return p.supabaseExchange(ctx, code, verifier)
+	}
 	ctx = oidc.ClientContext(ctx, p.Client)
 	t, e := p.OAuth.Exchange(ctx, code, oauth2.SetAuthURLParam("code_verifier", verifier))
 	if e != nil {
@@ -157,6 +174,9 @@ func (p *Provider) Exchange(ctx context.Context, code, verifier, nonce string) (
 	return Account{account.LocalID, account.Email, account.Token}, nil
 }
 func (p *Provider) Enabled(ctx context.Context, token, id string) bool {
+	if p.supabase != nil {
+		return p.supabaseEnabled(ctx, id)
+	}
 	client := p.Client
 	endpoint := p.IdentityURL + "/accounts:lookup?key=" + url.QueryEscape(p.APIKey)
 	payload := any(map[string]string{"idToken": token})

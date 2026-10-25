@@ -1,0 +1,137 @@
+=== RUN   TestOIDCExchangeSecurity
+=== RUN   TestOIDCExchangeSecurity/audience
+=== RUN   TestOIDCExchangeSecurity/expiration
+=== RUN   TestOIDCExchangeSecurity/issuer
+--- PASS: TestOIDCExchangeSecurity (0.21s)
+    --- PASS: TestOIDCExchangeSecurity/audience (0.01s)
+    --- PASS: TestOIDCExchangeSecurity/expiration (0.00s)
+    --- PASS: TestOIDCExchangeSecurity/issuer (0.00s)
+=== RUN   TestHostedRejectsMock
+--- PASS: TestHostedRejectsMock (0.00s)
+=== RUN   TestSupabaseGooglePKCEProtocol
+--- PASS: TestSupabaseGooglePKCEProtocol (0.01s)
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unconfirmed
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/anonymous
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/wrong_audience
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/invalid_UUID
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/email-only_account
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/missing_provider_access_token
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unverified_Google_identity
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/missing_explicit_identity_subject
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/different_Google_subject
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/different_Google_email
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unverified_Google_UserInfo
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/invalid_bearer
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/Google_rejected_provider_token
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/deleted
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/banned
+=== RUN   TestSupabaseRejectsUntrustedOrNonGoogleIdentity/admin_missing_user
+--- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity (0.08s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unconfirmed (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/anonymous (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/wrong_audience (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/invalid_UUID (0.01s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/email-only_account (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/missing_provider_access_token (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unverified_Google_identity (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/missing_explicit_identity_subject (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/different_Google_subject (0.01s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/different_Google_email (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/unverified_Google_UserInfo (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/invalid_bearer (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/Google_rejected_provider_token (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/deleted (0.01s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/banned (0.00s)
+    --- PASS: TestSupabaseRejectsUntrustedOrNonGoogleIdentity/admin_missing_user (0.01s)
+=== RUN   TestSupabaseAdminStatusFailsClosed
+=== RUN   TestSupabaseAdminStatusFailsClosed/banned
+=== RUN   TestSupabaseAdminStatusFailsClosed/deleted
+=== RUN   TestSupabaseAdminStatusFailsClosed/unconfirmed
+=== RUN   TestSupabaseAdminStatusFailsClosed/missing
+=== RUN   TestSupabaseAdminStatusFailsClosed/provider_unavailable
+=== RUN   TestSupabaseAdminStatusFailsClosed/wrong_user
+=== RUN   TestSupabaseAdminStatusFailsClosed/unlinked_Google_identity
+--- PASS: TestSupabaseAdminStatusFailsClosed (0.02s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/banned (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/deleted (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/unconfirmed (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/missing (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/provider_unavailable (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/wrong_user (0.00s)
+    --- PASS: TestSupabaseAdminStatusFailsClosed/unlinked_Google_identity (0.00s)
+=== RUN   TestSupabaseCredentialsAreNotForwardedOnRedirect
+--- PASS: TestSupabaseCredentialsAreNotForwardedOnRedirect (0.00s)
+=== RUN   TestSupabaseHostedConfiguration
+--- PASS: TestSupabaseHostedConfiguration (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/identity	1.373s
+=== RUN   TestPostgresAuthenticatedWorkflow
+{"timestamp":"2026-10-25T00:25:49.654737212Z","severity":"INFO","msg":"http request","request_id":"h98gq_hy8QUzJszpPTYbxaDEKxtoNcGamrtpjnYkN00","method":"GET","path":"/v1/auth/login","elapsed_ms":24}
+{"timestamp":"2026-10-25T00:25:49.698882125Z","severity":"INFO","msg":"http request","request_id":"vaNyxz99tRkePYMmqbyxlEBfPrac3rkMc7_DlehEs6A","method":"GET","path":"/v1/auth/callback","elapsed_ms":38}
+{"timestamp":"2026-10-25T00:25:49.70432963Z","severity":"INFO","msg":"http request","request_id":"NKlZFNSMsJ2YaJ0-aix62VDsb-hxat1DDC_WJoGjx9s","method":"GET","path":"/v1/auth/me","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:49.708926707Z","severity":"INFO","msg":"http request","request_id":"atRUzNePnUmFkalh3THnxn1niUzRjIRSuhlACkUZl84","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:49.712937398Z","severity":"INFO","msg":"http request","request_id":"LecP9IGMIX58fBxyzcifFEy_CrpkTEH6HutuwrZiZWM","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.716711822Z","severity":"INFO","msg":"http request","request_id":"SFFq8hpH5tiZ9Yv1BfFPyR4jdBLq_hy-Su7PMiXykDw","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.720823688Z","severity":"INFO","msg":"http request","request_id":"nPLwa2uEzQdZwBlh9YpUD2rEVan7EWJ6qLCg9jEBHxc","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.726736024Z","severity":"INFO","msg":"http request","request_id":"q2x8llmhz_StAa5mSFuJlplxnTigUJzV6LpCsuD1mZY","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:49.730675397Z","severity":"INFO","msg":"http request","request_id":"rSG8KmHjY9w87rdBX0cblJr3j2XR4b4xRGff-aeuvas","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.733110495Z","severity":"INFO","msg":"http request","request_id":"v4_MmK7SLyWINufD6Zegz0WYg6Xtc5OvpJ8Eg5gAkic","method":"GET","path":"/v1/tenants/other/policies","elapsed_ms":1}
+{"timestamp":"2026-10-25T00:25:49.734856218Z","severity":"INFO","msg":"http request","request_id":"ti6zVFnxqhXn145ZORykZHCxsceK8Uc5fnaR2YuOM7E","method":"POST","path":"/v1/tenants/demo/invitations","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:49.814718034Z","severity":"INFO","msg":"http request","request_id":"T3YK02rTw51hlZH0MKOiqtW2DCHaZ4TYMweA_jsAiO4","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":78}
+{"timestamp":"2026-10-25T00:25:49.859932018Z","severity":"INFO","msg":"http request","request_id":"rsM43M_LsFZ-DKDWcMz0-XiXLldISRPB0wnjWn3lnKs","method":"GET","path":"/v1/auth/login","elapsed_ms":43}
+{"timestamp":"2026-10-25T00:25:49.900325673Z","severity":"INFO","msg":"http request","request_id":"G19o1EU6JdEhKkugaywJ7flJdLTBZXxbWAugpZnn-8U","method":"GET","path":"/v1/auth/callback","elapsed_ms":37}
+{"timestamp":"2026-10-25T00:25:49.905197664Z","severity":"INFO","msg":"http request","request_id":"wxbZvyv406p6yj879sHQVr3JB6oq6viw0f7xeXH3ZD4","method":"GET","path":"/v1/auth/me","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:49.909109984Z","severity":"INFO","msg":"http request","request_id":"AHsbP0CkZvm0BGTCxD87ZBJKjmeGnllCIjElNoRfx9g","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.935002391Z","severity":"INFO","msg":"http request","request_id":"Lh95hka4Q_tgEduvZDEBOVtHwYbmrgCPXfxAxgA2d3M","method":"POST","path":"/v1/tenants/demo/policies","elapsed_ms":24}
+{"timestamp":"2026-10-25T00:25:49.944587734Z","severity":"INFO","msg":"http request","request_id":"w1yGsuzSbFlbB0izIntrN5a5Nf0mTExuMjvN-ETD_gw","method":"POST","path":"/v1/tenants/demo/policies/HPTcu-U_lf03AHfiFhB5DkzY3_keQW8IT6w2MbZNM8g/submit","elapsed_ms":8}
+{"timestamp":"2026-10-25T00:25:49.947575613Z","severity":"INFO","msg":"http request","request_id":"cVSJ_lfRgelSSWRYsBzKzkJQCsIu4ItP01vd7dGA7s4","method":"POST","path":"/v1/tenants/demo/policies/HPTcu-U_lf03AHfiFhB5DkzY3_keQW8IT6w2MbZNM8g/approve","elapsed_ms":1}
+{"timestamp":"2026-10-25T00:25:49.950974819Z","severity":"INFO","msg":"http request","request_id":"UytmDnYb96Jq5Fo6ucjE0wG_XRgDJZ27JGv4rdzP090","method":"GET","path":"/v1/auth/login","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:49.964162872Z","severity":"INFO","msg":"http request","request_id":"uB5SMtDNe5idlPCT3KrvaiDE0y7J6xp3YoB-a0Bkpwk","method":"GET","path":"/v1/auth/callback","elapsed_ms":10}
+{"timestamp":"2026-10-25T00:25:49.96717085Z","severity":"INFO","msg":"http request","request_id":"CILcgh3abqXzjz9ijg2dGt7lhhTtX7aRZLBej7q2Tsc","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-25T00:25:49.974045009Z","severity":"INFO","msg":"http request","request_id":"5bphgMqMUKz79JQiAteplqssJKotP4EUlLw7iK77BEY","method":"POST","path":"/v1/tenants/demo/policies/HPTcu-U_lf03AHfiFhB5DkzY3_keQW8IT6w2MbZNM8g/approve","elapsed_ms":5}
+{"timestamp":"2026-10-25T00:25:49.991958747Z","severity":"INFO","msg":"http request","request_id":"EV569QqyXsc7zNy5iidZFK-JqdvOcQuixUyL_ZYuCNU","method":"POST","path":"/v1/tenants/demo/policies/HPTcu-U_lf03AHfiFhB5DkzY3_keQW8IT6w2MbZNM8g/activate","elapsed_ms":16}
+{"timestamp":"2026-10-25T00:25:49.995585584Z","severity":"INFO","msg":"http request","request_id":"HYoD6qCwO7xMq7SkWUEK1g_Lg5Sa1vYuYnnQcQOe_Gg","method":"GET","path":"/v1/auth/login","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:50.008555294Z","severity":"INFO","msg":"http request","request_id":"x9bJYIJsTI5zbiS10CMqWAslf-Ds0RZFkuCsigiRKG4","method":"GET","path":"/v1/auth/callback","elapsed_ms":10}
+{"timestamp":"2026-10-25T00:25:50.011942507Z","severity":"INFO","msg":"http request","request_id":"lXo-VufAWtiaF6-M0M27taJN6KIUTDnaRuR8D6TAi4s","method":"GET","path":"/v1/auth/me","elapsed_ms":1}
+{"timestamp":"2026-10-25T00:25:50.01411172Z","severity":"INFO","msg":"http request","request_id":"7vqzR_9OYyUYUo71b4FHmrWHy3FySFyTMUQBvZNDUEw","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.029474386Z","severity":"INFO","msg":"http request","request_id":"Jku5bH7hzSbIL50QMVvXL8djWloRU5atlm2qGdBNsnw","method":"POST","path":"/v1/tenants/demo/credentials","elapsed_ms":12}
+{"timestamp":"2026-10-25T00:25:50.035766277Z","severity":"INFO","msg":"http request","request_id":"lZ6_9aY7qNg_RogmYbmz0pXOSa60-FEt2Gj_zDcV2BU","method":"GET","path":"/v1/tenants/demo/evaluations","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:50.04353022Z","severity":"INFO","msg":"http request","request_id":"-gEUMqUJX7jva462kYJpEglSofoLtx632CSKPnjmQXs","method":"POST","path":"/v1/tenants/demo/benchmarks","elapsed_ms":6}
+{"timestamp":"2026-10-25T00:25:50.597068698Z","severity":"INFO","msg":"http request","request_id":"_7JPdLkWG19fygJnOQ3ViK-wl0XJvTSVQV-T-f69m6A","method":"GET","path":"/v1/tenants/demo/benchmarks/iNNWqRBVaxg3MNfSTnHmXezqrPw00kKoJY6ur92neb4/export","elapsed_ms":12}
+{"timestamp":"2026-10-25T00:25:50.75914078Z","severity":"INFO","msg":"http request","request_id":"ciySc05nhE91tKJwFOqDYXv6WK5FCVtdqhy1u5168k0","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":112}
+{"timestamp":"2026-10-25T00:25:50.776360735Z","severity":"INFO","msg":"http request","request_id":"Qxq0G632fLlpGN6dzcE6_eB9zNoM9MqzBcfBigmwuFA","method":"POST","path":"/v1/tenants/demo/evaluations","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:50.780517439Z","severity":"INFO","msg":"http request","request_id":"AkNPcyz9C5kctMzYkp2cNWdvoIH1HrCufjpExXUX4qw","method":"GET","path":"/v1/tenants/demo/evaluations/attempt-1NHYhqltPSqbZCgveUhGp58kpwUmjw7oovJVf-Wknq0","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:50.788698731Z","severity":"INFO","msg":"http request","request_id":"K5Zl3N8nMwTbEHDtJn_1kgejdHh_jJnorTxYHaabGTk","method":"GET","path":"/v1/auth/me","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:50.792163885Z","severity":"INFO","msg":"http request","request_id":"b4u2tRYdlBKBQUtw2Pdt6KTvvwZXaQktbRfDNu4Oucg","method":"GET","path":"/v1/auth/me","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.796286112Z","severity":"INFO","msg":"http request","request_id":"QAkEc_VbKVIAb-5mP9F3q9WRHD5j8vrfnEfxZ-eWg7o","method":"POST","path":"/v1/auth/logout","elapsed_ms":2}
+{"timestamp":"2026-10-25T00:25:50.797607592Z","severity":"INFO","msg":"http request","request_id":"5_xZN5w15D_7xRe_FORVdEnuKClOqywKQKa_oSsBgOo","method":"GET","path":"/v1/auth/me","elapsed_ms":0}
+--- PASS: TestPostgresAuthenticatedWorkflow (1.57s)
+=== RUN   TestSupabaseBrowserSessionProtocol
+{"timestamp":"2026-10-25T00:25:50.832655571Z","severity":"INFO","msg":"http request","request_id":"qoeLGb3-bzTr5FD12lIGeZJGlDUdKd7TURRqpMP8GYY","method":"GET","path":"/v1/auth/login","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:50.836472116Z","severity":"INFO","msg":"http request","request_id":"tZuxVqPI3sVHPaSFvRVPsRKbfAbFIZVElDjLd38NBH4","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.838279698Z","severity":"INFO","msg":"http request","request_id":"IzZP3oyTNnyM0E7GUyJUPXcSMZ2SgHGMiOBmpNzrqzE","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.886509205Z","severity":"INFO","msg":"http request","request_id":"H1YPM-9f1DwLIrjA1naY-VbjisB45mnMDv_nnsFfHtg","method":"GET","path":"/v1/auth/callback","elapsed_ms":46}
+{"timestamp":"2026-10-25T00:25:50.895722847Z","severity":"INFO","msg":"http request","request_id":"6wrmg-86U9lJ5TXBY1x-EyN2Wm3RpvxUKL10AkbY7oY","method":"GET","path":"/v1/auth/me","elapsed_ms":5}
+{"timestamp":"2026-10-25T00:25:50.900414147Z","severity":"INFO","msg":"http request","request_id":"nw58PLAvEw1gabw83cnWw-OS_lQZ8MrTMNaclQBa_k4","method":"GET","path":"/v1/auth/callback","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.906020296Z","severity":"INFO","msg":"http request","request_id":"VLUwTwnRJ5ZEVRWryXKGs9eqjbgtpOfuyTLvpq78mcc","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:50.935919641Z","severity":"INFO","msg":"http request","request_id":"PpSXeZUT9o5iu_U3Nyukc7PaDc2lMDtbHyLPB5p0hfQ","method":"GET","path":"/v1/auth/callback","elapsed_ms":25}
+{"timestamp":"2026-10-25T00:25:50.964404342Z","severity":"INFO","msg":"http request","request_id":"1JbK0Hf8wRkakxa9gm5dzecP-lRlSxccJJWgeGY2PZQ","method":"GET","path":"/v1/auth/me","elapsed_ms":7}
+{"timestamp":"2026-10-25T00:25:50.967511822Z","severity":"INFO","msg":"http request","request_id":"ELu8h5tN65C3h0OfdPrf1Nveh4LPpUXqLOxeUp86JwE","method":"POST","path":"/v1/auth/logout","elapsed_ms":0}
+{"timestamp":"2026-10-25T00:25:50.970959606Z","severity":"INFO","msg":"http request","request_id":"0EprR4PChbytalxb3TAApusWnqFljBdf7x99Bj71CxM","method":"POST","path":"/v1/auth/logout","elapsed_ms":1}
+{"timestamp":"2026-10-25T00:25:50.979943438Z","severity":"INFO","msg":"http request","request_id":"N1_zE0UivIQCqtYwvcpNgAWqrNKNIh-OzNtw0GhZ8eQ","method":"GET","path":"/v1/auth/me","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:51.002305918Z","severity":"INFO","msg":"http request","request_id":"covmwdl_BvkLQv5uBxqbwElspvpCxdaH1PUYZWfKutM","method":"GET","path":"/v1/auth/login","elapsed_ms":19}
+{"timestamp":"2026-10-25T00:25:51.03594802Z","severity":"INFO","msg":"http request","request_id":"OwyUuuOXc1zxShAp70qmHqFWfRi-rSq5BJTX3zLeP5o","method":"GET","path":"/v1/auth/callback","elapsed_ms":30}
+{"timestamp":"2026-10-25T00:25:51.044573032Z","severity":"INFO","msg":"http request","request_id":"sxKUIHjZCruOr6XI6n1dO3MBDW9i-GTsRCsEoxxyPhI","method":"GET","path":"/v1/auth/me","elapsed_ms":4}
+{"timestamp":"2026-10-25T00:25:51.049545397Z","severity":"INFO","msg":"http request","request_id":"f_0LGXB4MwCF1IRvqlza7gM5-wjWV7Y29q862TCLdn0","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:51.081439413Z","severity":"INFO","msg":"http request","request_id":"Nd78eJv3O57mtRxEvy5QHSQYF16W2M_jqut7wpeCdSg","method":"GET","path":"/v1/auth/callback","elapsed_ms":27}
+{"timestamp":"2026-10-25T00:25:51.086364366Z","severity":"INFO","msg":"http request","request_id":"jhFxir-047Nf3nN0ReOcwwvh10jw3ns68KLwNuiX8bk","method":"GET","path":"/v1/auth/login","elapsed_ms":3}
+{"timestamp":"2026-10-25T00:25:51.109615642Z","severity":"INFO","msg":"http request","request_id":"WsG3YM0lwtRleIUmkHqkP_x8QiU_KHScoXMlgDwoej0","method":"GET","path":"/v1/auth/callback","elapsed_ms":1}
+--- PASS: TestSupabaseBrowserSessionProtocol (0.31s)
+=== RUN   TestResourceNameValidation
+--- PASS: TestResourceNameValidation (0.00s)
+=== RUN   TestInvitationEmailValidation
+--- PASS: TestInvitationEmailValidation (0.00s)
+PASS
+ok  	github.com/optitrace/optitrace/services/engine/internal/server	2.949s
+Linux go test -race ./internal/identity ./internal/server -count=1 -v => exit 0
