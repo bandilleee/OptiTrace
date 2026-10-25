@@ -82,7 +82,7 @@ npm --prefix apps/web run test:e2e
 ./scripts/Measure-Api.ps1 -Samples 100
 ```
 
-Go tests cover bounded policy equivalence, 13 execution plans, adversarial observations, cancellation/journaling, protocol authentication and PostgreSQL authorization. Web tests cover client/proxy boundaries and real browser journeys. GitHub Actions also configures Linux race checks, vulnerability/image scans, code-generation drift, Windows checks and Terraform validation/mock plans. The private repository is connected, but GitHub account billing restrictions currently prevent Actions jobs from starting; hosted CI remains unverified.
+Go tests cover bounded policy equivalence, 13 execution plans, adversarial observations, cancellation/journaling, protocol authentication and PostgreSQL authorization. Web tests cover client/proxy boundaries and real browser journeys. GitHub Actions also configures Linux race checks, vulnerability/image scans, code-generation drift, Windows checks and Terraform validation/mock plans. Previous private-repository runs could not start because of GitHub account billing restrictions. Public-repository CI status must be checked on the Actions tab; local checks and provider builds do not establish hosted CI success.
 
 `npm --prefix apps/web test` runs unit tests. Without `OPTITRACE_LIVE=1`, browser tests use controlled API fixtures to exercise UI states. With it, the separate live suite uses the actual local Go API, database and identity provider.
 

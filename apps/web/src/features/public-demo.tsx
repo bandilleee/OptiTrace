@@ -117,7 +117,11 @@ export function PublicDemo() {
                     <SelectField
                       aria-label="Policy profile"
                       value={profile}
-                      onValueChange={setProfile}
+                      onValueChange={(v) => {
+                        setProfile(v);
+                        setResult(undefined);
+                        setError(null);
+                      }}
                       disabled={pending}
                     >
                       <option value="conditional">Conditional verification</option>
@@ -134,7 +138,11 @@ export function PublicDemo() {
                     <SelectField
                       aria-label="Observation scenario"
                       value={scenario}
-                      onValueChange={(v) => setScenario(v as typeof scenario)}
+                      onValueChange={(v) => {
+                        setScenario(v as typeof scenario);
+                        setResult(undefined);
+                        setError(null);
+                      }}
                       disabled={pending}
                     >
                       {scenarios.map((s) => (
@@ -149,7 +157,11 @@ export function PublicDemo() {
                     <SelectField
                       aria-label="Execution strategy"
                       value={strategy}
-                      onValueChange={(v) => setStrategy(v as typeof strategy)}
+                      onValueChange={(v) => {
+                        setStrategy(v as typeof strategy);
+                        setResult(undefined);
+                        setError(null);
+                      }}
                       disabled={pending}
                     >
                       {strategies.map((s) => (

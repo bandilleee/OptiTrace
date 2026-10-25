@@ -72,6 +72,12 @@ test('anonymous sandbox runs, inspects and exports an ephemeral result', async (
   expect((await download).suggestedFilename()).toBe('optitrace-demo-fixture.json');
   expect(requests).toHaveLength(1);
   expect(requests[0]).toContain('/demo/evaluations');
+  await page.getByRole('combobox', { name: 'Execution strategy', exact: true }).click();
+  await page.getByRole('option', { name: 'Full parallel', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Additional verification required' })).toHaveCount(
+    0,
+  );
+  await expect(page.getByText('Ready to run', { exact: true })).toBeAttached();
 });
 
 test('mobile sandbox shows capacity errors without navigating to login', async ({ page }) => {
