@@ -1,0 +1,4 @@
+ok  	github.com/optitrace/optitrace/services/engine/internal/portfolio	1.220s
+ok  	github.com/optitrace/optitrace/services/engine/internal/storage	1.607s
+ok  	github.com/optitrace/optitrace/services/engine/internal/identity	1.316s
+ok  	github.com/optitrace/optitrace/services/engine/internal/server	2.772s

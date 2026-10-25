@@ -2,6 +2,8 @@
 
 Recorded 2026-10-25. Input `4332231`; authentication integrated as `897e594` and hosting as `30ea0d4`. Runtime/database/proxy integration is the companion implementation commit. No hosted resources or remote repository were created by this work.
 
+Final application implementation revision: `eb00a42`; documentation clarification: `a7a1b24`. The final serialized race run passed all four affected packages, exit0. Evidence-only additions do not change the tested binaries.
+
 ## Changes and review
 
 Added `cmd/portfolio` with one public API listener, loopback-only synthetic adapters and a durable polling worker. Hosted startup rejects mock identity, migration credentials, external adapters/cloud jobs/buckets, non-application database logins and unverified TLS. Pool maximum is six. Shutdown forcibly closes active HTTP requests after its grace period before closing the database pool.
@@ -34,6 +36,8 @@ Image inspected locally: non-root `10001:10001`, exec CMD `/app/portfolio`, no E
 ## Race checks and limitations
 
 First Linux run used host networking, which did not reach the Windows-published test database port; database-dependent packages failed connection-refused. Corrected the test network to Docker bridge and the isolated database's container address. The next combined run passed identity/storage/portfolio but failed the existing server workflow under simultaneous compilation/build load. Its isolated rerun passed, exit0, in `.artifacts/portfolio-race-server.log`. No race report was observed; this does not establish a cause for the first server workflow failure. A final serialized run is recorded separately below.
+
+Final command: cached Linux Go1.26.10/GCC race builder, `go test -race -p 1 ./internal/portfolio ./internal/storage ./internal/identity ./internal/server -count=1`, Docker bridge network, both test database URLs pointing at the isolated PostgreSQL container. Exit0: portfolio1.220s, storage1.607s, identity1.316s, server2.772s, with no race reports. See `portfolio-integration-race.log`; cold compilation time is not a performance measurement.
 
 Only disposable synthetic PostgreSQL was mutated. The primary local Compose stack was not migrated/rebuilt by this task and still runs its previous image. Temporary runtime smoke containers were removed; the test database container can be stopped after final checks, preserving its data. Context/ and the user's untracked logo artifacts remain untouched.
 
