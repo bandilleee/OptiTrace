@@ -81,7 +81,7 @@ export function Benchmarks({ tenant, identity }: Props) {
             e.preventDefault();
             const next = {
               seed: integerError(seed, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER),
-              count: integerError(count, 2, 1000),
+              count: integerError(count, 2, 100),
             };
             setErrors(next);
             if (!next.seed && !next.count) start.mutate();
@@ -104,7 +104,7 @@ export function Benchmarks({ tenant, identity }: Props) {
             <Input
               type="number"
               min={2}
-              max={1000}
+              max={100}
               required
               aria-invalid={!!errors.count}
               aria-describedby="count-error"

@@ -117,11 +117,11 @@ export function Login({ error }: { error?: string }) {
           <div className="login-note">
             <ShieldCheck size={17} />
             <span>
-              Invitation-only access. Local development uses the labelled test identity provider.
+              Invitation-only access. Sign in with the Google account invited to your workspace.
             </span>
           </div>
           <div className="login-facts">
-            <span>Google Cloud Identity Platform</span>
+            <span>Google sign-in</span>
             <span>Workspace permissions enforced on every request</span>
           </div>
         </div>
