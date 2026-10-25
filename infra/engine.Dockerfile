@@ -3,7 +3,8 @@ WORKDIR /src
 COPY services/engine/go.mod services/engine/go.sum ./
 RUN go mod download
 COPY services/engine/ ./
-RUN CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api && \
+RUN CGO_ENABLED=0 go build -trimpath -o /out/portfolio ./cmd/portfolio && \
+    CGO_ENABLED=0 go build -trimpath -o /out/api ./cmd/api && \
     CGO_ENABLED=0 go build -trimpath -o /out/simulator ./cmd/simulator && \
     CGO_ENABLED=0 go build -trimpath -o /out/worker ./cmd/worker && \
     CGO_ENABLED=0 go build -trimpath -o /out/migrate ./cmd/migrate && \

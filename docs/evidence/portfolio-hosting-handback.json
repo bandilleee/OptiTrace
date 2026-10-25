@@ -1,0 +1,69 @@
+{
+  "task_id": "portfolio-hosting",
+  "status": "passed",
+  "input_commit": "4332231bcfdcef57ece61283a1b1ad171fa3df28",
+  "summary": "Prepared Vercel/RenderFree/Supabase hosting boundaries, safe bootstrap and CI/docs; local checks pass, no hosted writes/deployment. Runtime/migration integration remains required.",
+  "changed_paths": [
+    ".github/workflows/ci.yml",
+    "docs/evidence/portfolio-hosting-checks.log",
+    "docs/evidence/portfolio-hosting-handback.json",
+    "docs/evidence/portfolio-hosting.md",
+    "docs/runbooks/PORTFOLIO-HOSTING.md",
+    "infra/engine.Dockerfile",
+    "infra/portfolio.Dockerfile",
+    "infra/render.yaml",
+    "infra/supabase/bootstrap.sql",
+    "scripts/hosting/Initialize-PortfolioDatabase.ps1",
+    "scripts/hosting/Test-PortfolioConfig.Tests.ps1",
+    "scripts/hosting/Test-PortfolioConfig.ps1"
+  ],
+  "checks": [
+    {
+      "command": "Test-PortfolioConfig.ps1 -Mode Static",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "Test-PortfolioConfig.Tests.ps1",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "All hosting PowerShell files parse",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "Render Blueprint official schema validation (downloaded public metadata)",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "actionlint v1.7.7 CI and optional GCP workflow",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "docker compose -f infra/compose.yaml config --quiet",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    },
+    {
+      "command": "Approved isolated PostgreSQL18 bootstrap acceptance via private psql relay, repeated-role rejection and role attribute inspection",
+      "exit_code": 0,
+      "evidence": "docs/evidence/portfolio-hosting-checks.log"
+    }
+  ],
+  "limitations": [
+    "Docker sources require the parent cmd/portfolio implementation; no heavy image build or scan performed in this lane.",
+    "Parent owns Supabase auth, migration003/DataAPI grants/evaluation_events and root/web contract updates; not verified by bootstrap-only test.",
+    "No hosted resources, managed pooler, real OAuth redirect, provider quotas or Vercel proxy were exercised.",
+    "Supabase redirect state-query escaping requires real-provider acceptance; do not broaden host/path allowlists.",
+    "Free-tier sleep/pause/limits preclude a production SLA; no synthetic savings or actual spend claimed."
+  ]
+}

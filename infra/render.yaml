@@ -1,0 +1,55 @@
+{
+  "services": [
+    {
+      "type": "web",
+      "name": "optitrace-portfolio",
+      "runtime": "docker",
+      "plan": "free",
+      "region": "frankfurt",
+      "branch": "main",
+      "dockerfilePath": "./infra/portfolio.Dockerfile",
+      "dockerContext": ".",
+      "dockerCommand": "/app/portfolio",
+      "autoDeployTrigger": "off",
+      "healthCheckPath": "/healthz",
+      "envVars": [
+        {
+          "key": "APP_ENV",
+          "value": "production"
+        },
+        {
+          "key": "AUTH_MODE",
+          "value": "supabase"
+        },
+        {
+          "key": "PORT",
+          "value": "10000"
+        },
+        {
+          "key": "APP_ORIGIN",
+          "sync": false
+        },
+        {
+          "key": "API_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_PUBLISHABLE_KEY",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_SECRET_KEY",
+          "sync": false
+        },
+        {
+          "key": "DATABASE_URL",
+          "sync": false
+        }
+      ]
+    }
+  ]
+}

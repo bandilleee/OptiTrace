@@ -1,0 +1,43 @@
+Portfolio hosting preparation. Date2026-10-25. Input4332231bcfdcef57ece61283a1b1ad171fa3df28. No hosted resource creation or deployment.
+
+COMMAND: Test-PortfolioConfig.ps1 -Mode Static
+PASS: one free web service, manual deployment, private configuration placeholders and portfolio CMD.
+EXIT_CODE: 0
+
+COMMAND: Test-PortfolioConfig.Tests.ps1
+PASS: static Blueprint, valid synthetic runtime and 14 unsafe configuration rejections. No provider contacted.
+EXIT_CODE: 0
+
+COMMAND: All hosting PowerShell files parse
+Three scripts parse.
+EXIT_CODE: 0
+
+COMMAND: Render Blueprint official schema validation (downloaded public metadata)
+
+Hash
+----
+8A3FB8DA6B4F55FE686FBEFA790E011D3DD7895F013F355953C572A21AB6494A
+
+EXIT_CODE: 0
+
+COMMAND: actionlint v1.7.7 CI and optional GCP workflow
+EXIT_CODE: 0
+
+COMMAND: docker compose -f infra/compose.yaml config --quiet
+EXIT_CODE: 0
+
+COMMAND: git diff --check
+warning: in the working copy of '.github/workflows/ci.yml', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'infra/engine.Dockerfile', CRLF will be replaced by LF the next time Git touches it
+EXIT_CODE: 0
+
+OBSERVED EARLIER LOCAL POSTGRESQL BOOTSTRAP ACCEPTANCE (exit0):
+Approved isolated container optitrace-portfolio-bootstrap, pinned postgres18 image, localhost55435, memory128MiB, shared_buffers16MB. No image build or pull.
+Created bootstrap_owner LOGIN CREATEROLE (non-superuser) owning a disposable optitrace_bootstrap database.
+Compiled a tiny local psql relay; ProcessStartInfo passed no credentials as command arguments. Owner secret travelled via private PG environment and app password via stdin psql quoted variable literal.
+Initialize-PortfolioDatabase.ps1 -LocalTest -Confirm:false succeeded once; repeat invocation was rejected without overwriting the role.
+Catalog result: optitrace_login|rolsuper=false|rolbypassrls=false|rolcreaterole=false|rolcreatedb=false|rolreplication=false|memberships=0.
+Disposable container removed afterward; port55435 and its RAM released. Supabase-managed roles, migrations003 and evaluation_events were not exercised by this bootstrap-only test.
+EXIT_CODE: 0
+
+FINAL CI RECHECK: TEST_SUPABASE_DATABASE_URL uses the disposable test PostgreSQL instance; actionlint exits0. No provider resources invoked.
