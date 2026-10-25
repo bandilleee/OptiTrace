@@ -45,6 +45,7 @@ $start.Environment['PGDATABASE']=[uri]::UnescapeDataString($connection.AbsoluteP
 $start.Environment['PGUSER']=$owner
 $start.Environment['PGPASSWORD']=$password
 $start.Environment['PGSSLMODE']=$query.sslmode
+if ($query.ContainsKey('sslrootcert')) { $start.Environment['PGSSLROOTCERT']=$query.sslrootcert }
 $start.Environment['PGCONNECT_TIMEOUT']='15'
 $process=[Diagnostics.Process]::Start($start)
 try {

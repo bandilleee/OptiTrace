@@ -11,6 +11,7 @@ RUN CGO_ENABLED=0 go build -trimpath -o /out/portfolio ./cmd/portfolio && \
 FROM scratch AS runtime
 COPY --from=build /out/ /app/
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY infra/certs/supabase-root-2021.crt /app/certs/supabase-root-2021.crt
 USER 10001:10001
 WORKDIR /app
 EXPOSE 10000

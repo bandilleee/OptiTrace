@@ -1,0 +1,17 @@
+.git
+.artifacts
+artifacts
+Context
+services
+infra
+agents
+benchmarks
+policies
+docs
+scripts
+**/node_modules
+**/.next
+**/.env*
+**/coverage
+**/test-results
+**/playwright-report

@@ -20,6 +20,8 @@ Create a dedicated project and keep its database owner password outside Render/V
 
 Use the **session pooler** connection from the Supabase Connect panel: IPv4, port **5432**, TLS `sslmode=verify-full`. The direct database endpoint can require IPv6; transaction pooling on 6543 is not the selected profile. Custom-role pooler usernames are qualified: `optitrace_login.<project-ref>`. The database owner's session-pooler username is separately `postgres.<project-ref>`. Percent-encode passwords in URLs; the application and owner must have different passwords.
 
+The actual shared pooler uses the Supabase CA, which is not validated by the system trust store alone. `infra/certs/supabase-root-2021.crt` is the public official CA with reviewed source/fingerprint in its README. The portfolio image includes it at `/app/certs/supabase-root-2021.crt`; include `sslrootcert=/app/certs/supabase-root-2021.crt` in the Render database URL. Native operator URLs instead need the percent-encoded absolute Windows certificate path; the bootstrap wrapper forwards this to psql. Do not change `verify-full` to `require` to work around a certificate error. Enable server SSL enforcement separately.
+
 Create the application login before migration using the provided PowerShell wrapper and `infra/supabase/bootstrap.sql`. The wrapper requires a unique 32-128-character random URL-safe application password (letters, digits, `_`, `-`), supplied as a SecureString. It sends the SQL variable privately through stdin and owner password through the psql process environment; neither is included in process arguments, saved files or success/error output. The SQL uses the psql quoted-variable literal, creates a fresh non-bypass login with no memberships, and fails if `optitrace_login` already exists. It never rotates an existing role silently.
 
 ```powershell
@@ -37,7 +39,7 @@ Before starting the hosted API, verify all migration versions/checksums, a non-o
 Recommended runtime connection (placeholder, not a credential):
 
 ```text
-postgresql://optitrace_login.<project-ref>:<encoded-application-password>@<dashboard-session-pooler-host>:5432/postgres?sslmode=verify-full&pool_max_conns=4&pool_min_conns=0&pool_max_conn_lifetime=300s&pool_max_conn_idle_time=60s
+postgresql://optitrace_login.<project-ref>:<encoded-application-password>@<dashboard-session-pooler-host>:5432/postgres?sslmode=verify-full&sslrootcert=/app/certs/supabase-root-2021.crt&pool_max_conns=4&pool_min_conns=0&pool_max_conn_lifetime=300s&pool_max_conn_idle_time=60s
 ```
 
 ### Google through Supabase Auth

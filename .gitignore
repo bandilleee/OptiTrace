@@ -10,8 +10,12 @@ test-results/
 *.tsbuildinfo
 coverage.out
 .artifacts/
+.vercel/
 .terraform/
 *.tfstate*
 *.tfvars
 !*.tfvars.example
 !*.env.example
+
+.vercel
+.env*
