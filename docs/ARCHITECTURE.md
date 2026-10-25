@@ -11,7 +11,7 @@ OptiTrace is an execution experiment over an approved verification contract, not
 - Complete policy retrieves all capabilities. Conditional policy may stop optional work only after all possible completions have the same outcome and mandatory obligations are satisfied. No cross-request cache in v1.
 - Benchmarks persist before launch and execute in a leased worker. Retries cannot overwrite completed reports. Same immutable observations and fault distributions feed every comparator. Actual HTTP execution is labelled separately from virtual simulation.
 - Selected portfolio hosting: Vercel Next.js, one Render Free process for Go API/private simulator/lease worker, and Supabase PostgreSQL/Auth. Dedicated database role, verified TLS session pooling and explicit Data API denials protect application data. Free-tier sleep/pause and cold starts are accepted demo availability limits. See ADR0004 and the portfolio hosting runbook. GCP Terraform/Cloud Run/Cloud SQL remain optional; their Johannesburg default does not establish residency for this profile.
-- Reviewed integration and explicit release approval precede cloud writes. Coding agents have no deployment credentials.
+- Reviewed integration and explicit release approval precede cloud writes. Provider CLI access is granted only in the user-authorized operator context; it does not itself approve deployment or unrelated resource changes.
 
 ## Data flow
 

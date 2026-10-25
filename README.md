@@ -74,11 +74,11 @@ Go tests cover bounded policy equivalence, 13 execution plans, adversarial obser
 
 `npm --prefix apps/web test` runs unit tests. Without `OPTITRACE_LIVE=1`, browser tests use controlled API fixtures to exercise UI states. With it, the separate live suite uses the actual local Go API, database and identity provider.
 
-## Authentication and GCP
+## Authentication and optional GCP profile
 
-Hosted identity uses Google OIDC and Google Cloud Identity Platform REST. Verified invitations are bound to stable Identity Platform user IDs; PostgreSQL memberships determine authorization. Go issues opaque eight-hour sessions, stores their hashes, enforces CSRF/Origin checks and rechecks disabled provider accounts at most every five minutes. API keys have separate scopes and revocation.
+Selected hosted identity uses Supabase Auth with Google PKCE. Verified invitations bind stable Supabase UUIDs; PostgreSQL memberships determine authorization. Go issues opaque eight-hour sessions, stores their hashes, enforces CSRF/Origin checks and rechecks disabled provider accounts at most every five minutes. API keys have separate scopes and revocation. Google Cloud Identity Platform REST remains available for the optional GCP profile.
 
-Copy `.env.example` to an ignored `.env` for manual native development and use `scripts/Import-LocalEnv.ps1`; hosted values belong in Secret Manager. Real Google sign-in needs your approved OAuth client, Identity Platform API key/project and exact registered callback. No cloud credentials are needed for the default synthetic environment.
+Copy `.env.example` to an ignored `.env` for manual native development and use `scripts/Import-LocalEnv.ps1`. Portfolio hosted secrets belong in Render/Supabase settings; Vercel receives only its server-side API base URL. Real Google sign-in needs an approved OAuth client in Supabase and exact registered callbacks. Secret Manager and Identity Platform keys apply only to the optional GCP profile. No cloud credentials are needed for the default synthetic environment.
 
 Terraform maps the API, console and private simulator to Cloud Run, benchmarks to Cloud Run Jobs, persistence to Cloud SQL, reports to private Cloud Storage, and delivery identity to Workload Identity Federation. Defaults use Johannesburg regional compute/database resources, with production HA and deletion protection. No cloud deployment has been performed.
 
@@ -87,5 +87,7 @@ Read `docs/ARCHITECTURE.md`, `docs/runbooks/RELEASE.md`, `docs/runbooks/AGENT-HA
 Observed local results and remaining release prerequisites are recorded in [integration verification](docs/evidence/verification.md).
 
 The latest [parallel delivery and acceptance handback](docs/evidence/NEXT-PHASE.md) records the evaluator/planner repairs and the current **release HOLD**: profile-specific latency, failed live-browser acceptance, real Google setup and hosted release prerequisites remain open. Historical passing checks do not override these failures.
+
+The [portfolio integration evidence](docs/evidence/portfolio-integration.md) records the subsequent hosting/authentication migration and local checks. Its passing component checks do not clear the earlier full acceptance HOLD.
 
 The approved frontend uses shadcn/ui, Tailwind4, local Montserrat fonts, and the supplied animated logo kit. See the [design implementation notes](docs/design/FRONTEND.md) for the palette, component mappings, prototype adaptations, and browser checks.
