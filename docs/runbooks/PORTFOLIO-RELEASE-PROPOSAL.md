@@ -12,12 +12,15 @@ All three provider CLIs authenticated successfully. Read-only account checks fou
 | Supabase | Existing `OptiTrace` organization `znwkartuhyniucsgtstm`; no project listed in it | Free project `optitrace`, Frankfurt (`eu-central-1`), separate owner/application credentials |
 | Render | `My Workspace` (`tea-d6gnjohdrdic73caidl0`) | New Free `optitrace-api` service in Frankfurt, one portfolio process, manual deployments |
 | Vercel | `echoverses-projects`, observed Hobby plan | New `optitrace` project rooted at `apps/web`, Node22, manual first deployment |
+| Google OAuth | User-authorized Google developer account | Dedicated unbilled `optitrace-auth-<available-suffix>` project for the Google web OAuth client/consent configuration only, if no dedicated client already exists |
 
 Use the provider-assigned fixed Vercel production URL after project creation for exact Go/Supabase origin and callback configuration; availability of a short alias is not assumed. Render's assigned HTTPS URL becomes server-only Vercel `API_BASE_URL`. No application credentials enter frontend public variables.
 
 ## Authorized release scope requested
 
 Create only these dedicated resources on free plans; stop if a provider requires payment, an upgrade or unavailable quota. Do not change, delete, resume or reuse existing projects/services. Do not add a worker service, database service on Render, disk, cron, paid domain or self-ping. Keep the repository private and automatic Render deployment off.
+
+The Google project above is solely for Supabase's Google sign-in credentials. Do not link a billing account or provision GCP workloads/Identity Platform; stop on a payment requirement. Account verification/consent screens may require the user's browser participation.
 
 Bootstrap the isolated Supabase application role, apply reviewed migrations without development seeding, disable Data API exposure, configure Google authentication, provision the first invited administrator through the existing operator workflow, and deploy the reviewed image/web bundle. Account/database secrets remain in local credential storage and provider secret settings; do not print or commit them. Google web OAuth credentials and consent/test-user setup are prerequisites; they are separate from paid GCP workload billing. Confirm the user's intended administrator Google account before provisioning membership.
 
