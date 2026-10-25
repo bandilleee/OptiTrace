@@ -56,8 +56,14 @@ export async function proxy(request: Request, parts: string[]) {
       body: ['GET', 'HEAD'].includes(request.method) ? undefined : await limitedBody(request),
       redirect: 'manual',
       cache: 'no-store',
-      signal: AbortSignal.timeout(120000),
+      signal: AbortSignal.timeout(55000),
     });
+    // A sleeping host may serve an HTML wake-up page instead of the Go API.
+    // Do not replay mutations: their result may already have committed.
+    if (result.headers.get('content-type')?.includes('text/html') && result.status < 300) {
+      await result.body?.cancel();
+      return unavailable();
+    }
     const responseHeaders = new Headers({ 'Cache-Control': 'no-store' });
     for (const key of ['content-type', 'location', 'content-disposition', 'retry-after']) {
       const value = result.headers.get(key);
@@ -71,14 +77,18 @@ export async function proxy(request: Request, parts: string[]) {
         { error: { code: 'payload_too_large', message: 'API request exceeds the 1 MiB limit.' } },
         { status: 413 },
       );
-    return Response.json(
-      {
-        error: {
-          code: 'upstream_unavailable',
-          message: 'The verification service is unavailable. Check the local API and try again.',
-        },
-      },
-      { status: 503 },
-    );
+    return unavailable();
   }
+}
+
+function unavailable() {
+  return Response.json(
+    {
+      error: {
+        code: 'upstream_unavailable',
+        message: 'The verification service is starting or unavailable. Please try again shortly.',
+      },
+    },
+    { status: 503, headers: { 'Cache-Control': 'no-store', 'Retry-After': '30' } },
+  );
 }

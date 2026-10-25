@@ -9,7 +9,9 @@ import (
 	"github.com/optitrace/optitrace/services/engine/internal/identity"
 	"github.com/optitrace/optitrace/services/engine/internal/storage"
 	"github.com/optitrace/optitrace/services/engine/internal/storage/dbgen"
+	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -130,16 +132,34 @@ func (s *Server) evaluations(w http.ResponseWriter, r *http.Request, tx pgx.Tx, 
 			if e != nil {
 				return e
 			}
+			if e = storage.EnrichEvaluationJournals(r.Context(), tx, []map[string]any{v}); e != nil {
+				return e
+			}
 			write(w, 200, v)
 			return nil
 		}
 		rows, e := dbgen.New(tx).ListEvaluations(r.Context())
-		v := []json.RawMessage{}
-		for _, row := range rows {
-			v = append(v, json.RawMessage(row))
-		}
 		if e != nil {
 			return e
+		}
+		items := make([]map[string]any, 0, len(rows))
+		for _, row := range rows {
+			var item map[string]any
+			if e = json.Unmarshal(row, &item); e != nil {
+				return e
+			}
+			items = append(items, item)
+		}
+		if e = storage.EnrichEvaluationJournals(r.Context(), tx, items); e != nil {
+			return e
+		}
+		v := []json.RawMessage{}
+		for _, item := range items {
+			row, marshalErr := json.Marshal(item)
+			if marshalErr != nil {
+				return marshalErr
+			}
+			v = append(v, json.RawMessage(row))
 		}
 		write(w, 200, map[string]any{"items": v})
 		return nil
@@ -217,23 +237,16 @@ func (s *Server) evaluations(w http.ResponseWriter, r *http.Request, tx pgx.Tx, 
 		return e
 	}
 	journal := func(ctx context.Context, event string, check evaluation.Check) error {
-		jtx, e := storage.Tenant(ctx, s.DB, tid)
+		raw, e := json.Marshal(check)
 		if e != nil {
 			return e
 		}
-		defer jtx.Rollback(ctx)
-		raw, e := json.Marshal(map[string]any{"event": event, "check": check, "recorded_at": time.Now().UTC()})
+		e = storage.AppendEvaluationEvent(ctx, s.DB, tid, id, check.Capability, event, raw)
 		if e != nil {
-			return e
+			// Never put provider tokens, database URLs or evidence values in logs.
+			slog.Error("evaluation journal persistence failed", "evaluation_id", id, "phase", event, "capability", check.Capability, "error_type", fmt.Sprintf("%T", e), "context_error", ctx.Err())
 		}
-		tag, e := jtx.Exec(ctx, `UPDATE resources SET data=jsonb_set(data,'{journal}',coalesce(data->'journal','[]'::jsonb)||jsonb_build_array($2::jsonb)) WHERE id=$1 AND kind='evaluation_attempt'`, id, raw)
-		if e != nil {
-			return e
-		}
-		if tag.RowsAffected() != 1 {
-			return fmt.Errorf("execution journal missing")
-		}
-		return jtx.Commit(ctx)
+		return e
 	}
 	result, e := s.Engine.Evaluate(r.Context(), evaluation.Request{Policy: evaluation.Policy{ID: b.PolicyID, Profile: policy["profile"].(string), Version: int(policy["version"].(float64))}, Scenario: b.Scenario, Strategy: b.Strategy, Journal: journal})
 	if e != nil {
@@ -277,6 +290,10 @@ func (s *Server) benchmarks(w http.ResponseWriter, r *http.Request, tx pgx.Tx, p
 		}
 		if b.Count < 2 || b.Count > 1000 {
 			fail(w, 400, "invalid_count", "Count must be between 2 and 1000")
+			return nil
+		}
+		if os.Getenv("RUNTIME_PROFILE") == "portfolio" && b.Count > 100 {
+			fail(w, 400, "portfolio_benchmark_limit", "Portfolio benchmarks accept at most 100 observations")
 			return nil
 		}
 		if _, e := tx.Exec(r.Context(), `SELECT pg_advisory_xact_lock(hashtextextended($1,0))`, tid+":benchmark"); e != nil {

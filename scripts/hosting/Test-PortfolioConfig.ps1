@@ -43,7 +43,7 @@ foreach ($part in $database.Query.TrimStart('?').Split('&',[StringSplitOptions]:
 }
 if ($query.sslmode -cne 'verify-full') { throw 'Database TLS must validate the host certificate (sslmode=verify-full).' }
 $poolSize = 0
-if (-not [int]::TryParse($query.pool_max_conns,[ref]$poolSize) -or $poolSize -lt 1 -or $poolSize -gt 8) { throw 'Set pool_max_conns between 1 and 8; four is the portfolio default.' }
+if (-not [int]::TryParse($query.pool_max_conns,[ref]$poolSize) -or $poolSize -lt 1 -or $poolSize -gt 6) { throw 'Set pool_max_conns between 1 and 6; four is the portfolio default.' }
 foreach ($name in @('MIGRATION_DATABASE_URL','SIMULATOR_URL','SIMULATOR_AUDIENCE','BENCHMARK_JOB_NAME','REPORT_BUCKET','MOCK_ISSUER','MOCK_INTERNAL_URL','NEXT_PUBLIC_SUPABASE_SECRET_KEY')) {
     if (-not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name))) { throw "Do not configure $name in the hosted portfolio runtime." }
 }

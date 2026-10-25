@@ -1,8 +1,14 @@
 # OptiTrace
 
-An invitation-only verification operations console and a bounded network-API execution optimiser. Next.js/TypeScript, Go, embedded OPA, PostgreSQL18 and Google Cloud Identity Platform REST.
+An invitation-only verification operations console and a bounded network-API execution optimiser. Next.js/TypeScript, Go, embedded OPA and PostgreSQL. The selected portfolio deployment uses Vercel, Render Free and Supabase PostgreSQL/Auth with Google sign-in; Go owns application sessions and authorization.
 
 The included South Africa workloads, capabilities, prices and policy thresholds are **synthetic assumptions**. The application does not establish MTN savings or real fraud-detection performance. A benchmark that finds no improvement remains visible.
+
+## Portfolio deployment
+
+For hosted setup, follow [the portfolio hosting runbook](docs/runbooks/PORTFOLIO-HOSTING.md). One Render process runs the API, private loopback simulator and durable benchmark worker. Supabase provides Google authentication and PostgreSQL, with a dedicated non-owner application login and no Data API access to application tables. Vercel proxies browser requests to Go; provider tokens never become browser application sessions.
+
+Render Free can sleep and Supabase Free can pause inactive projects. Cold starts and paused services are availability limits, separate from warm API performance gates. Portfolio benchmarks are capped at 100 cases. The optional GCP infrastructure remains available for a later separately approved release. Prepared configuration and local tests do not establish a hosted deployment or hosted acceptance.
 
 ## Run locally on Windows
 

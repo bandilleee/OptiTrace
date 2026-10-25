@@ -2,6 +2,28 @@ import { afterEach, describe, it, expect, vi } from 'vitest';
 import { proxy } from '../src/lib/proxy';
 afterEach(() => vi.unstubAllGlobals());
 describe('same-origin API proxy', () => {
+  it('returns a retryable API error for host wake pages without replaying a mutation', async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValue(
+        new Response('<html>Starting</html>', { headers: { 'content-type': 'text/html' } }),
+      );
+    vi.stubGlobal('fetch', fetcher);
+    const result = await proxy(
+      new Request('http://localhost:3000/api/v1/evaluations', { method: 'POST', body: '{}' }),
+      ['v1', 'evaluations'],
+    );
+    expect(result.status).toBe(503);
+    expect(result.headers.get('retry-after')).toBe('30');
+    expect((await result.json()).error.code).toBe('upstream_unavailable');
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it('handles cold-start transport failure without exposing local setup instructions', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('private upstream detail')));
+    const result = await proxy(new Request('http://localhost:3000/api/v1/me'), ['v1', 'me']);
+    expect(result.status).toBe(503);
+    expect(await result.text()).not.toMatch(/private upstream|local API/);
+  });
   it('limits streamed bodies before forwarding upstream', async () => {
     const fetcher = vi.fn();
     vi.stubGlobal('fetch', fetcher);

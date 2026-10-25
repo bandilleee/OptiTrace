@@ -143,6 +143,9 @@ func TestPostgresAuthenticatedWorkflow(t *testing.T) {
 		request(admin, adminCSRF, "POST", "/v1/tenants/demo/invitations", string(body), 400)
 	}
 	request(admin, adminCSRF, "POST", "/v1/tenants/demo/benchmarks", `{"seed":42,"count":1}`, 400)
+	t.Setenv("RUNTIME_PROFILE", "portfolio")
+	request(admin, adminCSRF, "POST", "/v1/tenants/demo/benchmarks", `{"seed":42,"count":101}`, 400)
+	t.Setenv("RUNTIME_PROFILE", "")
 	request(admin, adminCSRF, "GET", "/v1/tenants/other/policies", "", 403)
 	request(admin, "wrong", "POST", "/v1/tenants/demo/invitations", `{"email":"x@optitrace.test","roles":["auditor"]}`, 403)
 	ev := request(admin, adminCSRF, "POST", "/v1/tenants/demo/evaluations", `{"policy_id":"policy-conditional","scenario":"number_mismatch"}`, 201)

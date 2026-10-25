@@ -15,6 +15,9 @@ var schema string
 //go:embed 002_policy_guards.sql
 var policyGuards string
 
+//go:embed 003_portfolio_security.sql
+var portfolioSecurity string
+
 func Open(ctx context.Context, url string) (*pgxpool.Pool, error) {
 	p, e := pgxpool.New(ctx, url)
 	if e != nil {
@@ -38,7 +41,7 @@ func Migrate(ctx context.Context, p *pgxpool.Pool) error {
 	if _, e = tx.Exec(ctx, `CREATE TABLE IF NOT EXISTS schema_migrations(version integer PRIMARY KEY,checksum text NOT NULL,applied_at timestamptz NOT NULL DEFAULT now())`); e != nil {
 		return e
 	}
-	for i, migration := range []string{schema, policyGuards} {
+	for i, migration := range []string{schema, policyGuards, portfolioSecurity} {
 		version := i + 1
 		checksum := fmt.Sprintf("%x", sha256.Sum256([]byte(migration)))
 		var applied string
