@@ -8,7 +8,9 @@ The included South Africa workloads, capabilities, prices and policy thresholds 
 
 For hosted setup, follow [the portfolio hosting runbook](docs/runbooks/PORTFOLIO-HOSTING.md). One Render process runs the API, private loopback simulator and durable benchmark worker. Supabase provides Google authentication and PostgreSQL, with a dedicated non-owner application login and no Data API access to application tables. Vercel proxies browser requests to Go; provider tokens never become browser application sessions.
 
-Render Free can sleep and Supabase Free can pause inactive projects. Cold starts and paused services are availability limits, separate from warm API performance gates. Portfolio benchmarks are capped at 100 cases. The optional GCP infrastructure remains available for a later separately approved release. Prepared configuration and local tests do not establish a hosted deployment or hosted acceptance.
+The invitation-only [portfolio preview is live](https://optitrace.vercel.app). [Hosted release evidence](docs/evidence/PORTFOLIO-PREVIEW.md) records real Google login, distinct author/reviewer policy approval, evaluations, persisted traces and the benchmark popup. Full production acceptance remains HOLD.
+
+Render Free can sleep and Supabase Free can pause inactive projects. Cold starts and paused services are availability limits, separate from warm API performance gates. Portfolio benchmarks are capped at 100 cases. The optional GCP infrastructure remains available for a later separately approved release.
 
 ## Run locally on Windows
 
@@ -70,7 +72,7 @@ npm --prefix apps/web run test:e2e
 ./scripts/Measure-Api.ps1 -Samples 100
 ```
 
-Go tests cover bounded policy equivalence, 13 execution plans, adversarial observations, cancellation/journaling, protocol authentication and PostgreSQL authorization. Web tests cover client/proxy boundaries and real browser journeys. GitHub Actions also configures Linux race checks, vulnerability/image scans, code-generation drift, Windows checks and Terraform validation/mock plans. Hosted CI is not verified until this repository is connected and its workflows run.
+Go tests cover bounded policy equivalence, 13 execution plans, adversarial observations, cancellation/journaling, protocol authentication and PostgreSQL authorization. Web tests cover client/proxy boundaries and real browser journeys. GitHub Actions also configures Linux race checks, vulnerability/image scans, code-generation drift, Windows checks and Terraform validation/mock plans. The private repository is connected, but GitHub account billing restrictions currently prevent Actions jobs from starting; hosted CI remains unverified.
 
 `npm --prefix apps/web test` runs unit tests. Without `OPTITRACE_LIVE=1`, browser tests use controlled API fixtures to exercise UI states. With it, the separate live suite uses the actual local Go API, database and identity provider.
 
@@ -80,13 +82,13 @@ Selected hosted identity uses Supabase Auth with Google PKCE. Verified invitatio
 
 Copy `.env.example` to an ignored `.env` for manual native development and use `scripts/Import-LocalEnv.ps1`. Portfolio hosted secrets belong in Render/Supabase settings; Vercel receives only its server-side API base URL. Real Google sign-in needs an approved OAuth client in Supabase and exact registered callbacks. Secret Manager and Identity Platform keys apply only to the optional GCP profile. No cloud credentials are needed for the default synthetic environment.
 
-Terraform maps the API, console and private simulator to Cloud Run, benchmarks to Cloud Run Jobs, persistence to Cloud SQL, reports to private Cloud Storage, and delivery identity to Workload Identity Federation. Defaults use Johannesburg regional compute/database resources, with production HA and deletion protection. No cloud deployment has been performed.
+Terraform maps the API, console and private simulator to Cloud Run, benchmarks to Cloud Run Jobs, persistence to Cloud SQL, reports to private Cloud Storage, and delivery identity to Workload Identity Federation. Defaults use Johannesburg regional compute/database resources, with production HA and deletion protection. This optional GCP workload deployment has not been performed; the selected portfolio preview runs on Vercel, Render and Supabase.
 
 Read `docs/ARCHITECTURE.md`, `docs/runbooks/RELEASE.md`, `docs/runbooks/AGENT-HARNESS.md`, `policies/README.md` and `benchmarks/README.md` for contracts and evidence boundaries. The release runbook requires explicit approval, current cost inputs, real-provider smoke tests, backup restoration and rollback rehearsal before hosting acceptance.
 
 Observed local results and remaining release prerequisites are recorded in [integration verification](docs/evidence/verification.md).
 
-The latest [parallel delivery and acceptance handback](docs/evidence/NEXT-PHASE.md) records the evaluator/planner repairs and the current **release HOLD**: profile-specific latency, failed live-browser acceptance, real Google setup and hosted release prerequisites remain open. Historical passing checks do not override these failures.
+The historical [parallel delivery and acceptance handback](docs/evidence/NEXT-PHASE.md) records evaluator/planner repairs and the full acceptance **HOLD**. The [hosted preview report](docs/evidence/PORTFOLIO-PREVIEW.md) updates Google login and hosted functional checks; full controlled performance, independent acceptance and recovery drills remain open. Historical passing checks do not override unresolved failures.
 
 The [portfolio integration evidence](docs/evidence/portfolio-integration.md) records the subsequent hosting/authentication migration and local checks. Its passing component checks do not clear the earlier full acceptance HOLD.
 
