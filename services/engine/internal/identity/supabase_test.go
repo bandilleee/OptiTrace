@@ -65,7 +65,7 @@ func (d *supabaseDouble) serve(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/auth/v1/authorize":
 		q := r.URL.Query()
-		if q.Get("provider") != "google" || q.Get("code_challenge_method") != "s256" || len(q.Get("code_challenge")) != 43 || q.Has("state") {
+		if q.Get("provider") != "google" || q.Get("prompt") != "select_account" || q.Get("code_challenge_method") != "s256" || len(q.Get("code_challenge")) != 43 || q.Has("state") {
 			http.Error(w, "invalid provider or upstream-state override", 400)
 			return
 		}

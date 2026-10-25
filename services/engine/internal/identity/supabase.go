@@ -89,7 +89,9 @@ func (p *Provider) supabaseAuthorizationURL(state, verifier string) string {
 	query := callback.Query()
 	query.Set("state", state)
 	callback.RawQuery = query.Encode()
-	query = url.Values{"provider": {"google"}, "redirect_to": {callback.String()}, "scopes": {"openid email profile"}, "code_challenge": {Hash(verifier)}, "code_challenge_method": {"s256"}}
+	// A browser can hold several Google accounts. Always let the user select
+	// which invited identity should receive the application session.
+	query = url.Values{"provider": {"google"}, "prompt": {"select_account"}, "redirect_to": {callback.String()}, "scopes": {"openid email profile"}, "code_challenge": {Hash(verifier)}, "code_challenge_method": {"s256"}}
 	return p.supabase.authURL + "/authorize?" + query.Encode()
 }
 
