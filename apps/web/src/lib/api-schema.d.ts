@@ -363,6 +363,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/demo/evaluations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Run an ephemeral synthetic evaluation without authentication
+         * @description Enabled only with PUBLIC_DEMO_ENABLED=true. Fixed policies/scenarios/strategies; no tenant identifiers or personal data. Maximum 2048-byte body; two concurrent executions and 30 requests/minute per API process. Not persisted; no benchmark jobs.
+         */
+        post: operations["runPublicDemo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -556,6 +576,41 @@ export interface components {
         MembershipUpdate: {
             id: string;
             roles: components["schemas"]["Role"][];
+        };
+        DemoInput: {
+            profile: components["schemas"]["Profile"];
+            scenario: components["schemas"]["Scenario"];
+            strategy: components["schemas"]["Strategy"];
+        };
+        /** @description Ephemeral synthetic evaluation. No tenant access, persistence or audit guarantee. Not a benchmark. Shared process-wide limits apply. */
+        DemoEvaluation: {
+            id: string;
+            policy_id: string;
+            policy_version: number;
+            profile: components["schemas"]["Profile"];
+            scenario: components["schemas"]["Scenario"];
+            strategy: components["schemas"]["Strategy"];
+            /** @enum {string} */
+            outcome: "verified" | "additional_verification_required" | "indeterminate";
+            stopping_reason: string;
+            checks: components["schemas"]["Check"][];
+            supplier_cost_microrand: number | null;
+            runtime_cost_microrand: number | null;
+            elapsed_ms: number | null;
+            created_at: string;
+            /** @enum {string} */
+            status?: "completed" | "execution_unconfirmed";
+            journal?: {
+                /** @enum {string} */
+                event: "starting" | "completed";
+                check: components["schemas"]["Check"];
+                recorded_at: string;
+            }[];
+            plan: string;
+            /** @constant */
+            persisted: false;
+            /** @constant */
+            public_demo: true;
         };
     };
     responses: never;
@@ -3574,6 +3629,51 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Error"];
                 };
+            };
+        };
+    };
+    runPublicDemo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DemoInput"];
+            };
+        };
+        responses: {
+            /** @description Actual synthetic engine result, not persisted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoEvaluation"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Shared rate or concurrency limit; Retry-After header */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Demo unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

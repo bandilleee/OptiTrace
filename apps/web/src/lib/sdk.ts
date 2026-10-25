@@ -97,3 +97,7 @@ export function exportBenchmark(input: { path: paths["/v1/tenants/{tenant}/bench
 export function getPolicy(input: { path: paths["/v1/tenants/{tenant}/policies/{id}"]["get"]['parameters']['path']; csrf?: string; idempotency?: string }): Promise<paths["/v1/tenants/{tenant}/policies/{id}"]["get"]['responses'][200]['content']['application/json']> {
   return api<paths["/v1/tenants/{tenant}/policies/{id}"]["get"]['responses'][200]['content']['application/json']>("/tenants/{tenant}/policies/{id}".replace("{tenant}", encodeURIComponent(String(input.path.tenant))).replace("{id}", encodeURIComponent(String(input.path.id))), { method: "GET", csrf: input.csrf, idempotency: input.idempotency });
 }
+
+export function runPublicDemo(input: { body: paths["/v1/demo/evaluations"]["post"]['requestBody']['content']['application/json']; csrf?: string; idempotency?: string }): Promise<paths["/v1/demo/evaluations"]["post"]['responses'][200]['content']['application/json']> {
+  return api<paths["/v1/demo/evaluations"]["post"]['responses'][200]['content']['application/json']>("/demo/evaluations", { method: "POST", csrf: input.csrf, idempotency: input.idempotency, body: input.body });
+}

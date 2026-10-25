@@ -57,7 +57,7 @@ export function TraceRail() {
     </div>
   );
 }
-export function Trace({ result }: { result: Evaluation }) {
+export function Trace({ result }: { result: Omit<Evaluation, 'tenant_id'> }) {
   const verified = result.outcome === 'verified';
   const uncertain = result.outcome === 'indeterminate';
   return (

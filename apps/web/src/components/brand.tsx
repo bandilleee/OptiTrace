@@ -86,6 +86,9 @@ export function Login({ error }: { error?: string }) {
             <LockKeyhole size={23} />
           </span>
           <h2>Your verification workspace</h2>
+          <Button asChild className="google-button">
+            <a href="/demo">Try the public sandbox</a>
+          </Button>
           <p>
             Sign in with your invited Google account. Your workspace administrator manages access
             and permissions.

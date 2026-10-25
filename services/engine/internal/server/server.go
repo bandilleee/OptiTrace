@@ -67,6 +67,9 @@ func decode(w http.ResponseWriter, r *http.Request, v any) bool {
 }
 func (s *Server) Handler() http.Handler {
 	m := http.NewServeMux()
+	if os.Getenv("PUBLIC_DEMO_ENABLED") == "true" {
+		m.Handle("POST /v1/demo/evaluations", newPublicDemo(s.Engine))
+	}
 	m.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		ctx, c := context.WithTimeout(r.Context(), time.Second)
 		defer c()

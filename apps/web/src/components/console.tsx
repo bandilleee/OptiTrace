@@ -135,6 +135,9 @@ export function Workspace() {
       <div className="loading-page">
         <Logo />
         <BrandLoader />
+        <Button asChild variant="outline">
+          <a href="/demo">Try the public sandbox</a>
+        </Button>
       </div>
     );
   if (!identity.data)

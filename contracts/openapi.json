@@ -3821,6 +3821,45 @@
         ],
         "description": "Tenant authorization is enforced in Go and PostgreSQL; the tenant path is not proof of membership. See contracts/AUTHORIZATION.md for role and credential boundaries."
       }
+    },
+    "/v1/demo/evaluations": {
+      "post": {
+        "operationId": "runPublicDemo",
+        "summary": "Run an ephemeral synthetic evaluation without authentication",
+        "description": "Enabled only with PUBLIC_DEMO_ENABLED=true. Fixed policies/scenarios/strategies; no tenant identifiers or personal data. Maximum 2048-byte body; two concurrent executions and 30 requests/minute per API process. Not persisted; no benchmark jobs.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actual synthetic engine result, not persisted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoEvaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "429": {
+            "description": "Shared rate or concurrency limit; Retry-After header"
+          },
+          "503": {
+            "description": "Demo unavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4566,6 +4605,151 @@
           "roles"
         ],
         "additionalProperties": false
+      },
+      "DemoInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "profile",
+          "scenario",
+          "strategy"
+        ],
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/Scenario"
+          },
+          "strategy": {
+            "$ref": "#/components/schemas/Strategy"
+          }
+        }
+      },
+      "DemoEvaluation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/Scenario"
+          },
+          "strategy": {
+            "$ref": "#/components/schemas/Strategy"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "additional_verification_required",
+              "indeterminate"
+            ]
+          },
+          "stopping_reason": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Check"
+            }
+          },
+          "supplier_cost_microrand": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "runtime_cost_microrand": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "elapsed_ms": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "execution_unconfirmed"
+            ]
+          },
+          "journal": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "event": {
+                  "type": "string",
+                  "enum": [
+                    "starting",
+                    "completed"
+                  ]
+                },
+                "check": {
+                  "$ref": "#/components/schemas/Check"
+                },
+                "recorded_at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "event",
+                "check",
+                "recorded_at"
+              ]
+            }
+          },
+          "plan": {
+            "type": "string"
+          },
+          "persisted": {
+            "type": "boolean",
+            "const": false
+          },
+          "public_demo": {
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "required": [
+          "id",
+          "policy_id",
+          "policy_version",
+          "profile",
+          "scenario",
+          "strategy",
+          "outcome",
+          "stopping_reason",
+          "checks",
+          "supplier_cost_microrand",
+          "runtime_cost_microrand",
+          "elapsed_ms",
+          "created_at",
+          "plan",
+          "persisted",
+          "public_demo"
+        ],
+        "additionalProperties": false,
+        "description": "Ephemeral synthetic evaluation. No tenant access, persistence or audit guarantee. Not a benchmark. Shared process-wide limits apply."
       }
     }
   }

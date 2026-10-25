@@ -2153,3 +2153,131 @@ td[data-slot='table-cell'] strong {
 .workflow-grid .panel > button {
   margin: 0 22px 22px;
 }
+
+.public-demo {
+  min-height: 100dvh;
+  background: var(--background);
+}
+.demo-header {
+  border-bottom: 1px solid var(--border);
+  padding: 20px max(24px, calc((100vw - 1280px) / 2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.demo-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.public-demo main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 48px 24px;
+}
+.demo-intro {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: end;
+  gap: 64px;
+  margin-bottom: 40px;
+}
+.demo-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--selected);
+  font-size: 13px;
+}
+.demo-intro h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.16;
+  letter-spacing: -1.5px;
+  margin: 16px 0 20px;
+}
+.demo-intro p,
+.demo-fields p,
+.demo-notes p,
+.demo-footer {
+  color: var(--muted-foreground);
+  line-height: 1.75;
+  font-size: 13px;
+}
+.demo-intro aside {
+  border-left: 2px solid var(--selected);
+  padding-left: 24px;
+}
+.demo-intro aside strong {
+  display: block;
+  margin: 10px 0;
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+  gap: 24px;
+  align-items: start;
+}
+.demo-grid > *,
+.demo-grid section {
+  min-width: 0;
+}
+.demo-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.demo-fields label {
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.demo-fields .demo-small {
+  font-size: 11px;
+}
+.demo-notes {
+  display: grid;
+  gap: 14px;
+}
+.demo-notes a {
+  color: var(--selected);
+  font-size: 13px;
+  text-decoration: underline;
+}
+.demo-plan {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.demo-plan p {
+  margin: 8px 0;
+}
+.demo-plan span {
+  color: var(--muted-foreground);
+}
+.demo-footer {
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+@media (max-width: 800px) {
+  .demo-intro,
+  .demo-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .demo-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px 20px;
+  }
+  .public-demo main {
+    padding: 32px 16px;
+  }
+  .demo-header nav .preference-controls {
+    flex-wrap: wrap;
+  }
+}

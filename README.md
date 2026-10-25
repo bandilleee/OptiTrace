@@ -1,8 +1,18 @@
 # OptiTrace
 
+[Try the public sandbox](https://optitrace.vercel.app/demo) · [Source code](https://github.com/bandilleee/OptiTrace) · [MIT license](LICENSE)
+
 An invitation-only verification operations console and a bounded network-API execution optimiser. Next.js/TypeScript, Go, embedded OPA and PostgreSQL. The selected portfolio deployment uses Vercel, Render Free and Supabase PostgreSQL/Auth with Google sign-in; Go owns application sessions and authorization.
 
 The included South Africa workloads, capabilities, prices and policy thresholds are **synthetic assumptions**. The application does not establish MTN savings or real fraud-detection performance. A benchmark that finds no improvement remains visible.
+
+## Try it without an account
+
+Open the [public sandbox](https://optitrace.vercel.app/demo). Choose a profile, synthetic scenario and execution strategy, then run the real Go evaluator. Inspect evidence states, source timestamps, compulsory checks, selected plan and synthetic charges, or export the result as JSON. No Google account or invitation is required.
+
+Try **conditional / number mismatch / staged**, then compare **full parallel**. Try **complete / clear** to see all compulsory checks, or **stale / timeout** for unresolved evidence. A single run is not a performance benchmark. The shared demo allows 30 requests/minute and two concurrent evaluations per API process. It never reads tenant data, saves visitor traces, changes policies or queues benchmarks. The free host may need time to wake up.
+
+For the complete console—including policy author/reviewer workflows, persistent traces, benchmarks and administration—run your own local instance using the instructions below. Hosted Google workspaces remain invitation-only. See [contributing](CONTRIBUTING.md), [security reporting](SECURITY.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Portfolio deployment
 
