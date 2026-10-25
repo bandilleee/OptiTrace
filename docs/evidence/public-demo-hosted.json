@@ -1,0 +1,38 @@
+{
+  "Cases": [
+    {
+      "Profile": "conditional",
+      "Scenario": "number_mismatch",
+      "Strategy": "staged",
+      "Outcome": "additional_verification_required",
+      "Calls": 1,
+      "Charge": 1200.0,
+      "Persisted": false,
+      "Status": 200
+    },
+    {
+      "Profile": "complete",
+      "Scenario": "clear",
+      "Strategy": "optitrace",
+      "Outcome": "verified",
+      "Calls": 3,
+      "Charge": 6600.0,
+      "Persisted": false,
+      "Status": 200
+    },
+    {
+      "Profile": "conditional",
+      "Scenario": "stale",
+      "Strategy": "optitrace",
+      "Outcome": "indeterminate",
+      "Calls": 3,
+      "Charge": 6600.0,
+      "Persisted": false,
+      "Status": 200
+    }
+  ],
+  "AnonymousTenantAccess": 401,
+  "TenantInput": 400,
+  "SourceCommit": "4eebebf63932ab3b21df3f4f2172921b52be99be",
+  "RenderDeployment": "dep-dbf0ct7avr4c73cccjd0"
+}

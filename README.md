@@ -14,6 +14,10 @@ Try **conditional / number mismatch / staged**, then compare **full parallel**. 
 
 For the complete console—including policy author/reviewer workflows, persistent traces, benchmarks and administration—run your own local instance using the instructions below. Hosted Google workspaces remain invitation-only. See [contributing](CONTRIBUTING.md), [security reporting](SECURITY.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
 
+![Public sandbox running a synthetic verification](docs/evidence/screenshots/public-sandbox.png)
+
+[Public release validation and limitations](docs/evidence/OPEN-SOURCE.md) include actual unauthenticated hosted checks. GitHub Actions currently remains blocked by an account-level billing lock, including after publication.
+
 ## Portfolio deployment
 
 For hosted setup, follow [the portfolio hosting runbook](docs/runbooks/PORTFOLIO-HOSTING.md). One Render process runs the API, private loopback simulator and durable benchmark worker. Supabase provides Google authentication and PostgreSQL, with a dedicated non-owner application login and no Data API access to application tables. Vercel proxies browser requests to Go; provider tokens never become browser application sessions.
